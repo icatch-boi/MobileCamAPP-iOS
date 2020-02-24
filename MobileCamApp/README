@@ -1,0 +1,2 @@
+1. Rename sphost.BRN to sphost.wav, because Xcode do not archive sphost.BRN into ipa file.
+2. Read sphost.wav and then write to the sphost.BRN file at cache directory.

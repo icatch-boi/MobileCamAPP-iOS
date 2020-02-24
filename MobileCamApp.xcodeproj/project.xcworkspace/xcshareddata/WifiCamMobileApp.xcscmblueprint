@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "284098f2-da88-11de-8585-8d488507ad20++7100",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "284098f2-da88-11de-8585-8d488507ad20++7100" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "284098f2-da88-11de-8585-8d488507ad20++7100" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A5E43E34-F4F2-4104-8204-C7324F8FE4B8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "284098f2-da88-11de-8585-8d488507ad20++7100" : "iOS_360Cam\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "WifiCamMobileApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "code\/WifiCamMobileApp.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/rsvn1.icatchtek.com\/svn\/misc",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "284098f2-da88-11de-8585-8d488507ad20++7100"
+    }
+  ]
+}

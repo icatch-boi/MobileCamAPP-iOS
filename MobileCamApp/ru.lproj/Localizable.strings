@@ -1,0 +1,254 @@
+/*
+ Localizable.strings
+ WifiCamMobileApp
+ 
+ Created by Sunmedia Apple on 14-2-19.
+ Copyright (c) 2014年 iCatchTech. All rights reserved.
+ */
+
+
+
+"SetPhotoResolution" = "Set Photo Resolution";
+
+"Albums" = "Albums";
+"Photos" = "Camera Roll";
+"Videos" = "Videos";
+"Edit" = "Choose";
+"SelectItem" = "Select Items";
+"SelectedItems" = "%d Items Selected";
+"SelectedOneVideo" = "1 Video Selected";
+"SelectedVideos" = "%d Videos Selected";
+"SelectedOnePhoto" = "1 Photo Selected";
+"SelectedPhotos" = "%d Photos Selected";
+
+"DownloadConfirmMessage" = "Total Files: %1\nDownload Time: %2 mins\n\nConfirm download?";
+"DownloadConfirmMessage1" = "Total Files: %1\nDownload Time: %2 seconds\n\nConfirm download?";
+"DownloadConfirmMessage2" = "Total Files: %1\nDownload Time: %2 minutes %3 seconds \n\nConfirm download?";
+"DownloadConfirmMessage3" = "Total Files: %1\nDownload Time: %2 hours %3 mintues %4 seconds\n\nConfirm download?";
+"DownloadingTitle" = "Downloading...";
+"DownloadingMessage" = "Downloading %1/%2\n%3%";
+"DownloadDoneMessage" = "Totally downloaded %1 photos, %2 videos";
+"Saved" = "Item saved to album";
+
+"Deleting" = "Deleting...";
+"DeleteDoneTitle" = "Delete File";
+"DeleteDoneMessage" = "Selected items has deleted";
+"Deleted" = "Deleted";
+
+"All" = "All";
+"DoubleTapToShow" = "Double tap to show";
+"NoPhotos" = "No photos";
+"NoVideos" = "No videos";
+
+"SETTING_CAP_TL_INTERVAL_3_S" = "3s";
+"SETTING_CAP_TL_INTERVAL_1_M" = "1m";
+"SETTING_CAP_TL_INTERVAL_10_M" = "10m";
+"SETTING_CAP_TL_DURATION_60_M" = "60m";
+"SETTING_CAP_TL_DURATION_Unlimited" = "Unlimited";
+
+"SETTING_UPSIDE_DOWN" = "Upside Down";
+"SETTING_SLOW_MOTION" = "Slow Motion";
+"SETTING_OFF"="Off";
+"SETTING_ON"="On";
+"SETTING_TIMELAPSE"="Timelapse";
+"SETTING_TIMELAPSE_TYPE"="Timelapse Type";
+"SETTING_TIMELAPSE_TYPE_VIDEO"="Video";
+"SETTING_TIMELAPSE_TYPE_STILL"="Still";
+
+"ZoomFailed"="Zoom In/Out Failed!";
+"NoCard"="Please insert an SD card!";
+
+"SETTING_FORMAT_FAILED" = "format failed.";
+"PreviewNotSupported"="PREVIEW NOT SUPPORTED";
+//-----------------------------------------------------------------------------
+
+/*
+ Localizable.strings
+ CameraWifiLink
+ Created by macbook-rd on 12/12/3.
+ Copyright (c) 2012年 Tericky. All rights reserved.
+ */
+"CARD_INSERTED" 	="НРД вставлена ​​карта";//"\n\nНРД вставлена ​​карта";
+"CARD_REMOVED" 	= "НРД карты удалены";//"\n\nНРД карты удалены";
+"SETTING_BURST_10_PHOTOS" 	="10 фото";
+"SETTING_BURST_INTERVAL_10_FPS" 	="10fps";
+"SETTING_CAP_TL_DURATION_10_M" 	="10m";
+"SETTING_VID_TL_INTERVAL_10_M" 	="10m";
+"SETTING_CAP_TL_INTERVAL_10_S" 	="10s";
+"SETTING_VID_TL_DURATION_10_S" 	="10s";
+"SETTING_CAP_TL_DURATION_15_M" 	="15m";
+"SETTING_VID_TL_DURATION_15_S" 	="15s";
+"SETTING_BURST_INTERVAL_1_FPS" 	="1fps";
+"SETTING_CAP_TL_INTERVAL_1_HR" 	="1hr";
+"SETTING_CAP_TL_DURATION_1_HR" 	="1hr";
+"SETTING_VID_TL_INTERVAL_1_M" 	="1m";
+"SETTING_VID_TL_DURATION_1_M" 	="1m";
+"SETTING_CAP_TL_INTERVAL_1_S" 	="1s";
+"SETTING_CAP_TL_DURATION_20_M" 	="20m";
+"SETTING_CAP_TL_INTERVAL_20_S" 	="20s";
+"SETTING_VID_TL_DURATION_20_S" 	="20s";
+"SETTING_BURST_INTERVAL_2_FPS" 	="2fps";
+"SETTING_BURST_3_PHOTOS" 	="3 фото";
+"SETTING_CAP_TL_INTERVAL_30_M" 	="30m";
+"SETTING_CAP_TL_DURATION_30_M" 	="30m";
+"SETTING_CAP_TL_INTERVAL_30_S" 	="30s";
+"SETTING_VID_TL_DURATION_30_S" 	="30s";
+"SETTING_BURST_INTERVAL_3_FPS" 	="3fps";
+"SETTING_BURST_INTERVAL_4_FPS" 	="4fps";
+"SETTING_BURST_5_PHOTOS" 	="5 фотографий";
+"SETTING_BURST_INTERVAL_5_FPS" 	="5fps";
+"SETTING_CAP_TL_INTERVAL_5_M" 	="5m";
+"SETTING_CAP_TL_DURATION_5_M" 	="5m";
+"SETTING_CAP_TL_INTERVAL_5_S" 	="5s";
+"SETTING_VID_TL_DURATION_5_S" 	="5s";
+"CameraAlbum" 	="Альбом";
+"SETTING_APP_VERSION" 	="App Версия:% @";
+"SETTING_POWER_SUPPLY_AUTO" 	="Автоматический";
+"SETTING_AWB_AUTO" 	="Автоматический";
+"DownloadPhotoError" 	="Не удается загрузить пункта";
+"DownloadThumbError" 	="Не могу скачать с миниатюрами";
+"STREAM_CAPTURE_FAILED" 	="Съемка не удалась, пожалуйста, повторите";
+"ALERT_CLOSE" 	="Близко";
+"SETTING_AWB_CLOUDY" 	="Облачный";
+"Sure" 	="Подтверждать";
+"DeleteSure" 	="Confirm Delete";
+"SureDelete" 	="Confirm Delete";
+"SureDownload" 	="Подтвердите Скачать";
+"ConnectingPleaseWait" 	="Подключение, пожалуйста, подождите...";
+"ConnectError" 	="Ошибка соединения";
+"SETTING_DATESTAMP_DATE" 	="Дата";
+"SETTING_DATESTAMP_DATE_TIME" 	="Дата и Время";
+"SETTING_AWB_DAYLIGHT" 	="Дневной свет";
+"DeleteMultiAsk" 	="удалять%d выбранные элементы ?";
+"DeletePhoto" 	="Удаление элементов";
+"DeleteSelected" 	="Удалить выбранные";
+"AllDownload" 	="Скачать все";
+"DownloadAllPhoto" 	="Скачать все элементы";
+"DownloadPhoto" 	="Скачать пункта";
+"DownloadFileList" 	="Скачать список";
+"DownloadSelected" 	="Скачать Seletected";
+"CompleteDownload" 	="Downloaded %d pictures\n %d videos";
+"SavePhotoWaitCount" 	="";
+"DownloadFileListWait" 	="Загрузка список ...";
+"DownloadSelectedError" 	="Ошибка при загрузке, %d элементы не загружаются";
+"SaveError" 	="Ошибка при сохранении";
+"SETTING_VID_TL_INTERVAL_EVENT" 	="Event";
+"SETTING_AWB_FLUORESECENT" 	="Fluoresecent";
+"SETTING_FORMAT_CONFIRM" 	="Формат";
+"SETTING_FORMAT_FINISH" 	="Формат отделкой.";
+"SETTING_FORMATTING" 	="форматирование ...";
+"SETTING_FIRMWARE_VERSION" 	="Версия прошивки:%@";
+"PhotoView" 	="Галерея";
+"SETTING_BURST_HIGHEST_SPEED" 	="Максимальная скорость";
+"SETTING_AWB_INCANDESCENT" 	="Лампа накаливания";
+"SavePhotoToAlbum" 	="Пункт сохраняются в альбоме";
+"LOAD_SETTING_DATA" 	="Загрузить сохраненные данные...";
+"MultipleSelect" 	="Выберите Mutiple";
+"SETTING_PRODUCT_NAME" 	="Имя приложения:%@";
+"SavePhoto" 	="Экономить";
+"PhotoSavingWait" 	="Сохранение, пожалуйста, подождите...";
+"Saving" 	="Сохранение...";
+"CARD_ERROR" 	="SD-карта ошибка чтения!！";
+"SelectPhotoAmount" 	="выбранный %d / %d Предметы";
+"DeleteSelectSuccess" 	="Выбранные элементы удалены";
+"DownloadSelectedPhoto" 	="Seletected элементы, загруженные";
+"ALERT_TITLE_SET_FLASH_MODE" 	="Set Flash Mode";
+"STREAM_SET_RES" 	="Установите разрешение";
+"STREAM_SET_TIMER" 	="Установить таймер";
+"DownloadMiltiAsk" 	="";
+"SETTING_CAP_TL_DURATION_UNLIMITION" 	="Unlimition";
+"STREAM_FAILED" 	=" Видео поток потеряли, пожалуйста, ближе к устройству и снова.";
+"ShowNoViewVideoTip" 	="Потоковое видео не поддерживается";
+"NoWifiConnection" 	="Wi-Fi соединение с устройством не найден";
+"DeleteError" 	="Ошибка при удалении";
+"DeleteMultiError" 	="Ошибка при удалении , %d элементы не удаляются";
+"SETTING_BURST_CONTINUOUS" 	="";
+"CARD_FULL_RECORDING_CANCELED" 	="Предупреждение: SD-карта заполнена, не может записать или сфотографировать.";
+"SETTING_POWER_SUPPLY_50" 	="50 Гц";
+"SETTING_POWER_SUPPLY_60" 	=" 60 Гц";
+"SETTING_ABOUT" 	="о";
+"STREAM_TITLE" 	="Предварительный просмотр камеры";
+"Cancel" 	="отменить";
+"STREAM_ERROR_CAPTURING" 	="Захват не может переключиться";
+"STREAM_CAPTURING" 	="Захват ...";
+"SETTING_CAR_MODE" 	="";
+"Connecting" 	="Подключение ...";
+"TimeoutError" 	="Подключение к камере не удалось, пожалуйста, убедитесь, Wi-Fi-соединение работает.";
+"SETTING_BURST" 	="взрыв Capture";
+"SETTING_BURST_INTERVAL" 	="Интервал серии Caputure";
+"SETTING_DATESTAMP" 	="штамп даты";
+"Delete" 	="удалять";
+"STREAM_ERROR_CANNOT_OPEN_GALLERY" 	="Отключено в режиме захвата или записи";
+"SETTING_FORMAT_DESC" 	="Хотите отформатировать SD​​, все ваши данные будут потеряны?";
+"Download" 	="скачать";
+"Exit" 	="Выход";
+"STREAM_EXITING" 	="Выход ...";
+"SETTING_FORMAT" 	="формат";
+"SETTING_POWER_SUPPLY" 	="Частота силы";
+"ALERT_LOW_BATTERY" 	="Низкий уровень заряда батареи, пожалуйста, зарядите устройство.";
+"ALERT_NO" 	="";
+"NotEnoughSpaceError" 	="Не хватает места!";
+"STREAM_ERROR_NOT_ENOUGH_SPACE" 	="Не хватает места!";
+"DownloadNotEnoughSpace" 	="Недостаточно памяти, удалите некоторые файлы и перезапустить.";
+"SETTING_BURST_OFF" 	="От";
+"SETTING_DATESTAMP_OFF" 	="От";
+"SETTING_CAP_TL_INTERVAL_OFF" 	="От";
+"SETTING_CAP_TL_DURATION_OFF" 	="От";
+"SETTING_VID_TL_INTERVAL_OFF" 	="От";
+"SETTING_VID_TL_DURATION_OFF" 	="От";
+"SETTING_SELF_TIMER_CHANGE_TO_OFF" 	="От";
+"SETTING_SELF_TIMER_OFF" 	="От";
+"SETTING_DATESTAMP_OFF" 	="От";
+"ALERT_NO" 	="";
+"ALERT_SETTING_BURCT_SET" 	="";
+"ALERT_SETTING_CAR_MODE_SET" 	="";
+"ALERT_SETTING_SLOW_MOT_SET" 	="";
+"ALERT_SETTING_TIMELAPSE_SET" 	="";
+"STREAM_WAIT_FOR_VIDEO" 	="Пожалуйста, подождите";
+"STREAM_EXIT_WAIT" 	="Пожалуйста, подождите";
+"STREAM_EXIT_RECORDING" 	="Нажмите еще раз, чтобы остановить запись и выход";
+"STREAM_ERROR_CAPTURING_CAPTURE" 	="Обработка ...";
+"PTP_CONNECTED" 	="PTP связи";
+"STREAM_RECONNECT" 	="Снова";
+"STREAM_ERROR_RECORDING" 	="Запись не может переключиться";
+"CARD_FULL" 	="SD карта заполнена";
+"STREAM_SET_ERROR" 	="Установить не удалось";
+"ALERT_TITLE_SET_PHOTO_RESOLUTION" 	="";
+"ALERT_TITLE_SET_SELF_TIMER" 	="Установить таймер";
+"STREAM_SET_COMPLETE" 	="Успех указан";
+"ALERT_TITLE_SET_VIDEO_RESOLUTION" 	="Установите разрешение";
+"SETTING" 	="установка";
+"SETTING_CAP_TIMESCAPE_LIMIT" 	="Продолжительность Timelapse";
+"SETTING_CAP_TIMESCAPE_INTERVAL" 	="интервал Timelapse";
+"SETTING_VID_TIMESCAPE_LIMIT" 	="Продолжительность видео Timelapse";
+"SETTING_VID_TIMESCAPE_INTERVAL" 	="Интервал Видео Timelapse";
+"CARD_FULL_RECORDING" 	="Предупреждение: SD-карта заполнена, запись видео остановилось.";
+"SETTING_AWB" 	="Баланс белого";
+"ALERT_YES" 	="";
+"ALERT_DOWNLOAD_CORRECT_APP" 	="Please download correct APP";
+"Media on My iPhone" = "iphone камеры ролл";
+"Add New Camera" = "Добавить камеру";
+"Connect to" = "подключиться к";
+"Are you sure you want to remove this record" = "Вы уверены, что хотите удалить эту камеру?";
+"Warning" = "Предупреждение";
+"PhotosLabel"="Фото";
+"SETTING_CAP_TL_INTERVAL_0.5_S" = "0.5s";
+
+"AUDIO" = "Audio";
+"Connected to other Wi-Fi" = "Connected to other Wi-Fi, please connect again.";
+"Reconnect to" = "Reconnect to";
+
+"LIVEURL" = "Live URL";
+"LIVE_RESOLUTION" = "Set Live Resolution";
+"Tips" = "Tips";
+"Start Live" = "Start Live...";
+"Stop Live" = "Stop Live...";
+"LIVE_STREAM_FORMAT" = "Please switch to the h. 264 stream format to broadcast live!";
+"LIVE_FAILED" = "Live failure, please check up network status and the correctness of the URL!";
+"CreateLiveBroadCastFailed" = "Failed to create a LiveBroadcast";
+"CreateStreamingChannelFailed" = "Failed to create a streaming channel";
+"BindFailed" = "Binding LiveBroadcast and LiveStreams failure";
+"CheckoutLiveBroadCastStatusFailed" = "Switch liveBroadcast failure";
+"ActivetoTestingFailed" = "Convert LiveBroadcast to testing status failed";
+"TestingtoLiveFailed" = "Convert LiveBroadcast to live status failed";
+"GetLiveBroadcastStautsFailed" = "Get LiveBroadcast status failed";

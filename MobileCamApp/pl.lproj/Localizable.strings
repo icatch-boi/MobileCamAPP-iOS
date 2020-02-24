@@ -1,0 +1,295 @@
+/*
+ Localizable.strings
+ WifiCamMobileApp
+ 
+ Created by Sunmedia Apple on 14-2-19.
+ Copyright (c) 2014年 iCatchTech. All rights reserved.
+ */
+
+
+
+"SetPhotoResolution" = "Set Photo Resolution";
+
+"Albums" = "Albums";
+"Photos" = "Camera Roll";
+"Videos" = "Videos";
+"Edit" = "Choose";
+"SelectItem" = "Select Items";
+"SelectedItems" = "%d Items Selected";
+"SelectedOneVideo" = "1 Video Selected";
+"SelectedVideos" = "%d Videos Selected";
+"SelectedOnePhoto" = "1 Photo Selected";
+"SelectedPhotos" = "%d Photos Selected";
+
+"DownloadConfirmMessage" = "Total Files: %1\nDownload Time: %2 mins\n\nConfirm download?";
+"DownloadConfirmMessage1" = "Total Files: %1\nDownload Time: %2 seconds\n\nConfirm download?";
+"DownloadConfirmMessage2" = "Total Files: %1\nDownload Time: %2 minutes %3 seconds \n\nConfirm download?";
+"DownloadConfirmMessage3" = "Total Files: %1\nDownload Time: %2 hours %3 mintues %4 seconds\n\nConfirm download?";
+"DownloadingTitle" = "Downloading...";
+"DownloadingMessage" = "Downloading %1/%2\n%3%";
+"DownloadDoneMessage" = "Totally downloaded %1 photos, %2 videos";
+"Saved" = "Item saved to album";
+
+"Deleting" = "Deleting...";
+"DeleteDoneTitle" = "Delete File";
+"DeleteDoneMessage" = "Selected items has deleted";
+"Deleted" = "Deleted";
+
+"All" = "All";
+"DoubleTapToShow" = "Double tap to show";
+"NoPhotos" = "No photos";
+"NoVideos" = "No videos";
+
+"SETTING_CAP_TL_INTERVAL_3_S" = "3s";
+"SETTING_CAP_TL_INTERVAL_1_M" = "1m";
+"SETTING_CAP_TL_INTERVAL_10_M" = "10m";
+"SETTING_CAP_TL_DURATION_60_M" = "60m";
+"SETTING_CAP_TL_DURATION_Unlimited" = "Unlimited";
+
+"SETTING_CAP_TL_INTERVAL_2_S" = "2s";
+"SETTING_CAP_TL_INTERVAL_1_M" = "1m";
+"SETTING_CAP_TL_INTERVAL_10_M" = "10m";
+"SETTING_CAP_TL_DURATION_60_M" = "60m";
+"SETTING_CAP_TL_DURATION_Unlimited" = "Unlimited";
+
+"SETTING_UPSIDE_DOWN" = "Upside Down";
+"SETTING_SLOW_MOTION" = "Slow Motion";
+"SETTING_OFF"="Off";
+"SETTING_ON"="On";
+"SETTING_TIMELAPSE"="Timelapse";
+"SETTING_TIMELAPSE_TYPE"="Timelapse Type";
+"SETTING_TIMELAPSE_TYPE_VIDEO"="Video";
+"SETTING_TIMELAPSE_TYPE_STILL"="Still";
+
+"ZoomFailed"="Zoom In/Out Failed!";
+"NoCard"="Please insert an SD card!";
+
+"CameraPbError"="Camera error!";
+
+"ALERT_DOWNLOAD_CORRECT_APP"="Please download correct app";
+
+"Weibo" = "Sina Weibo";
+"TencentWeibo" = "Tencent Weibo";
+
+"SETTING_FORMAT_FAILED" = "format failed.";
+"PreviewNotSupported"="PREVIEW NOT SUPPORTED";
+//-----------------------------------------------------------------------------
+
+/*
+ Localizable.strings
+ CameraWifiLink
+ 
+ Created by macbook-rd on 12/12/3.
+ Copyright (c) 2012年 Tericky. All rights reserved.
+ */
+
+"AllDownload"			=	"Pobierz wszystko";
+
+"Cancel"				=	"Anuluj";
+"CameraAlbum"			=	"Album";
+"ConnectError"			=	"Błąd połączenia";
+"Connecting"			=	"Łączenie...";
+"ConnectingPleaseWait"	=	"Łączę, proszę czekać…";
+
+"Delete"				=	"Kasuj";
+"DeleteMultiAsk"		=	"Usuń %d zaznaczone elementy";
+"DeleteError"			=	"Błąd podczas usuwania";
+"DeleteMultiError"		=	"Błąd podczas usuwania, %d rzeczy nie usunięte";
+"DeletePhoto"			=	"Usuń element";
+"DeleteSelectSuccess"	=	"Usunięto zaznaczone elementy";
+"DeleteSure"			=	"Potwierdź kasowanie";
+"DeleteSelected"		=	"Usuń zaznaczone";
+"Download"				=	"Pobierz";
+"DownloadAllPhoto"		=	"Pobierz wszystkie elementy";
+"DownloadFileList"		=	"Pobierz listę";
+"DownloadFileListWait"	=	"Pobierz listę…";
+"DownloadSelected"		=	"Pobierz zaznaczone";
+"DownloadSelectedPhoto"	=	"Pobrano wybrane pozycje";
+"DownloadMiltiAsk"		=	"Całkowita ilość plików: %d\nCzas pobierania: %d mins\n\nPotwierdzasz pobieranie?";
+
+"DownloadPhoto"			=	"Pobierz element";
+"DownloadSelectedError"	=	"Błąd pobierania, %d elemementów nie można pobrać";
+"DownloadThumbError"	=	"Nie można pobrać miniatur";
+"DownloadPhotoError"	=	"Nie można pobrać elementu";
+"DownloadNotEnoughSpace"=   "Za mało pamięci, proszę skasować niektóre pliki i zacząć ponownie.";
+
+"Exit"					=	"Wyjdź";
+
+"MultipleSelect"		=	"Wybierz wiele";
+
+"NoWifiConnection"		=	"Nie znaleziono sygnału Wi-Fi urządzenia";
+
+"Saving"				=	"Zapisywanie…";
+"SavePhoto"				=	"Zapisz zdjęcie";
+"SavePhotoToAlbum"		=	"Element zapisany do albumu";
+"SaveError"				=	"Błąd podczas zapisywania";
+"SavePhotoWaitCount"	=	"Pobierz %d / %d …\n %d %%";
+"SelectPhotoAmount"		=	"Zaznacz %d / %d elementy";
+"Sure"					=	"Potwierdź";
+"SureDelete"			=	"Potwierdź kasowanie";
+"SureDownload"			=	"Potwierdź pobieranie";
+"PhotoSavingWait"		=	"Zapisywanie, Proszę czekaj…";
+"PhotoView"				=	"Galeria";
+
+
+"ShowNoViewVideoTip"	=	"Streaming video nie jest obsługiwany";
+"CompleteDownload"		=	"Pobierz %d zdjęć\n %d wideo";
+
+"NotEnoughSpaceError"   =   "Za mało miejsca!";
+"TimeoutError"          =   "Nieudane połączenie z kamerą, sprawdzić, czy działa połączenie Wi-Fi.";
+
+"CARD_ERROR"            =   "Błąd karty SD";
+"CARD_INSERTED"         =   "Włożona karta SD";//"\n\nWłożona karta SD";
+"CARD_REMOVED"          =   "Usunięto kartę SD";
+"CARD_FULL"             =   "Karta SD jest pełna";
+"CARD_FULL_RECORDING"   =   "Ostrzeżenie : Karta SD jest pełna, zatrzymano nagrywanie wideo.";
+"CARD_FULL_RECORDING_CANCELED"   =   "Uwaga: Pełna karta SD, nie można nagrywać ani robić zdjęć.";
+
+"STREAM_TITLE"                      = "Przegląd kamery";
+"STREAM_SET_COMPLETE"               = "Ustawienie udane";
+"STREAM_SET_TIMER"                  = "Ustaw timer";
+"STREAM_SET_RES"                    = "Ustaw rozdzielczość";
+"STREAM_SET_ERROR"                  = "Ustawienie nieudane";
+"PTP_CONNECTED"                     = "PTP połączone";
+"STREAM_ERROR_CANNOT_OPEN_GALLERY"  = "Wyłączone podczas fotografowania lub nagrywania";
+"STREAM_ERROR_CAPTURING"            = "Nie można włączyć fotografowania";
+"STREAM_ERROR_NOT_ENOUGH_SPACE"     = "Za mało miejsca!";
+"STREAM_ERROR_RECORDING"            = "Nie można włączyć nagrywania";
+"STREAM_ERROR_CAPTURING_CAPTURE"    = "Przetwarzanie...";
+"STREAM_CAPTURING"                  = "Fotografowanie...";
+"STREAM_CAPTURE_FAILED"             = "Przechwytywanie nie powiodło się, spróbuj ponownie";
+"STREAM_WAIT_FOR_VIDEO"             = "Proszę czekać";
+"STREAM_EXIT_WAIT"                  = "Proszę czekać";
+"STREAM_EXIT_RECORDING"             = "Nacisnąć ponownie, aby zatrzymać nagrywanie i wyjść";
+"STREAM_EXITING"                    = "Zamykanie ...";
+"STREAM_FAILED"                     = "Utracony strumień wideo, podejdź bliżej do urządzenia i ponownie połącz";
+"STREAM_RECONNECT"                  = "Połącz ponownie";
+
+"SETTING"                           = "Ustawienie";
+"SETTING_POWER_SUPPLY"              = "Częstotliwość";
+"SETTING_POWER_SUPPLY_50"           = "50Hz";
+"SETTING_POWER_SUPPLY_60"           = "60Hz";
+"SETTING_POWER_SUPPLY_AUTO"         = "Auto";
+"SETTING_FORMAT"                    = "Formatowanie kamery";
+"SETTING_FORMAT_CONFIRM"            = "Formatuj";
+"SETTING_FORMAT_DESC"               = "Czy formatować SD, wszystkie dane będą utracone?";
+"SETTING_FORMATTING"                = "Formatowanie…";
+"SETTING_FORMAT_FINISH"             = "Formatowanie zakończone";
+"SETTING_BURST"                     = "Zdjęcia seryjne";
+"SETTING_BURST_OFF"                 = "Wyjdź";
+"SETTING_BURST_3_PHOTOS"            = "3 zdjęć";
+"SETTING_BURST_5_PHOTOS"            = "5 zdjęć";
+"SETTING_BURST_10_PHOTOS"           = "10 Zdjęć";
+"SETTING_BURST_HIGHEST_SPEED"       = "Najwyższa prędkość";
+"SETTING_CAP_TIMESCAPE_INTERVAL"    = "Interwał sekwencji zdjęć";
+"SETTING_CAP_TIMESCAPE_LIMIT"       = "Czas trwania sekwencji zdjęć";
+"SETTING_VID_TIMESCAPE_INTERVAL"    = "Interwał sekwencji wideo";
+"SETTING_VID_TIMESCAPE_LIMIT"       = "Czas trwania sekwencji wideo";
+"SETTING_DATESTAMP"                 = "Pokaż datę";
+"SETTING_DATESTAMP_OFF"             = "Wyjdź";
+"SETTING_DATESTAMP_DATE"            = "Data";
+"SETTING_DATESTAMP_DATE_TIME"       = "Data i czas";
+"SETTING_ABOUT"                     = "O urządzeniu";
+"SETTING_APP_VERSION"               = "Wersja aplikacji: %@";
+"SETTING_PRODUCT_NAME"              = "Nazwa produktu: %@";
+"SETTING_FIRMWARE_VERSION"          = "Firmware wersja: %@";
+"SETTING_AWB"                       = "Balans bieli";
+"SETTING_AWB_AUTO"                  = "Auto";
+"SETTING_AWB_DAYLIGHT"              = "Światło dzienne";
+"SETTING_AWB_CLOUDY"                = "Pochmurno";
+"SETTING_AWB_FLUORESECENT"          = "Światło jarzeniowe";
+"SETTING_AWB_INCANDESCENT"          = "Sztuczne oświetlenie";
+"SETTING_BURST_INTERVAL"            = "Interwał zdjęć seryjnych";
+"SETTING_BURST_INTERVAL_1_FPS"      = "1fps";
+"SETTING_BURST_INTERVAL_2_FPS"      = "2fps";
+"SETTING_BURST_INTERVAL_3_FPS"      = "3fps";
+"SETTING_BURST_INTERVAL_4_FPS"      = "4fps";
+"SETTING_BURST_INTERVAL_5_FPS"      = "5fps";
+"SETTING_BURST_INTERVAL_10_FPS"     = "10fps";
+"SETTING_CAP_TL_INTERVAL_OFF"       = "Wyjdź";
+"SETTING_CAP_TL_INTERVAL_1_S"       = "1s";
+"SETTING_CAP_TL_INTERVAL_5_S"       = "5s";
+"SETTING_CAP_TL_INTERVAL_10_S"      = "10s";
+"SETTING_CAP_TL_INTERVAL_20_S"      = "20s";
+"SETTING_CAP_TL_INTERVAL_30_S"      = "30s";
+"SETTING_CAP_TL_INTERVAL_1_M"       = "1m";
+"SETTING_CAP_TL_INTERVAL_5_M"       = "5m";
+"SETTING_CAP_TL_INTERVAL_10_M"      = "10m";
+"SETTING_CAP_TL_INTERVAL_30_M"      = "30m";
+"SETTING_CAP_TL_INTERVAL_1_HR"      = "1hr";
+"SETTING_CAP_TL_DURATION_OFF"       = "Wyjdź";
+"SETTING_CAP_TL_DURATION_5_M"       = "5m";
+"SETTING_CAP_TL_DURATION_10_M"      = "10m";
+"SETTING_CAP_TL_DURATION_15_M"      = "15m";
+"SETTING_CAP_TL_DURATION_20_M"      = "20m";
+"SETTING_CAP_TL_DURATION_30_M"      = "30m";
+"SETTING_CAP_TL_DURATION_1_HR"      = "1hr";
+"SETTING_CAP_TL_DURATION_UNLIMITION"= "Nieograniczony";
+"SETTING_VID_TL_INTERVAL_OFF"       = "Wyjdź";
+"SETTING_VID_TL_INTERVAL_1_M"       = "1m";
+"SETTING_VID_TL_INTERVAL_5_M"       = "5m";
+"SETTING_VID_TL_INTERVAL_10_M"      = "10m";
+"SETTING_VID_TL_INTERVAL_EVENT"     = "Zdarzenie";
+"SETTING_VID_TL_DURATION_OFF"       = "Wyjdź";
+"SETTING_VID_TL_DURATION_5_S"       = "5s";
+"SETTING_VID_TL_DURATION_10_S"      = "10s";
+"SETTING_VID_TL_DURATION_15_S"      = "15s";
+"SETTING_VID_TL_DURATION_20_S"      = "20s";
+"SETTING_VID_TL_DURATION_30_S"      = "30s";
+"SETTING_VID_TL_DURATION_1_M"       = "1m";
+"SETTING_VID_TL_DURATION_5_M"       = "5m";
+"SETTING_VID_TL_DURATION_10_M"      = "10m";
+
+"SETTING_SELF_TIMER_CHANGE_TO_OFF"  = "Wyjdź";
+"SETTING_SELF_TIMER_OFF"            = "Wyjdź";
+
+"ALERT_TITLE_SET_PHOTO_RESOLUTION"  = "Ustaw rozdzielczość zdjęć";
+"ALERT_TITLE_SET_VIDEO_RESOLUTION"  = "Ustawienie rozdzielczości wideo";
+"ALERT_TITLE_SET_SELF_TIMER"        = "Ustawienie autotimera";
+"ALERT_TITLE_SET_FLASH_MODE"        = "Ustaw tryb Flash";
+"ALERT_CLOSE"                       = "Zamknięto";
+"ALERT_LOW_BATTERY"                 = "Niski poziom baterii, proszę naładować urządzenie.";
+"ALERT_YES"                         = "Tak";
+"ALERT_NO"                          = "Nie";
+
+"LOAD_SETTING_DATA"                 = "Wczytaj ustawienia danych";
+
+// new function
+"SETTING_BURST_CONTINUOUS"          = "Kontynuuj";
+"SETTING_CAR_MODE"                  = "Tryb samochód";
+"SETTING_CAR_MODE_ON"               = "WŁ";
+"SETTING_CAR_MODE_OFF"              = "Wył";
+"SETTING_SLOW_MOTION"               = "Slow-Motion Function";
+"SETTING_SLOW_MOTION_ON"            = "WŁ";
+"SETTING_SLOW_MOTION_OFF"           = "Wył";
+"ALERT_SETTING_TIMELAPSE_SET"       = "Proszę wyłączyć Timelapse, aby ustawić tę wartość";
+"ALERT_SETTING_CAR_MODE_SET"        = "Proszę wyłączyć tryb samochodowy, aby ustawić tę wartość";
+"ALERT_SETTING_BURCT_SET"           = "Proszę wyłączyć przechwytywanie zdjęć seryjnych, aby ustawić tę wartość";
+"ALERT_SETTING_SLOW_MOT_SET"        = "Proszę wyłączyć tryb Slow Motion, aby ustawić tę wartość";
+"ALERT_DOWNLOAD_CORRECT_APP"        = "Proszę pobierz prawidłową aplikację";
+"Media on My iPhone"                = "iphone rolki z aparatu";
+"Add New Camera"                    = "Dodaj Camera";
+"Connect to"                        = "połączyć się";
+"Are you sure you want to remove this record" = "Czy na pewno chcesz usunąć ten aparat?";
+"Warning"                           = "Ostrzeżenie";
+"PhotosLabel"                       ="Zdjęcia";
+"SETTING_CAP_TL_INTERVAL_0.5_S" = "0.5s";
+
+"AUDIO" = "Audio";
+"Connected to other Wi-Fi" = "Connected to other Wi-Fi, please connect again.";
+"Reconnect to" = "Reconnect to";
+
+"LIVEURL" = "Live URL";
+"LIVE_RESOLUTION" = "Set Live Resolution";
+"Tips" = "Tips";
+"Start Live" = "Start Live...";
+"Stop Live" = "Stop Live...";
+"LIVE_STREAM_FORMAT" = "Please switch to the h. 264 stream format to broadcast live!";
+"LIVE_FAILED" = "Live failure, please check up network status and the correctness of the URL!";
+"CreateLiveBroadCastFailed" = "Failed to create a LiveBroadcast";
+"CreateStreamingChannelFailed" = "Failed to create a streaming channel";
+"BindFailed" = "Binding LiveBroadcast and LiveStreams failure";
+"CheckoutLiveBroadCastStatusFailed" = "Switch liveBroadcast failure";
+"ActivetoTestingFailed" = "Convert LiveBroadcast to testing status failed";
+"TestingtoLiveFailed" = "Convert LiveBroadcast to live status failed";
+"GetLiveBroadcastStautsFailed" = "Get LiveBroadcast status failed";

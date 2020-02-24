@@ -1,0 +1,268 @@
+/* 
+  Localizable.strings
+  WifiCamMobileApp - Chinese (Traditional)
+
+  Created by Sunmedia Apple on 14-2-19.
+  Copyright (c) 2014年 iCatchTech. All rights reserved.
+*/
+
+
+
+"SetPhotoResolution" = "設定照片解析度";
+
+"Albums" = "相簿";
+"Photos" = "照片";
+"Videos" = "影片";
+"Edit" = "選擇";
+"SelectItem" = "選取項目";
+"SelectedItems" = "已選取%d項";
+"SelectedOneVideo" = "已選取1個影片";
+"SelectedVideos" = "已選取%d個影片";
+"SelectedOnePhoto" = "已選取1張照片";
+"SelectedPhotos" = "已選取%d張照片";
+
+"DownloadConfirmMessage" = "檔案數目: %1\n下載時間: %2 分鐘\n\n確認下載嗎?";
+"DownloadConfirmMessage1" = "檔案數目: %1\n下載時間: %2 秒鐘\n\n確認下載嗎?";
+"DownloadConfirmMessage2" = "檔案數目: %1\n下載時間: %2 分鐘 %3 秒鐘\n\n確認下載嗎?";
+"DownloadConfirmMessage3" = "檔案數目: %1\n下載時間: %2 小时 %3 分鐘 %4 秒鐘\n\n確認下載嗎?";
+"DownloadingTitle" = "下載檔案中...";
+"DownloadingMessage" = "下載 %1/%2\n%3%";
+"DownloadDoneMessage" = "已下載 %1 照片, %2 影片";
+
+"Deleting" = "刪除中...";
+"DeleteDoneTitle" = "刪除檔案";
+"DeleteDoneMessage" = "選取的檔案已刪除";
+"Deleted" = "刪除完畢";
+
+"All" = "所有";
+"DoubleTapToShow" = "雙擊顯示";
+"NoPhotos" = "没有照片";
+"NoVideos" = "没有影片";
+
+"SETTING_CAP_TL_INTERVAL_3_S" = "3s";
+"SETTING_CAP_TL_INTERVAL_1_M" = "1m";
+"SETTING_CAP_TL_INTERVAL_10_M" = "10m";
+"SETTING_CAP_TL_DURATION_60_M" = "60m";
+"SETTING_CAP_TL_DURATION_Unlimited" = "無限制";
+
+"SETTING_UPSIDE_DOWN" = "反轉";
+"SETTING_SLOW_MOTION" = "慢動作";
+"SETTING_OFF"="關閉";
+"SETTING_ON"="打開";
+"SETTING_TIMELAPSE"="間隔拍攝";
+"SETTING_TIMELAPSE_TYPE"="間隔拍攝類型";
+"SETTING_TIMELAPSE_TYPE_VIDEO"="視頻";
+"SETTING_TIMELAPSE_TYPE_STILL"="圖片";
+
+"ZoomFailed"="放大/縮小失敗!";
+"NoCard"="未插入記憶卡!";
+
+"CameraPbError"="Camera error!";
+
+"ALERT_DOWNLOAD_CORRECT_APP"="Please download correct app";
+
+"Weibo" = "新浪微博";
+"TencentWeibo" = "騰訊微博";
+
+"SETTING_FORMAT_FAILED" = "格式化失敗";
+"AutoDownload" = "自動下載";
+"ChangeSSID"="改變Wi-Fi SSID";
+"UpdateFW"="更新固件";
+"ClearAppTemp"="清空應用空間";
+"ConfirmFormatSD"="確認格式化?";
+"TimelapseOff"="請在設置中將間隔拍攝打開";
+"PreviewNotSupported"="不支持該尺寸預覽";
+"StartPVFailed"="開流失敗";
+
+"ActionTimeOut"="操作超時";
+//
+
+/*
+ Localizable.strings
+ CameraWifiLink
+ Created by macbook-rd on 12/12/3.
+ Copyright (c) 2012年 Tericky. All rights reserved.
+ */
+"CARD_INSERTED" 	="儲存卡已插入";//"\n\n儲存卡已插入";
+"CARD_REMOVED" 	= "儲存卡已移除";//"\n\n儲存卡已移除";
+"SETTING_BURST_10_PHOTOS" 	="10張";
+"SETTING_BURST_INTERVAL_10_FPS" 	="10fps";
+"SETTING_CAP_TL_DURATION_10_M" 	="10m";
+"SETTING_VID_TL_INTERVAL_10_M" 	="10m";
+"SETTING_CAP_TL_INTERVAL_10_S" 	="10s";
+"SETTING_VID_TL_DURATION_10_S" 	="10s";
+"SETTING_CAP_TL_DURATION_15_M" 	="15m";
+"SETTING_VID_TL_DURATION_15_S" 	="15s";
+"SETTING_BURST_INTERVAL_1_FPS" 	="1fps";
+"SETTING_CAP_TL_INTERVAL_1_HR" 	="1hr";
+"SETTING_CAP_TL_DURATION_1_HR" 	="1hr";
+"SETTING_VID_TL_INTERVAL_1_M" 	="1m";
+"SETTING_VID_TL_DURATION_1_M" 	="1m";
+"SETTING_CAP_TL_INTERVAL_1_S" 	="1s";
+"SETTING_CAP_TL_DURATION_20_M" 	="20m";
+"SETTING_CAP_TL_INTERVAL_20_S" 	="20s";
+"SETTING_VID_TL_DURATION_20_S" 	="20s";
+"SETTING_BURST_INTERVAL_2_FPS" 	="2fps";
+"SETTING_BURST_3_PHOTOS" 	="3張";
+"SETTING_CAP_TL_INTERVAL_30_M" 	="30m";
+"SETTING_CAP_TL_DURATION_30_M" 	="30m";
+"SETTING_CAP_TL_INTERVAL_30_S" 	="30s";
+"SETTING_VID_TL_DURATION_30_S" 	="30s";
+"SETTING_BURST_INTERVAL_3_FPS" 	="3fps";
+"SETTING_BURST_INTERVAL_4_FPS" 	="4fps";
+"SETTING_BURST_5_PHOTOS" 	="5張";
+"SETTING_BURST_INTERVAL_5_FPS" 	="5fps";
+"SETTING_CAP_TL_INTERVAL_5_M" 	="5m";
+"SETTING_CAP_TL_DURATION_5_M" 	="5m";
+"SETTING_CAP_TL_INTERVAL_5_S" 	="5s";
+"SETTING_VID_TL_DURATION_5_S" 	="5s";
+"CameraAlbum" 	="相册";
+"SETTING_APP_VERSION" 	="應用程式版本：%@";
+"SETTING_POWER_SUPPLY_AUTO" 	="自動";
+"SETTING_AWB_AUTO" 	="自動";
+"DownloadPhotoError" 	="無法下載文件";
+"DownloadThumbError" 	="無法下载縮圖";
+"STREAM_CAPTURE_FAILED" 	="拍照失敗，請重試";
+"ALERT_CLOSE" 	="關閉";
+"SETTING_AWB_CLOUDY" 	="陰天";
+"Sure" 	="確認";
+"DeleteSure" 	="確認刪除";
+"SureDelete" 	="確認刪除";
+"SureDownload" 	="確認下載";
+"ConnectingPleaseWait" 	="連線中，請稍後...";
+"ConnectError" 	="連線失敗";
+"SETTING_DATESTAMP_DATE" 	="日期";
+"SETTING_DATESTAMP_DATE_TIME" 	="日期和時間";
+"SETTING_AWB_DAYLIGHT" 	="晴天";
+"DeleteMultiAsk" 	="是否删除選擇的 %d 個文件?";
+"DeletePhoto" 	="删除文件";
+"DeleteSelected" 	="删除選擇的";
+"AllDownload" 	="全部下載";
+"DownloadAllPhoto" 	="下載所有文件";
+"DownloadPhoto" 	="下載文件";
+"DownloadFileList" 	="下載列表";
+"DownloadSelected" 	="下載選中的文件";
+"CompleteDownload" 	="共下載 %d 張相片\n　　　 %d 個影片";
+"SavePhotoWaitCount" 	="";
+"DownloadFileListWait" 	="正在下載檔案列表...";
+"DownloadSelectedError" 	="有 %d 個文件下載失敗";
+"SaveError" 	="存檔失敗";
+"SETTING_VID_TL_INTERVAL_EVENT" 	="Event";
+"SETTING_AWB_FLUORESECENT" 	="螢光燈";
+"SETTING_FORMAT_CONFIRM" 	="格式化";
+"SETTING_FORMAT_FINISH" 	="格式化完成";
+"SETTING_FORMATTING" 	="正在格式化...";
+"SETTING_FIRMWARE_VERSION" 	="韌體版本：%@";
+"PhotoView" 	="相簿";
+"SETTING_BURST_HIGHEST_SPEED" 	="最高速度";
+"SETTING_AWB_INCANDESCENT" 	="燈泡";
+"SavePhotoToAlbum" 	="文件已保存至手機相機膠卷";
+"LOAD_SETTING_DATA" 	="正在載入設定中...";
+"MultipleSelect" 	="多項選擇";
+"SETTING_PRODUCT_NAME" 	="產品名稱：%@";
+"SavePhoto" 	="保存";
+"PhotoSavingWait" 	="正在保存,請稍後...";
+"Saving" 	="保存中...";
+"CARD_ERROR" 	="儲存卡讀取錯誤!";
+"SelectPhotoAmount" 	="已選擇 %d / %d 個文件";
+"DeleteSelectSuccess" 	="删除選定文件";
+"DownloadSelectedPhoto" 	="所選文件下載完成";
+"ALERT_TITLE_SET_FLASH_MODE" 	="Set Flash Mode";
+"STREAM_SET_RES" 	="設定解析度";
+"STREAM_SET_TIMER" 	="設定定時器";
+"DownloadMiltiAsk" 	="";
+"SETTING_CAP_TL_DURATION_UNLIMITION" 	="Unlimition";
+"STREAM_FAILED" 	="設備已斷開，請靠近設備並重新連線";
+"ShowNoViewVideoTip" 	="無法支援此影片";
+"NoWifiConnection" 	="找不到可用的Wi-Fi連線";
+"DeleteError" 	="删除失敗";
+"DeleteMultiError" 	="有 %d 個文件刪除失敗";
+"SETTING_BURST_CONTINUOUS" 	="";
+"CARD_FULL_RECORDING_CANCELED" 	="警告：記憶卡已滿，無法錄製或拍照。";
+"SETTING_POWER_SUPPLY_50" 	="50Hz";
+"SETTING_POWER_SUPPLY_60" 	="60Hz";
+"SETTING_ABOUT" 	="關於";
+"STREAM_TITLE" 	="相機預覽";
+"Cancel" 	="取消";
+"STREAM_ERROR_CAPTURING" 	="不能切換拍照";
+"STREAM_CAPTURING" 	="拍照...";
+"SETTING_CAR_MODE" 	="";
+"Connecting" 	="連線中...";
+"TimeoutError" 	="相機的連線失敗，請確保Wi-Fi連線工作。";
+"SETTING_BURST" 	="連拍";
+"SETTING_BURST_INTERVAL" 	="定時拍照間隔";
+"SETTING_DATESTAMP" 	="日期戳記";
+"Delete" 	="刪除";
+"STREAM_ERROR_CANNOT_OPEN_GALLERY" 	="拍照或錄影中禁止使用";
+"SETTING_FORMAT_DESC" 	="格式化SD ，你的所有資料將會遺失？";
+"Download" 	="下載";
+"Exit" 	="退出...";
+"STREAM_EXITING" 	="退出...";
+"SETTING_FORMAT" 	="格式化SD";
+"SETTING_POWER_SUPPLY" 	="電源頻率";
+"ALERT_LOW_BATTERY" 	="電池電量不足，請充電。";
+"ALERT_NO" 	="";
+"NotEnoughSpaceError" 	="空間不足！";
+"STREAM_ERROR_NOT_ENOUGH_SPACE" 	="空間不足！";
+"DownloadNotEnoughSpace" 	="沒有足夠的儲存空間，請刪除一些文件，然後重新啟動。";
+"SETTING_BURST_OFF" 	="關閉";
+"SETTING_DATESTAMP_OFF" 	="關閉";
+"SETTING_CAP_TL_INTERVAL_OFF" 	="關閉";
+"SETTING_CAP_TL_DURATION_OFF" 	="關閉";
+"SETTING_VID_TL_INTERVAL_OFF" 	="關閉";
+"SETTING_VID_TL_DURATION_OFF" 	="關閉";
+"SETTING_SELF_TIMER_CHANGE_TO_OFF" 	="關閉";
+"SETTING_SELF_TIMER_OFF" 	="關閉";
+"SETTING_DATESTAMP_OFF" 	="關閉";
+"ALERT_NO" 	="";
+"ALERT_SETTING_BURCT_SET" 	="";
+"ALERT_SETTING_CAR_MODE_SET" 	="";
+"ALERT_SETTING_SLOW_MOT_SET" 	="";
+"ALERT_SETTING_TIMELAPSE_SET" 	="";
+"STREAM_WAIT_FOR_VIDEO" 	="請稍後";
+"STREAM_EXIT_WAIT" 	="請稍後";
+"STREAM_EXIT_RECORDING" 	="再次按下停止錄音並退出";
+"STREAM_ERROR_CAPTURING_CAPTURE" 	="正在處理中...";
+"PTP_CONNECTED" 	="PTP連線";
+"STREAM_RECONNECT" 	="重新連線";
+"STREAM_ERROR_RECORDING" 	="攝影中無法切換";
+"CARD_FULL" 	="SD卡已滿";
+"STREAM_SET_ERROR" 	="設定失敗";
+"ALERT_TITLE_SET_PHOTO_RESOLUTION" 	="";
+"ALERT_TITLE_SET_SELF_TIMER" 	="設定計時";
+"STREAM_SET_COMPLETE" 	="設定成功";
+"ALERT_TITLE_SET_VIDEO_RESOLUTION" 	="設定解析度";
+"SETTING" 	="設定";
+"SETTING_CAP_TIMESCAPE_LIMIT" 	="間隔攝影時間";
+"SETTING_CAP_TIMESCAPE_INTERVAL" 	="時間間隔長度";
+"SETTING_VID_TIMESCAPE_LIMIT" 	="影線攝影間隔時間";
+"SETTING_VID_TIMESCAPE_INTERVAL" 	="無縫錄影";
+"CARD_FULL_RECORDING" 	="警告：SD卡已滿，錄影停止。";
+"SETTING_AWB" 	="白平衡";
+"ALERT_YES" 	="";
+"ALERT_DOWNLOAD_CORRECT_APP" 	="請使用正確的APP";
+"Media on My iPhone" = "本機相簿";
+"Add New Camera" = "添加新相機";
+"Connect to" = "連接到";
+"Are you sure you want to remove this record" = "是否確定要刪除此相機?";
+"Warning" = "警告";
+"SETTING_CAP_TL_INTERVAL_0.5_S" = "0.5s";
+
+"AUDIO" = "聲音";
+"Connected to other Wi-Fi" = "已連接至其他Wi-Fi，請重新連接。";
+"Reconnect to" = "重新連接到";
+
+"LIVEURL" = "直播URL";
+"LIVE_RESOLUTION" = "直播解析度";
+"Tips" = "溫馨提示";
+"Start Live" = "開始直播...";
+"Stop Live" = "停止直播...";
+"LIVE_STREAM_FORMAT" = "請切換至H.264流格式才能進行直播!";
+"LIVE_FAILED" = "直播失敗，請檢查網絡狀況和URL的正確性!";
+"CreateLiveBroadCastFailed" = "創建直播廣播失敗";
+"CreateStreamingChannelFailed" = "創建streaming通道失敗";
+"BindFailed" = "綁定LiveBroadcast和LiveStreams失敗";
+"CheckoutLiveBroadCastStatusFailed" = "切換liveBroadcast失敗";
+"ActivetoTestingFailed" = "切換直播廣播為testing狀態失敗";
+"TestingtoLiveFailed" = "切換直播廣播為live狀態失敗";
+"GetLiveBroadcastStautsFailed" = "獲取直播廣播狀態失敗";

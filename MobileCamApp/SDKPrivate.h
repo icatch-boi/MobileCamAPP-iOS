@@ -47,4 +47,15 @@
 
 using namespace com::icatchtek::pancam;
 
+typedef NS_ENUM(NSInteger, PTPDpcBurstNumber) {
+    PTPDpcBurstNumber_HS = 0x0000,
+    PTPDpcBurstNumber_OFF,
+    PTPDpcBurstNumber_3,
+    PTPDpcBurstNumber_5,
+    PTPDpcBurstNumber_10,
+    PTPDpcBurstNumber_7,
+    PTPDpcBurstNumber_15,
+    PTPDpcBurstNumber_30,
+};
+
 #endif /* SDKPrivate_h */

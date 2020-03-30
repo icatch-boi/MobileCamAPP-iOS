@@ -266,3 +266,35 @@
 "ActivetoTestingFailed" = "切換直播廣播為testing狀態失敗";
 "TestingtoLiveFailed" = "切換直播廣播為live狀態失敗";
 "GetLiveBroadcastStautsFailed" = "獲取直播廣播狀態失敗";
+
+"kPeriodOfTime" = "時間段";
+"kTo" = "到";
+"kStartTime" = "請選擇開始時間";
+"kEndTime" = "請選擇結束時間";
+"kToday" = "今天";
+"kNearlyThreeDays" = "近三天";
+"kNearlyAWeekk" = "近一周";
+"kNearlyAMonth" = "近一月";
+"kNearlyHalfAYear" = "近半年";
+"kCameraType" = "攝像頭類型";
+"kAll" = "全部";
+"kFront" = "前置";
+"kRear" = "後置";
+"kReset" = "重置";
+"kDetermine" = "確定";
+"kSelectedTimeInvalid" = "所選時間段無效（開始時間不能大於結束時間），請重新選擇";
+
+"SETTING_AWB_UNDERWATER"    ="水下";
+"SETTING_BURST_7_PHOTOS"     ="7張";
+"SETTING_BURST_15_PHOTOS"     ="15張";
+"SETTING_BURST_30_PHOTOS"     ="30張";
+"unlimited" = "無限制";
+"SetScreenSaver" = "自動熄頻";
+"SetAutoPowerOff" = "自動關機";
+"SetPowerOnAutoRecord" = "開機後自動錄影";
+"SetExposureCompensation" = "曝光補償";
+"SetImageStabilization" = "圖像防抖";
+"SetVideoFileLength" = "錄像時間";
+"SetFastMotionMovie" = "快錄";
+"SetWindNoiseReduction" = "降噪";
+"CleanTempCompleted" = "暫存空間已清理完成 !";

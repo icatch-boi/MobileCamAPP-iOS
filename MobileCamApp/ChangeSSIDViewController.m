@@ -31,6 +31,17 @@
     
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     delegate.delegate = self;
+    
+    [self addGestureRecognizer];
+}
+
+- (void)addGestureRecognizer {
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing:)];
+    [self.view addGestureRecognizer:tap];
+}
+
+- (void)endEditing:(UITapGestureRecognizer *)sender {
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,7 +90,7 @@
     
     if( ssid == nil)
         return NO;
-    if( ssid.length < 1 || ssid.length > 12)
+    if( ssid.length < 1 || ssid.length > 20/*12*/)
         return NO;
     return [self isAlphaNumeric:ssid];
     /*
@@ -127,8 +138,23 @@
         return NO;
     if( password.length <8 || password.length>10)
         return NO;
-    return [self isAlphaNumeric:password];
+//    return [self isAlphaNumeric:password];
+    return [self deptNumInputShouldNumber:password];
 #endif
+}
+
+- (BOOL)deptNumInputShouldNumber:(NSString *)str
+{
+   if (str.length == 0) {
+        return NO;
+    }
+    
+    NSString *regex = @"[0-9]*";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    if ([pred evaluateWithObject:str]) {
+        return YES;
+    }
+    return NO;
 }
 
 - (IBAction)save:(id)sender {
@@ -199,7 +225,7 @@
     });
     
 #else
-    
+    [self.view endEditing:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showProgressHUDWithMessage:nil];
     });
@@ -211,6 +237,7 @@
         
         // check
         do {
+#if 0
             if( ![self isValidSSID:_tempSSID] ) {
                 error = YES;
                 errorMessage = @"Incorrect SSID (<12 characters)";
@@ -241,6 +268,44 @@
             } else {
                 _camera.password = _tempPassword;
             }
+#else
+            BOOL needSetSSID = ![[[SDK instance] getCustomizePropertyStringValue:0xD83C] isEqualToString:_tempSSID];
+            BOOL needSetPWD = ![[[SDK instance] getCustomizePropertyStringValue:0xD83D] isEqualToString:_tempPassword];
+            
+            if (needSetSSID) {
+                if (![self isValidSSID:_tempSSID]) {
+                    error = YES;
+                    errorMessage = @"Incorrect SSID (<20 numeric characters)";
+                    break;
+                } else {
+                    ret = [_ctrl.propCtrl changeSSID:_tempSSID];
+                    if (!ret) {
+                        error = YES;
+                        errorMessage = @"Change SSID Failed.";
+                        break;
+                    } else {
+                        _camera.ssid = _tempSSID;
+                    }
+                }
+            }
+            
+            if (needSetPWD) {
+                if (![self isValidPassword:_tempPassword]) {
+                    error = YES;
+                    errorMessage = @"Invalid Password (8~10 numeric)";
+                    break;
+                } else {
+                    ret = [_ctrl.propCtrl changePassword:_tempPassword];
+                    if (!ret) {
+                        error = YES;
+                        errorMessage = @"Change Password Failed.";
+                        break;
+                    } else {
+                        _camera.password = _tempPassword;
+                    }
+                }
+            }
+#endif
         } while (0);
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -248,7 +313,7 @@
                 [self showProgressHUDNotice:errorMessage showTime:3.0];
             } else {
                 [self showProgressHUDCompleteMessage:@"Success."];
-                [NSThread sleepForTimeInterval:3];
+//                [NSThread sleepForTimeInterval:3];
             }
         });
     });

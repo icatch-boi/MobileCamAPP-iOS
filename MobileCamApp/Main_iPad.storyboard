@@ -27,7 +27,7 @@
                                     <outletCollection property="gestureRecognizers" destination="FF4-vp-3o9" appends="YES" id="NcO-0l-nfD"/>
                                 </connections>
                             </imageView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qKU-iS-uI8" userLabel="Button_capture">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qKU-iS-uI8" userLabel="Button_capture">
                                 <rect key="frame" x="668" y="447" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="6zo-qF-UG0"/>
@@ -125,7 +125,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKJ-Qa-7yb" userLabel="Button_video">
-                                <rect key="frame" x="520" y="897" width="80" height="80"/>
+                                <rect key="frame" x="508" y="897" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="H22-hS-6sx"/>
                                     <constraint firstAttribute="height" constant="80" id="r37-lV-kdI"/>
@@ -213,7 +213,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EQT-y0-To2" userLabel="Button_camera">
-                                <rect key="frame" x="605" y="894" width="80" height="80"/>
+                                <rect key="frame" x="593" y="894" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="KlR-Gd-K1c"/>
                                     <constraint firstAttribute="width" constant="80" id="R2o-9A-1Xq"/>
@@ -226,7 +226,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyX-ha-Zit" userLabel="Button_timelapse">
-                                <rect key="frame" x="688" y="894" width="80" height="80"/>
+                                <rect key="frame" x="676" y="894" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="Aeb-Ja-MGw"/>
                                     <constraint firstAttribute="width" constant="80" id="ajC-XE-rg1"/>
@@ -320,8 +320,8 @@
                             <constraint firstItem="EQT-y0-To2" firstAttribute="leading" secondItem="hKJ-Qa-7yb" secondAttribute="trailing" constant="5" id="58b-Es-2Tf"/>
                             <constraint firstItem="Q1n-rd-Fbz" firstAttribute="leading" secondItem="dEU-xy-e4z" secondAttribute="trailing" constant="8" symbolic="YES" id="5Gj-Rm-XTY"/>
                             <constraint firstItem="8an-Kp-SuQ" firstAttribute="top" secondItem="Q1n-rd-Fbz" secondAttribute="top" id="5mH-cA-rGD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="EQT-y0-To2" secondAttribute="trailing" priority="250" id="5rd-yZ-Qat"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="nyX-ha-Zit" secondAttribute="trailing" constant="-20" id="9Db-tW-Hgd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EQT-y0-To2" secondAttribute="trailing" priority="250" constant="-8" id="5rd-yZ-Qat"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nyX-ha-Zit" secondAttribute="trailing" constant="-8" id="9Db-tW-Hgd"/>
                             <constraint firstItem="UQO-1d-NCa" firstAttribute="top" secondItem="OgL-cv-DyH" secondAttribute="bottom" constant="-8" id="9oN-E7-bZb"/>
                             <constraint firstItem="hNG-e1-cDX" firstAttribute="leading" secondItem="dp3-yu-t9b" secondAttribute="leading" constant="-4" id="AFt-97-KGv"/>
                             <constraint firstItem="MZC-SF-b61" firstAttribute="top" secondItem="fvN-Rk-ulI" secondAttribute="bottom" constant="8" id="AOO-h7-hNg"/>
@@ -352,6 +352,7 @@
                             <constraint firstItem="UQO-1d-NCa" firstAttribute="top" secondItem="gez-F4-2zZ" secondAttribute="bottom" constant="-8" id="Qkb-d2-pyx"/>
                             <constraint firstItem="lty-rv-SUz" firstAttribute="leading" secondItem="qtZ-ZA-ruE" secondAttribute="trailing" constant="8" symbolic="YES" id="R6h-QH-dUG"/>
                             <constraint firstItem="lty-rv-SUz" firstAttribute="top" secondItem="Q1n-rd-Fbz" secondAttribute="bottom" constant="8" symbolic="YES" id="RZR-id-9Og"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hKJ-Qa-7yb" secondAttribute="trailing" priority="250" constant="-8" id="S8x-tw-VR0"/>
                             <constraint firstItem="C4y-xG-Nno" firstAttribute="leading" secondItem="dp3-yu-t9b" secondAttribute="leading" constant="8" id="TU9-h7-tks"/>
                             <constraint firstAttribute="trailing" secondItem="Q1n-rd-Fbz" secondAttribute="trailing" priority="250" constant="8" id="TxC-Hk-K3I"/>
                             <constraint firstItem="Y3b-QZ-lkH" firstAttribute="bottom" secondItem="g56-6q-Le9" secondAttribute="bottom" id="VZd-Xm-oDh"/>
@@ -851,7 +852,7 @@
         <!--Navigation Controller-->
         <scene sceneID="I3k-2p-hSt">
             <objects>
-                <navigationController id="u76-rB-ipZ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PlaybackVideoID" id="u76-rB-ipZ" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="wJZ-WA-piW"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="Lwh-9x-Oaj">

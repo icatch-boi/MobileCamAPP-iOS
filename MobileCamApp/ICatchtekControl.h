@@ -40,6 +40,8 @@
 #include "type/ICatchCamVideoSize.h"
 #include "type/ICatchCamWhiteBalance.h"
 #include "type/ICatchCamWifiMode.h"
+#include "type/ICatchCamListFileFilter.h"
+#include "type/ICatchCamFeatureID.h"
 
 using namespace com::icatchtek::control;
 

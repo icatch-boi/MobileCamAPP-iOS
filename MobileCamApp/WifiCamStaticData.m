@@ -255,6 +255,17 @@
   };
 }
 
+-(NSDictionary *)whiteBalanceDict2
+{
+    return @{@(1):NSLocalizedString(@"SETTING_AWB_AUTO", @""),
+             @(2):NSLocalizedString(@"SETTING_AWB_CLOUDY", @""),
+             @(3):NSLocalizedString(@"SETTING_AWB_DAYLIGHT", @""),
+             @(4):NSLocalizedString(@"SETTING_AWB_FLUORESECENT", @""),
+             @(5):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
+             @(6):NSLocalizedString(@"SETTING_AWB_UNDERWATER", @""),
+             @(ICH_CAM_WB_UNDEFINED):@"undef"};
+}
+
 -(NSDictionary *)burstNumberStringDict
 {
   return @{@(ICH_CAM_BRUST_NUMBER_HS):@[NSLocalizedString(@"SETTING_BURST_HIGHEST_SPEED", nil), @""],
@@ -262,7 +273,10 @@
            @(ICH_CAM_BURST_NUMBER_3):@[NSLocalizedString(@"SETTING_BURST_3_PHOTOS", nil), @"continuous_shot_1"],
            @(ICH_CAM_BURST_NUMBER_5):@[NSLocalizedString(@"SETTING_BURST_5_PHOTOS", nil), @"continuous_shot_2"],
            @(ICH_CAM_BURST_NUMBER_10):@[NSLocalizedString(@"SETTING_BURST_10_PHOTOS", nil), @"continuous_shot_3"],
-           @(ICH_CAM_BURST_NUMBER_UNDEFINED):@"undef"
+           @(ICH_CAM_BURST_NUMBER_UNDEFINED):@"undef",
+           @(PTPDpcBurstNumber_7):@[NSLocalizedString(@"SETTING_BURST_7_PHOTOS", nil), @"continuous_shot_7"],
+           @(PTPDpcBurstNumber_15):@[NSLocalizedString(@"SETTING_BURST_15_PHOTOS", nil), @"continuous_shot_15"],
+           @(PTPDpcBurstNumber_30):@[NSLocalizedString(@"SETTING_BURST_30_PHOTOS", nil), @"continuous_shot_30"],
   };
 }
 

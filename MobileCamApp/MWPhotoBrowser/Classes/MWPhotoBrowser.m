@@ -730,6 +730,7 @@ static double __timestampA = 0;
     navBar.barStyle = UIBarStyleBlackTranslucent;
     [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
+    navBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
 }
 
 - (void)storePreviousNavBarAppearance {
@@ -2173,10 +2174,13 @@ static double __timestampA = 0;
         [self hideProgressHUD:NO];
         [self.navigationController popToRootViewControllerAnimated:YES];
         if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
-            [self doneButtonPressed:nil];
-            [_gridController.collectionView reloadData];
             _photoCount = 0;
             _deleteButton.enabled = NO;
+            [self doneButtonPressed:nil];
+            [_gridController.collectionView reloadData];
+            // Fix jira issue: 'MOBILEAPP-39'
+//            _photoCount = 0;
+//            _deleteButton.enabled = NO;
         }
     }
 }

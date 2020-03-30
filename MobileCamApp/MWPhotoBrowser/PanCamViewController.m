@@ -26,7 +26,7 @@ static const NSInteger HJGLKDefaultFramesPerSecond = 30;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor]; //[UIColor whiteColor];
     self.glkView = [[GLKView alloc] initWithFrame:self.view.frame];
     self.glkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.glkView.delegate = self;

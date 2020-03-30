@@ -37,7 +37,7 @@
 @synthesize timelapseType;
 @synthesize enableAutoDownload;
 
--(id)initWithParameters:(NSUInteger)nAbility
+-(id)initWithParameters:(NSArray *)nAbility
           andCameraMode:(ICatchCamMode)nCameraMode
            andImageSize:(string)newImageSize
            andVideoSize:(string)newVideoSize

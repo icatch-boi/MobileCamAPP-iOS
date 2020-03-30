@@ -190,7 +190,11 @@ NSFetchedResultsControllerDelegate
                         if ([[SDK instance] isSDKInitialized]) {
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [self hideProgressHUD:YES];
-                                [self performSegueWithIdentifier:@"newPreviewSegue01" sender:sender];
+                                if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PREVIEW]) {
+                                    [self enterMPBActionWithSender:sender];
+                                } else {
+                                    [self performSegueWithIdentifier:@"newPreviewSegue01" sender:sender];
+                                }
                             });
                         } else {
                             totalCheckCount = 4;
@@ -213,6 +217,64 @@ NSFetchedResultsControllerDelegate
             });
         }
     });
+}
+
+- (BOOL)capableOf:(WifiCamAbility)ability
+{
+//    return (_camera.ability & ability) == ability ? YES : NO;
+    return [_camera.ability containsObject:@(ability)];
+}
+
+- (void)enterMPBActionWithSender:(id)sender {
+    [self saveCameraDataWithSender:sender];
+
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MPBHome" bundle:nil];
+    UINavigationController *nav = sb.instantiateInitialViewController;
+    [self presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)saveCameraDataWithSender:(id)sender {
+    NSArray *data = (NSArray *)sender;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Camera" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate
+                              predicateWithFormat:@"id = %@",[data firstObject]];
+    [fetchRequest setPredicate:predicate];
+    
+    Camera *camera = nil;
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (!error && fetchedObjects && fetchedObjects.count>0) {
+        AppLog(@"Already have one camera: %d", [[data firstObject] intValue]);
+        
+        camera = (Camera *)fetchedObjects[0];
+    } else {
+        AppLog(@"Create a camera");
+        
+        camera = (Camera *)[NSEntityDescription insertNewObjectForEntityForName:@"Camera"
+        inManagedObjectContext:self.managedObjectContext];
+    }
+    
+    camera.id = [data firstObject];
+    camera.wifi_ssid = [data lastObject];
+    
+    if (![camera.managedObjectContext save:&error]) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         */
+        AppLog(@"Unresolved error %@, %@", error, [error userInfo]);
+#ifdef DEBUG
+        abort();
+#endif
+    } else {
+        AppLog(@"Saved to sqlite.");
+    }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

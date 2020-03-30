@@ -15,6 +15,7 @@
 @protocol VideoPlaybackControllerDelegate <NSObject>
 - (BOOL)videoPlaybackController:(VideoPlaybackViewController *)controller
              deleteVideoAtIndex:(NSUInteger)index;
+- (BOOL)videoPlaybackController:(VideoPlaybackViewController *)controller deleteVideoFile:(shared_ptr<ICatchFile>)file;
 @end
 
 @interface VideoPlaybackViewController : PanCamGLKViewController <UIActionSheetDelegate, UIPopoverControllerDelegate, AppDelegateProtocol>
@@ -22,6 +23,8 @@
 @property (nonatomic) UIImage *previewImage;
 @property (nonatomic) NSUInteger index;
 @property (nonatomic) NSURL *videoURL;
+
+@property (nonatomic) shared_ptr<ICatchFile> currentFile;
 
 //
 - (void)updateVideoPbProgress:(double)value;

@@ -605,11 +605,13 @@
 
 - (WifiCamAlertTable *)prepareDataForWhiteBalance:(unsigned int)curWhiteBalance
 {
+    AppLog(@"Current WhiteBalance: %u", curWhiteBalance);
     WifiCamAlertTable *TAA = [[WifiCamAlertTable alloc] init];
     dispatch_sync([[SDK instance] sdkQueue], ^{
         SDK *sdk = [SDK instance];
         BOOL InvalidSelectedIndex = NO;
         vector<unsigned int> vWBs = [sdk retrieveSupportedWhiteBalances];
+#if 0
         vector<ICatchCamWhiteBalance> supportedEnumedWhiteBalances;
         ICatchCameraUtil::convertWhiteBalances(vWBs, supportedEnumedWhiteBalances);
         
@@ -621,9 +623,24 @@
              it != supportedEnumedWhiteBalances.end();
              ++it, ++i) {
             NSString *s = [dict objectForKey:@(*it)];
+        }
+#else
+        AppLog(@"Supported WhiteBalances count: %lu", vWBs.size());
+
+        TAA.array = [[NSMutableArray alloc] initWithCapacity:vWBs.size()];
+        int i = 0;
+        NSDictionary *dict = [[WifiCamStaticData instance] whiteBalanceDict2];
             
+        for (vector <unsigned int>::iterator it = vWBs.begin();
+             it != vWBs.end();
+             ++it, ++i) {
+            NSString *s = [dict objectForKey:@(*it)];
+            AppLog(@"Supported WhiteBalance: %u, %@", *it, s);
+#endif
             if (s != nil) {
                 [TAA.array addObject:s];
+            } else {
+                [TAA.array addObject:[NSString stringWithFormat:@"unknown: %u", *it]];
             }
             
             if (*it == curWhiteBalance && !InvalidSelectedIndex) {
@@ -636,6 +653,7 @@
             TAA.lastIndex = UNDEFINED_NUM;
         }
     });
+    TRACE();
     return TAA;
 }
 
@@ -739,6 +757,7 @@
             //        NSString *s = [dict objectForKey:@(*it)];
             NSString *s = nil;
             
+#if 0
             if (0 == *it) {
                 s = NSLocalizedString(@"SETTING_CAP_TL_INTERVAL_OFF", nil);
             }else if( *it >= 0xFFFE){
@@ -750,7 +769,35 @@
             } else {
                 s = [NSString stringWithFormat:@"%ds", *it];
             }
-            
+#else
+            if ([[SDK instance] checkCameraCapabilities:ICH_CAM_TIMELAPSE_USING_MS_VALUE]) {
+                float value = *it / 1000.0;
+                
+                if (0 == value) {
+                    s = NSLocalizedString(@"SETTING_CAP_TL_INTERVAL_OFF", nil);
+                } else if ( value >= 0xFFFE){
+                    s = NSLocalizedString(@"SETTING_CAP_TL_INTERVAL_0.5_S", nil);
+                } else if (value >= 60 && value < 3600) {
+                    s = [NSString stringWithFormat:@"%.1fm", (value/60)];
+                } else if (value >= 3600) {
+                    s = [NSString stringWithFormat:@"%.1fhr", (value/3600)];
+                } else {
+                    s = [NSString stringWithFormat:@"%.1fs", value];
+                }
+            } else {
+                if (0 == *it) {
+                    s = NSLocalizedString(@"SETTING_CAP_TL_INTERVAL_OFF", nil);
+                }else if( *it >= 0xFFFE){
+                    s = NSLocalizedString(@"SETTING_CAP_TL_INTERVAL_0.5_S", nil);
+                }else if (*it >= 60 && *it < 3600) {
+                    s = [NSString stringWithFormat:@"%dm", (*it/60)];
+                } else if (*it >= 3600) {
+                    s = [NSString stringWithFormat:@"%dhr", (*it/3600)];
+                } else {
+                    s = [NSString stringWithFormat:@"%ds", *it];
+                }
+            }
+#endif
             if (s != nil) {
                 [TAA.array addObject:s];
             }

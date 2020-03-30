@@ -269,3 +269,35 @@
 "ActivetoTestingFailed" = "切换直播广播为testing状态失败";
 "TestingtoLiveFailed" = "切换直播广播为live状态失败";
 "GetLiveBroadcastStautsFailed" = "获取直播广播状态失败";
+
+"kPeriodOfTime" = "时间段";
+"kTo" = "到";
+"kStartTime" = "请选择开始时间";
+"kEndTime" = "请选择结束时间";
+"kToday" = "今天";
+"kNearlyThreeDays" = "近三天";
+"kNearlyAWeekk" = "近一周";
+"kNearlyAMonth" = "近一月";
+"kNearlyHalfAYear" = "近半年";
+"kCameraType" = "摄像头类型";
+"kAll" = "全部";
+"kFront" = "前置";
+"kRear" = "后置";
+"kReset" = "重置";
+"kDetermine" = "确定";
+"kSelectedTimeInvalid" = "所选时间段无效（开始时间不能大于结束时间），请重新选择";
+
+"SETTING_AWB_UNDERWATER"    ="水下";
+"SETTING_BURST_7_PHOTOS"  ="7张";
+"SETTING_BURST_15_PHOTOS"  ="15张";
+"SETTING_BURST_30_PHOTOS"  ="30张";
+"unlimited" = "无限制";
+"SetScreenSaver" = "自动熄频";
+"SetAutoPowerOff" = "自动关机";
+"SetPowerOnAutoRecord" = "开机后自动录像";
+"SetExposureCompensation" = "曝光补偿";
+"SetImageStabilization" = "图像防抖";
+"SetVideoFileLength" = "录像时间";
+"SetFastMotionMovie" = "快录";
+"SetWindNoiseReduction" = "降噪";
+"CleanTempCompleted" = "应用空间已清理完成 !";

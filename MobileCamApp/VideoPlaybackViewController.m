@@ -27,6 +27,7 @@
 #import "StreamObserver.h"
 #import "WifiCamEvent.h"
 #import "CustomIOS7AlertView.h"
+#import "DiskSpaceTool.h"
 
 @interface VideoPlaybackViewController () <UITableViewDelegate, UITableViewDataSource> {
     UIPopoverController *_popController;
@@ -106,6 +107,7 @@
 @property (nonatomic, weak) UIButton *panoramaTypeButton;
 @property (strong, nonatomic) CustomIOS7AlertView *customIOS7AlertView;
 @property (nonatomic, strong) WifiCamAlertTable *tbPanoramaTypeArray;
+@property (nonatomic, strong) NSURL *localFilePath;
 
 @end
 
@@ -128,8 +130,8 @@
         self.gallery = _wifiCam.gallery;
         self.ctrl = _wifiCam.controler;
         
-        auto file = _gallery.videoTable.fileList.at(index);
-        self.title = [[NSString alloc] initWithFormat:@"%s", file->getFileName().c_str()];
+//        auto file = _gallery.videoTable.fileList.at(index);
+        self.title = [[NSString alloc] initWithFormat:@"%s", /*file*/self.currentFile->getFileName().c_str()];
     } else {
         NSString *prefix = @"/var/mobile/Containers/Data/Application/9473B6CA-0B87-465D-9BAD-66B57DF3E941/Documents/MobileCamApp-Medias/Videos/";
         self.title = [_videoURL.path substringFromIndex:prefix.length];
@@ -271,8 +273,9 @@
     [_pbCtrlPanel addSubview:_videoPbTotalTime];
     
     // PanoramaType change switch button
+    // Fixed: MOBILEAPP-19
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"]) {
-        if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:(_gallery.videoTable.fileList.at(index))])) {
+        if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile])) {
             [self setupPanoramaTypeChangeButton];
         }
     }
@@ -308,7 +311,7 @@
     _queue = [[NSOperationQueue alloc]init];
     cDistance = maxDistance;
     
-    if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:(_gallery.videoTable.fileList.at(index))])) {
+    if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile])) {
         UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         [self.view addGestureRecognizer:pinchGesture];
     }
@@ -363,7 +366,7 @@
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"]) {
         if (_videoURL == nil) {
-            [[PanCamSDK instance] initStreamWithRenderType:RenderType_AutoSelect isPreview:NO file:(_gallery.videoTable.fileList.at(index))];
+            [[PanCamSDK instance] initStreamWithRenderType:RenderType_AutoSelect isPreview:NO file:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile];
         } else {
             [[PanCamSDK instance] initStreamWithRenderType:RenderType_EnableGL isPreview:NO file:nil];
         }
@@ -475,6 +478,7 @@
 //    delete _streamObserver.listener;
 //    _streamObserver.listener = NULL;
 //    self.streamObserver = nil;
+    [self hideProgressHUD:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -773,6 +777,12 @@
     return _progressHUD;
 }
 
+- (void)showProgressHUDWithMessage:(NSString *)message {
+    self.progressHUD.labelText = message;
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    [self.progressHUD show:YES];
+}
+
 - (void)showProgressHUDNotice:(NSString *)message
                      showTime:(NSTimeInterval)time {
     if (message) {
@@ -876,6 +886,7 @@
 
 - (IBAction)sliderTouchUpInside:(VideoPlaybackSlideController *)slider {
     if (self.bufferingView.value == 1) {
+        self.seeking = NO;
         return;
     }
     TRACE();
@@ -883,10 +894,14 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             self.seeking = YES;
             BOOL retVal;
+            __block float value;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                value = slider.value;
+            });
             if (_videoURL) {
-                retVal = [[PanCamSDK instance] seek:slider.value];
+                retVal = [[PanCamSDK instance] seek:value];
             } else {
-                retVal = [_ctrl.pbCtrl seek:slider.value];
+                retVal = [_ctrl.pbCtrl seek:value];
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -991,9 +1006,9 @@
                         if (_videoURL) {
                             self.totalSecs = [[PanCamSDK instance] playFile:self.videoURL enableAudio:YES isRemote:NO];
                         } else {
-                            auto file = _gallery.videoTable.fileList.at(index);
-                            auto file1 = make_shared<ICatchFile>(*file.get());
-                            self.totalSecs = [_ctrl.pbCtrl play:file1];
+//                            auto file = _gallery.videoTable.fileList.at(index);
+//                            auto file1 = make_shared<ICatchFile>(*file.get());
+                            self.totalSecs = [_ctrl.pbCtrl play:/*file1*/self.currentFile];
                         }
                         if (_totalSecs <= 0) {
                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1039,7 +1054,7 @@
                                 _previewThumb.hidden = YES;
                                 self.glkView.hidden = NO;
                                 [self startGLKAnimation];
-                                if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:(_gallery.videoTable.fileList.at(index))])) {
+                                if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile])) {
                                     [self configureGyro];
                                 }
                             }
@@ -1193,7 +1208,7 @@ static double __timestampA = 0;
         // Create ICatch GL point
         CGPoint pointC = [touch locationInView:nil];
         
-        if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:(_gallery.videoTable.fileList.at(index))])) {
+        if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile])) {
             [[PanCamSDK instance] panCamRotate:pointC andPointPre:pointP andType:PCFileTypeStream];
         }
         
@@ -1806,15 +1821,25 @@ static double __timestampA = 0;
         BOOL deleteResult = NO;
         
         [self stopVideoPb];
+#if USE_NEW_MPB
+        if ([_delegate respondsToSelector:@selector(videoPlaybackController:deleteVideoFile:)]) {
+            deleteResult = [self.delegate videoPlaybackController:self deleteVideoFile:self.currentFile];
+        }
+#else
         if([_delegate respondsToSelector:@selector(videoPlaybackController:deleteVideoAtIndex:)]) {
             deleteResult = [self.delegate videoPlaybackController:self deleteVideoAtIndex:index];
         }
+#endif
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (deleteResult) {
                 [self hideProgressHUD:YES];
 //                [self.navigationController popToRootViewControllerAnimated:YES];
+#if 0
                 [self dismissViewControllerAnimated:YES completion:nil];
+#else
+                [self returnBack:nil];
+#endif
             } else {
                 [self showProgressHUDNotice:NSLocalizedString(@"DeleteError", nil) showTime:2.0];
             }
@@ -1834,8 +1859,8 @@ static double __timestampA = 0;
         [_popController dismissPopoverAnimated:YES];
     }
     
-    auto file = _gallery.videoTable.fileList.at(index);
-    unsigned long long size = file->getFileSize() >> 20;
+//    auto file = _gallery.videoTable.fileList.at(index);
+    unsigned long long size = /*file*/self.currentFile->getFileSize() >> 20;
     double downloadTime = ((double)size)/60;
     //downloadTime = MAX(1, downloadTime);
     
@@ -1897,7 +1922,7 @@ static double __timestampA = 0;
 
 - (IBAction)downloadDetail:(id)sender
 {
-    dispatch_queue_t downloadQueue = dispatch_queue_create("WifiCam.GCD.Queue.Playback.Donwload", 0);
+//    dispatch_queue_t downloadQueue = dispatch_queue_create("WifiCam.GCD.Queue.Playback.Donwload", 0);
     
     if ([sender isKindOfClass:[UIButton self]]) {
         [_popController dismissPopoverAnimated:YES];
@@ -1940,11 +1965,12 @@ static double __timestampA = 0;
             }
         }];
         
+#if 0
         BOOL downloadResult = YES;
         _downloadFileProcessing = YES;
         // Download percent!
-        auto file = _gallery.videoTable.fileList.at(index);
-        shared_ptr<ICatchFile>pFile = file;
+//        auto file = _gallery.videoTable.fileList.at(index);
+        shared_ptr<ICatchFile>pFile = /*file*/self.currentFile;
         
         // add calc download Percent new func
         NSString *fileName = [NSString stringWithUTF8String:pFile->getFileName().c_str()];
@@ -1994,7 +2020,178 @@ static double __timestampA = 0;
         if (![[SDK instance] closeFileTransChannel]) {
             return;
         }
+#else
+        BOOL downloadResult = [self downloadHandle];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self removeObserver:self forKeyPath:@"downloadedPercent"];
+            NSString *message = nil;
+            if (downloadResult) {
+                message = NSLocalizedString(@"Download complete", nil);
+            } else {
+                //SaveError
+                message = NSLocalizedString(@"SaveError", nil);
+            }
+            [self showProgressHUDCompleteMessage:message];
+            
+            if (downloadResult) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self showActivityViewController:self.actionButton];
+                });
+            }
+        });
+        
+        if (_videoURL) {
+            [[SDK instance] setIsBusy:NO];
+        } else {
+            [_ctrl.fileCtrl resetBusyToggle:NO];
+        }
+        [[UIApplication sharedApplication] endBackgroundTask:downloadTask];
+#endif
     });
+}
+
+- (BOOL)downloadHandle {
+    NSString *fileName = [NSString stringWithUTF8String:self.currentFile->getFileName().c_str()];
+    long long fileSize = self.currentFile->getFileSize();
+
+    NSString *fileDirectory = nil;
+    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+        fileDirectory = [[SDK instance] createMediaDirectory][2];
+    } else {
+        fileDirectory = [[SDK instance] createMediaDirectory][1];
+    }
+    
+    NSString *filePath = [fileDirectory stringByAppendingPathComponent:fileName];
+
+    NSArray *mediaDirectoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fileDirectory error:nil];
+    
+    if (mediaDirectoryContents.count) {
+        for (NSString *name in mediaDirectoryContents) {
+            if ([name isEqualToString:fileName]) {
+                long long tempSize = [DiskSpaceTool fileSizeAtPath:filePath];
+                
+                if (fileSize == tempSize) {
+                    AppLog(@"Local already exist file: %@", fileName);
+                    AppLog(@"locatePath: %@, %llu", filePath, fileSize);
+                    
+                    self.localFilePath = [NSURL fileURLWithPath:filePath];
+                    return YES;
+                }
+            }
+        }
+    }
+    
+    BOOL downloadResult = YES;
+    _downloadFileProcessing = YES;
+    AppLog(@"locatePath: %@, %llu", filePath, fileSize);
+    
+    dispatch_queue_t downloadQueue = dispatch_queue_create("WifiCam.GCD.Queue.Playback.Donwload", 0);
+    dispatch_async(downloadQueue, ^{
+        while (_downloadFileProcessing) {
+            @autoreleasepool {
+                self.downloadedPercent = [_ctrl.fileCtrl requestDownloadedPercent2:filePath fileSize:fileSize];
+            }
+        }
+    });
+    
+    // Downloading...
+    if (![[SDK instance] openFileTransChannel]) {
+        return downloadResult;
+    }
+    
+//    downloadResult = [_ctrl.fileCtrl downloadFile2:self.currentFile];
+    if ([[SDK instance] p_downloadFile2:self.currentFile] == nil) {
+        downloadResult = NO;
+    }
+    _downloadFileProcessing = NO;
+    
+    self.localFilePath = downloadResult ? [NSURL fileURLWithPath:filePath] : nil;
+        
+    if (![[SDK instance] closeFileTransChannel]) {
+        return downloadResult;
+    }
+    
+    return downloadResult;
+}
+
+- (void)showActivityViewController:(id)sender
+{
+    AppLog(@"%s", __func__);
+    if (_popController.popoverVisible) {
+        [_popController dismissPopoverAnimated:YES];
+    }
+    
+    uint shareNum = 1;
+    uint assetNum = (uint)[[SDK instance] retrieveCameraRollAssetsResult].count;
+    
+    if (self.localFilePath != nil) {
+        
+        if (self.localFilePath != nil && !UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.localFilePath.path)) {
+            shareNum = 0;
+        }
+        
+        UIActivityViewController *activityVc = [[UIActivityViewController alloc]initWithActivityItems:@[self.localFilePath] applicationActivities:nil];
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self presentViewController:activityVc animated:YES completion:nil];
+        } else {
+            // Create pop up
+            UIPopoverController *activityPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityVc];
+            // Show UIActivityViewController in popup
+            [activityPopoverController presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+        
+        activityVc.completionWithItemsHandler = ^(NSString *activityType,
+                                                  BOOL completed,
+                                                  NSArray *returnedItems,
+                                                  NSError *error) {
+            if (completed) {
+                AppLog(@"We used activity type: %@", activityType);
+                
+                if ([activityType isEqualToString:@"com.apple.UIKit.activity.SaveToCameraRoll"]) {
+                    dispatch_async(dispatch_queue_create("WifiCam.GCD.Queue.Share", DISPATCH_QUEUE_SERIAL), ^{
+                        [self showProgressHUDWithMessage:NSLocalizedString(@"PhotoSavingWait", nil)];
+                        
+                        BOOL ret;
+                        AppLog(@"shareNum: %d", shareNum);
+                        ret = [[SDK instance] savetoAlbum:@"MobileCamApp" andAlbumAssetNum:assetNum andShareNum:shareNum];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraDownloadCompleteNotification"
+                                                                                object:[NSNumber numberWithInt:ret]];
+                            
+                            if (ret) {
+                                [self showProgressHUDCompleteMessage:NSLocalizedString(@"SavePhotoToAlbum", nil)];
+                            } else {
+                                [self showProgressHUDCompleteMessage:NSLocalizedString(@"SaveError", nil)];
+                            }
+                            
+                            self.localFilePath = nil;
+                        });
+                    });
+                }
+            } else {
+                AppLog(@"We didn't want to share anything after all.");
+            }
+            
+            if (error) {
+                AppLog(@"An Error occured: %@, %@", error.localizedDescription, error.localizedFailureReason);
+            }
+        };
+    } else {
+        [self showAlertViewWithTitle:NSLocalizedString(@"SaveError", nil) message:nil cancelButtonTitle:NSLocalizedString(@"Sure", @"")];
+        
+        self.localFilePath = nil;
+    }
+}
+
+- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertVC addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark - GCDiscreetNotificationView
@@ -2255,6 +2452,14 @@ static double __timestampA = 0;
 
         [self showProgressHUDNotice:NSLocalizedString(@"CARD_INSERTED", nil) showTime:2.0];
     });
+}
+
+- (shared_ptr<ICatchFile>)currentFile {
+#if USE_NEW_MPB
+    return _currentFile;
+#else
+    return _gallery.videoTable.fileList.at(index);
+#endif
 }
 
 @end

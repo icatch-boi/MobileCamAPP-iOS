@@ -29,6 +29,8 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     SettingSectionTypeAutoDownload = 5,
 };
 
+#define kSpaceViewTag 5566
+
 @interface SettingViewController () {
     shared_ptr<UpdateFWCompleteListener> udpateFWCompleteListener;
     shared_ptr<UpdateFWCompletePowerOffListener> updateFWPowerOffListener;
@@ -196,6 +198,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     }
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
+    [self hideProgressHUD:YES];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -275,7 +278,8 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 
 - (BOOL)capableOf:(WifiCamAbility)ability
 {
-    return (_camera.ability & ability) == ability ? YES : NO;
+//    return (_camera.ability & ability) == ability ? YES : NO;
+    return [_camera.ability containsObject:@(ability)];
 }
 
 - (void)fillMainMenuBasicSlideTable
@@ -516,9 +520,11 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 - (NSDictionary *)fillWhiteBalanceTable
 {
     WifiCamAlertTable *awbArray = [_ctrl.propCtrl prepareDataForWhiteBalance:_camera.curWhiteBalance];
-    NSDictionary *whiteBalanceTable = [[WifiCamStaticData instance] whiteBalanceDict];
+    NSDictionary *whiteBalanceTable = [[WifiCamStaticData instance] whiteBalanceDict2]; //[[WifiCamStaticData instance] whiteBalanceDict];
+    NSString *currentAWB = [whiteBalanceTable objectForKey:@(_camera.curWhiteBalance)];
+    NSString *textLabel = currentAWB ? currentAWB : @"unknown";
     NSDictionary *table = @{@(SettingTableTextLabel): NSLocalizedString(@"SETTING_AWB", @""),
-                            @(SettingTableDetailTextLabel): [whiteBalanceTable objectForKey:@(_camera.curWhiteBalance)],
+                            @(SettingTableDetailTextLabel): textLabel,
                             @(SettingTableDetailType): @(SettingDetailTypeWhiteBalance),
                             @(SettingTableDetailData): awbArray.array,
                             @(SettingTableDetailLastItem): @(awbArray.lastIndex)};
@@ -541,8 +547,10 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 {
     WifiCamAlertTable *dsArray = [_ctrl.propCtrl prepareDataForDateStamp:_camera.curDateStamp];
     NSDictionary *dateStampTable = [[WifiCamStaticData instance] dateStampDict];
+    NSString *currentDate = [dateStampTable objectForKey:@(_camera.curDateStamp)];
+    NSString *textLabel = currentDate ? currentDate : @"unknown";
     NSDictionary *table = @{@(SettingTableTextLabel): NSLocalizedString(@"SETTING_DATESTAMP", @""),
-                            @(SettingTableDetailTextLabel): [dateStampTable objectForKey:@(_camera.curDateStamp)],
+                            @(SettingTableDetailTextLabel): textLabel,
                             @(SettingTableDetailType): @(SettingDetailTypeDateStamp),
                             @(SettingTableDetailData): dsArray.array,
                             @(SettingTableDetailLastItem): @(dsArray.lastIndex)};
@@ -718,11 +726,9 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
         [cell.textLabel setTextColor:[UIColor blueColor]];
         
         if (!indexPath.row) {
-            UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(cell.bounds.size.width - 100, 0, 100, cell.bounds.size.height)];
-            lab.text = [self cleanSpace];
-            lab.textColor = [UIColor lightGrayColor];
-            lab.textAlignment = NSTextAlignmentRight;
-            cell.accessoryView = lab;
+//            cell.accessoryView = lab;
+            [[cell viewWithTag:kSpaceViewTag] removeFromSuperview];
+            [cell addSubview:[self createSpaceLabelWithCell:cell]];
         }
     } else if (indexPath.section == SettingSectionTypeBasic
                /*|| indexPath.section == SettingSectionTypeTimelapse*/) {
@@ -769,6 +775,16 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
         AppLog(@"Some exception message for unexpected tableView");
         abort();
     }
+}
+
+- (UILabel *)createSpaceLabelWithCell:(UITableViewCell *)cell {
+    UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(cell.bounds.size.width - 118, 0, 100, cell.bounds.size.height)];
+    lab.text = [self cleanSpace];
+    lab.textColor = [UIColor lightGrayColor];
+    lab.textAlignment = NSTextAlignmentRight;
+    lab.tag = kSpaceViewTag;
+
+    return lab;
 }
 
 - (IBAction)updateAudioSwitch:(id)sender {
@@ -867,8 +883,14 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
             [_updateFWAlertView show];
         } */else if (indexPath.row == 1/*2*/) {
 //            [_ctrl.actCtrl cleanUpDownloadDirectory];
-            [_formatAlertView setTag:0];
-            [_formatAlertView show];
+            if (![_ctrl.propCtrl checkSDExist]) {
+                UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"NoCard", nil) preferredStyle:UIAlertControllerStyleAlert];
+                [alertC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Sure", nil) style:UIAlertActionStyleCancel handler:nil]];
+                [self presentViewController:alertC animated:YES completion:nil];
+            } else {
+                [_formatAlertView setTag:0];
+                [_formatAlertView show];
+            }
         }  else if( indexPath.row == 2 ) {
             if( self.facebooklogined ) {
                 [self facebooklogout];
@@ -1003,7 +1025,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [_ctrl.actCtrl cleanUpDownloadDirectory];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showProgressHUDCompleteMessage:@"应用空间已清理完成 !"];
+                [self showProgressHUDCompleteMessage:/*@"应用空间已清理完成 !"*/NSLocalizedString(@"CleanTempCompleted", nil)];
                 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:SettingSectionTypeAlertAction]] withRowAnimation:UITableViewRowAnimationFade];
             });
             

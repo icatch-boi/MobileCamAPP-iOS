@@ -66,4 +66,11 @@ const int UNDEFINED_NUM = 0xffff;
 #define USE_SYSTEM_IOS7_IMPLEMENTATION 0
 #define USE_SDK_EVENT_DISCONNECTED 0
 
+#define USE_NEW_MPB 1
+
+#define WEAK_SELF(obj) __weak typeof(obj) weak##obj = obj;
+#define STRONG_SELF(obj) __strong typeof(obj) obj = weak##obj;
+
+static NSString * const kActionButtonStateChangeNotification = @"ActionButtonStateChangeNotification";
+
 #endif

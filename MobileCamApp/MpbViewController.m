@@ -1806,8 +1806,13 @@ static NSString *kCellID = @"cellID";
             dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC);
             dispatch_semaphore_wait(_mpbSemaphore, time);
             // Just in case, make sure the cell for this indexPath is still On-Screen.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([cv cellForItemAtIndexPath:indexPath]) {
+            __block UICollectionViewCell *tempCell = nil;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                tempCell = [cv cellForItemAtIndexPath:indexPath];
+            });
+            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+                if (/*[cv cellForItemAtIndexPath:indexPath]*/tempCell) {
                     UIImage *image = [_ctrl.fileCtrl requestThumbnail:file];
                     if (image) {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1821,7 +1826,7 @@ static NSString *kCellID = @"cellID";
                         AppLog(@"request thumbnail failed");
                     }
                 }
-            });
+//            });
             dispatch_semaphore_signal(_mpbSemaphore);
         });
         
@@ -2092,6 +2097,23 @@ referenceSizeForFooterInSection:(NSInteger)section
     return ret;
 }
 
+- (BOOL)videoPlaybackController:(VideoPlaybackViewController *)controller deleteVideoFile:(shared_ptr<ICatchFile>)file {
+    AppLog(@"%s", __func__);
+
+    if (file.get() == nullptr) {
+        AppLog(@"Video file is empty.");
+        return NO;
+    }
+    
+    BOOL ret = [_ctrl.fileCtrl deleteFile:file];
+    if (ret) {
+        NSString *cachedKey = [NSString stringWithFormat:@"ID%d", file->getFileHandle()];
+        [_mpbCache removeObjectForKey:cachedKey];
+        [self resetCollectionViewData];
+    }
+    
+    return ret;
+}
 
 #pragma mark - MWPhotoBrowserDataSource
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser

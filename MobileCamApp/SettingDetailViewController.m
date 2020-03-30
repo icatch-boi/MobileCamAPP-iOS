@@ -301,6 +301,7 @@
                 mode = ICH_CAM_TIMELAPSE_VIDEO_PREVIEW_MODE;
             }
             
+            AppLog(@"set timelapse type to: %d, mode: %d", value, mode);
             if ([_ctrl.propCtrl changeTimelapseType:mode] == WCRetSuccess) {
                 _camera.timelapseType = value;
             } else {

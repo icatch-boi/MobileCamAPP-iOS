@@ -667,6 +667,7 @@
 
 -(int)changeTimelapseType:(ICatchCamPreviewMode)mode {
     int newValue = ICH_UNKNOWN_ERROR;
+    AppLog(@"changeTimelapseType, mode: %d", mode);
 
     if (_control) {
         newValue = _control->changePreviewMode(mode);
@@ -1066,6 +1067,76 @@
 }
 
 #pragma mark - PLAYBACK
+- (BOOL)setFileListAttribute:(NSUInteger)type order:(NSUInteger)order takenBy:(NSUInteger)takenBy {
+    if (!_playback) {
+         AppLog(@"SDK doesn't working.");
+         return NO;
+     }
+    
+    int ret = _playback->setFileListAttribute(static_cast<unsigned int>(type), static_cast<unsigned int>(order), static_cast<unsigned int>(takenBy));
+    if (ret != ICH_SUCCEED) {
+        AppLog(@"Set fileList attribute failed, ret: %d", ret);
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (NSUInteger)requestFileCount {
+    int fileCount = 0;
+    
+    if (_playback) {
+        int ret = _playback->getFileCount(fileCount);
+        
+        if (ret != ICH_SUCCEED) {
+            AppLog("Get file count failed, ret: %d", ret);
+        }
+    }
+
+    return fileCount;
+}
+
+- (vector<shared_ptr<ICatchFile>>)requestFileListOfType:(WCFileType)fileType startIndex:(int)startIndex endIndex:(int)endIndex
+{
+    int ret = -1;
+    vector<shared_ptr<ICatchFile>> list;
+    if (_playback) {
+        switch (fileType) {
+            case WCFileTypeImage:
+                ret = _playback->listFiles(ICH_FILE_TYPE_IMAGE, startIndex, endIndex, list, 20);
+                if (ret != ICH_SUCCEED) {
+                    AppLog(@"Get Image ListFiles failed, ret: %d", ret);
+                }
+                break;
+                
+            case WCFileTypeVideo:
+                ret = _playback->listFiles(ICH_FILE_TYPE_VIDEO, startIndex, endIndex, list, 20);
+                if (ret != ICH_SUCCEED) {
+                    AppLog(@"Get Video ListFiles failed, ret: %d", ret);
+                }
+                break;
+                
+            case WCFileTypeAll:
+                ret = _playback->listFiles(ICH_FILE_TYPE_ALL, startIndex, endIndex, list, 20);
+                if (ret != ICH_SUCCEED) {
+                    AppLog(@"Get All ListFiles failed, ret: %d", ret);
+                }
+                break;
+                
+            case WCFileTypeAudio:
+            case WCFileTypeText:
+            case WCFileTypeUnknow:
+            default:
+                break;
+        }
+    } else {
+        AppLog(@"SDK doesn't working.");
+    }
+    
+    AppLog(@"listSize: %lu", list.size());
+    return list;
+}
+
 - (vector<shared_ptr<ICatchFile>>)requestFileListOfType:(WCFileType)fileType
 {
     int ret = -1;
@@ -1101,6 +1172,77 @@
         }
     } else {
         AppLog(@"SDK doesn't working.");
+    }
+    
+    AppLog(@"listSize: %lu", list.size());
+    return list;
+}
+
+- (vector<shared_ptr<ICatchFile>>)requestHugeFileListOfType:(WCFileType)fileType maxNum:(int)maxNum
+{
+    AppLog(@"Get files using segmentation.");
+    vector<shared_ptr<ICatchFile>> list;
+    int FileCount = 0;
+    int startIndex = 1;
+    int endIndex = 0;
+    if (_playback) {
+        int ret = _playback->getFileCount(FileCount); // get total files count
+        if (ret != ICH_SUCCEED) {
+            AppLog(@"getFileCount failed, ret: %d", ret);
+            return list;
+        }
+    } else {
+        AppLog(@"SDK doesn't working.");
+    }
+    
+    if (FileCount <= 0){
+        AppLog(@"Number of files obtained: %d", FileCount);
+        return list;
+    }
+    
+    if (FileCount < maxNum){
+        startIndex = 1;
+        endIndex = FileCount;
+    } else {
+        startIndex = 1;
+        endIndex = maxNum;
+    }
+    
+    while(FileCount >= startIndex ) {
+        AppLog(@"start getFileList from startIndex %d to endIndex %d",startIndex,endIndex);
+        vector<shared_ptr<ICatchFile>> tempList;
+        switch (fileType) {
+            case WCFileTypeImage:
+                _playback->listFiles(ICH_FILE_TYPE_IMAGE, startIndex, endIndex, tempList, 20);
+                break;
+                
+            case WCFileTypeVideo:
+                _playback->listFiles(ICH_FILE_TYPE_VIDEO, startIndex, endIndex, tempList, 20);
+                break;
+                
+            case WCFileTypeAll:
+                _playback->listFiles(ICH_FILE_TYPE_ALL, startIndex, endIndex, tempList, 20);
+                break;
+                
+            case WCFileTypeAudio:
+            case WCFileTypeText:
+            case WCFileTypeUnknow:
+            default:
+                break;
+        }
+        // append to the end of list
+        if (tempList.size() > 0) {
+            list.insert(list.end(),tempList.begin(),tempList.end());
+        }
+        
+        startIndex = endIndex + 1;
+        if (endIndex + maxNum > FileCount) {
+            endIndex = FileCount;
+        } else {
+            endIndex = endIndex + maxNum;
+        }
+        
+        AppLog("end getFileList startIndex=%d endInex=%d", startIndex , endIndex);
     }
     
     AppLog(@"listSize: %lu", list.size());
@@ -1791,6 +1933,28 @@
 
 -(BOOL)isSupportAutoDownload {
     return _sdkState->supportImageAutoDownload()==true ? YES : NO;
+}
+
+- (uint)numberOfSensors {
+    uint number = 0;
+    if (_prop) {
+        _prop->getNumberOfSensors(number);
+    } else {
+        AppLog(@"SDK isn't working");
+    }
+    
+    return number;
+}
+
+- (BOOL)checkCameraCapabilities:(unsigned int)featureID {
+    BOOL ret = NO;
+    if (_prop) {
+        ret = _prop->checkCameraCapabilities(featureID);
+    } else {
+        AppLog(@"SDK isn't working");
+    }
+    
+    return ret;
 }
 
 @end

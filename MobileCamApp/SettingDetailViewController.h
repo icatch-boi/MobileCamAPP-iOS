@@ -23,6 +23,15 @@ typedef enum SettingDetailType{
   SettingDetailTypeVideoSize,
   SettingDetailTypeCaptureDelay,
   SettingDetailTypeLiveSize,
+    //add - 2017.3.17
+    SettingDetailTypeScreenSaver,
+    SettingDetailTypeAutoPowerOff,
+    SettingDetailTypeExposureCompensation,
+    SettingDetailTypeVideoFileLength,
+    SettingDetailTypeFastMotionMovie,
+    SettingDetailTypePowerOnAutoRecord,
+    SettingDetailTypeImageStabilization,
+    SettingDetailTypeWindNoiseReduction,
   
 }SettingDetailType;
 

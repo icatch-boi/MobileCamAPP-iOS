@@ -24,36 +24,85 @@ typedef NS_OPTIONS(NSUInteger, WifiCamTimelapseType) {
 };
 
 typedef NS_OPTIONS(NSUInteger, WifiCamAbility) {
-  WifiCamAbilityStillCapture = 1<<0,
-  WifiCamAbilityMovieRecord = 1<<1,
-  WifiCamAbilityTimeLapse = 1<<2,
-  
-  WifiCamAbilityWhiteBalance = 1<<3,
-  WifiCamAbilityDelayCapture = 1<<4,
-  WifiCamAbilityImageSize = 1<<5,
-  WifiCamAbilityVideoSize = 1<<6,
-  WifiCamAbilityLightFrequency = 1<<7,
-  WifiCamAbilityBatteryLevel = 1<<8,
-  WifiCamAbilityProductName = 1<<9,
-  WifiCamAbilityFWVersion = 1<<10,
-  WifiCamAbilityBurstNumber = 1<<11,
-  WifiCamAbilityDateStamp = 1<<12,
-  WifiCamAbilityChangeSSID = 1<<13,
-  WifiCamAbilityChangePwd = 1<<14,
-  WifiCamAbilityUpsideDown = 1<<15,
-  WifiCamAbilitySlowMotion = 1<<16,
-  WifiCamAbilityZoom = 1<<17,
-  WifiCamAbilityStillTimelapse = 1<<18,
-  WifiCamAbilityVideoTimelapse = 1<<19,
-  WifiCamAbilityLatestDelayCapture = 1<<20,
-  WifiCamAbilityGetMovieRecordedTime = 1<<21,
+//  WifiCamAbilityStillCapture = 1<<0,
+//  WifiCamAbilityMovieRecord = 1<<1,
+//  WifiCamAbilityTimeLapse = 1<<2,
+//
+//  WifiCamAbilityWhiteBalance = 1<<3,
+//  WifiCamAbilityDelayCapture = 1<<4,
+//  WifiCamAbilityImageSize = 1<<5,
+//  WifiCamAbilityVideoSize = 1<<6,
+//  WifiCamAbilityLightFrequency = 1<<7,
+//  WifiCamAbilityBatteryLevel = 1<<8,
+//  WifiCamAbilityProductName = 1<<9,
+//  WifiCamAbilityFWVersion = 1<<10,
+//  WifiCamAbilityBurstNumber = 1<<11,
+//  WifiCamAbilityDateStamp = 1<<12,
+//  WifiCamAbilityChangeSSID = 1<<13,
+//  WifiCamAbilityChangePwd = 1<<14,
+//  WifiCamAbilityUpsideDown = 1<<15,
+//  WifiCamAbilitySlowMotion = 1<<16,
+//  WifiCamAbilityZoom = 1<<17,
+//  WifiCamAbilityStillTimelapse = 1<<18,
+//  WifiCamAbilityVideoTimelapse = 1<<19,
+//  WifiCamAbilityLatestDelayCapture = 1<<20,
+//  WifiCamAbilityGetMovieRecordedTime = 1<<21,
+//  WifiCamAbilityDefaultToPlayback = 1<<22,
+//  WifiCamAbilityGetFileByPagination = 1<<23,
+//    //add - 2017.3.17
+//    WifiCamAbilityGetScreenSaverTime = 1<<24,
+//    WifiCamAbilityGetAutoPowerOffTime = 1<<25,
+//    WifiCamAbilityGetPowerOnAutoRecord = 1<<26,
+//    WifiCamAbilityGetExposureCompensation = 1<<27,
+//    WifiCamAbilityGetImageStabilization = 1<<28,
+//    WifiCamAbilityGetVideoFileLength = 1<<29,
+//    WifiCamAbilityGetFastMotionMovie = 1<<30,
+//    WifiCamAbilityGetWindNoiseReduction = 1<<31,
+//    //add - 2017.6.21
+//    WifiCamAbilityNewCaptureWay = 1 <<32,
+    WifiCamAbilityStillCapture = 1,
+    WifiCamAbilityMovieRecord,
+    WifiCamAbilityTimeLapse,
+    WifiCamAbilityWhiteBalance,
+    WifiCamAbilityDelayCapture,
+    WifiCamAbilityImageSize,
+    WifiCamAbilityVideoSize,
+    WifiCamAbilityLightFrequency,
+    WifiCamAbilityBatteryLevel,
+    WifiCamAbilityProductName,
+    WifiCamAbilityFWVersion,
+    WifiCamAbilityBurstNumber,
+    WifiCamAbilityDateStamp,
+    WifiCamAbilityChangeSSID,
+    WifiCamAbilityChangePwd,
+    WifiCamAbilityUpsideDown,
+    WifiCamAbilitySlowMotion,
+    WifiCamAbilityZoom,
+    WifiCamAbilityStillTimelapse,
+    WifiCamAbilityVideoTimelapse,
+    WifiCamAbilityLatestDelayCapture,
+    WifiCamAbilityGetMovieRecordedTime,
+    WifiCamAbilityDefaultToPlayback,
+    WifiCamAbilityGetFileByPagination,
+    //add - 2017.3.17
+    WifiCamAbilityGetScreenSaverTime,
+    WifiCamAbilityGetAutoPowerOffTime,
+    WifiCamAbilityGetPowerOnAutoRecord,
+    WifiCamAbilityGetExposureCompensation,
+    WifiCamAbilityGetImageStabilization,
+    WifiCamAbilityGetVideoFileLength,
+    WifiCamAbilityGetFastMotionMovie,
+    WifiCamAbilityGetWindNoiseReduction,
+    //add - 2017.6.21
+    WifiCamAbilityNewCaptureWay,
+    WifiCamAbilityPIV,
 };
 
 @interface WifiCamCamera : NSObject
 
 @property (nonatomic) BOOL exceptionOccured;
 
-@property (nonatomic) NSUInteger ability;
+@property (nonatomic) NSArray *ability;
 @property (nonatomic) ICatchCamMode cameraMode;
 @property (nonatomic) string curImageSize;
 @property (nonatomic) string curVideoSize;
@@ -80,7 +129,7 @@ typedef NS_OPTIONS(NSUInteger, WifiCamAbility) {
 @property (nonatomic) BOOL enableAutoDownload;
 @property (nonatomic) BOOL enableAudio;
 
--(id)initWithParameters:(NSUInteger)nAbility
+-(id)initWithParameters:(NSArray *)nAbility
           andCameraMode:(ICatchCamMode)nCameraMode
            andImageSize:(string)newImageSize
            andVideoSize:(string)newVideoSize

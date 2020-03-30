@@ -89,7 +89,11 @@ enum WCRetrunType {
 - (int)changePreviewMode:(ICatchCamPreviewMode)mode;
 
 // Photo gallery
+- (BOOL)setFileListAttribute:(NSUInteger)type order:(NSUInteger)order takenBy:(NSUInteger)takenBy;
+- (NSUInteger)requestFileCount;
+- (vector<shared_ptr<ICatchFile>>)requestFileListOfType:(WCFileType)fileType startIndex:(int)startIndex endIndex:(int)endIndex;
 -(vector<shared_ptr<ICatchFile>>)requestFileListOfType:(WCFileType)fileType;
+- (vector<shared_ptr<ICatchFile>>)requestHugeFileListOfType:(WCFileType)fileType maxNum:(int)maxNum;
 -(UIImage *)requestThumbnail:(shared_ptr<ICatchFile>)file;
 -(UIImage *)requestImage:(shared_ptr<ICatchFile>)file;
 -(NSString *)p_downloadFile:(shared_ptr<ICatchFile>)f;
@@ -192,5 +196,9 @@ enum WCRetrunType {
 
 - (NSArray *)createMediaDirectory;
 - (void)writeImageDataToFile:(UIImage *)image andName:(NSString *)fileName;
+
+- (uint)numberOfSensors;
+- (BOOL)checkCameraCapabilities:(unsigned int)featureID;
+
 @end
 

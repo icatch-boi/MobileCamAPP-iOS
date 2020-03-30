@@ -293,3 +293,35 @@
 "ActivetoTestingFailed" = "Convert LiveBroadcast to testing status failed";
 "TestingtoLiveFailed" = "Convert LiveBroadcast to live status failed";
 "GetLiveBroadcastStautsFailed" = "Get LiveBroadcast status failed";
+
+"kPeriodOfTime" = "Period of time";
+"kTo" = "To";
+"kStartTime" = "Select start time";
+"kEndTime" = " Select end time";
+"kToday" = "Today";
+"kNearlyThreeDays" = "3 Days";
+"kNearlyAWeekk" = "A Week";
+"kNearlyAMonth" = "A Month";
+"kNearlyHalfAYear" = "Half a year";
+"kCameraType" = "Camera type";
+"kAll" = "All";
+"kFront" = "Front";
+"kRear" = "Rear";
+"kReset" = "Reset";
+"kDetermine" = "Determine";
+"kSelectedTimeInvalid" = "The selected time period is invalid (the start time cannot be greater than the end time), please select again";
+
+"SETTING_AWB_UNDERWATER"    ="underwater";
+"SETTING_BURST_7_PHOTOS"     ="7 Photos";
+"SETTING_BURST_15_PHOTOS"     ="15 Photos";
+"SETTING_BURST_30_PHOTOS"     ="30 Photos";
+"unlimited" = "unlimited";
+"SetScreenSaver" = "ScreenSaver";
+"SetAutoPowerOff" = "Auto PowerOff";
+"SetPowerOnAutoRecord" = "PowerOn Auto Record";
+"SetExposureCompensation" = "Exposure Compensation";
+"SetImageStabilization" = "Image Stabilization";
+"SetVideoFileLength" = "Video File Length";
+"SetFastMotionMovie" = "Fast Motion Movie";
+"SetWindNoiseReduction" = "Wind Noise Reduction";
+"CleanTempCompleted" = "Clean Completed!";

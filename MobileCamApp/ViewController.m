@@ -459,6 +459,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     } else {
         AppLog(@"Saved to sqlite.");
     }
+    
+    [self hideProgressHUD:YES];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -486,7 +488,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 }
 
 - (BOOL)capableOf:(WifiCamAbility)ability {
-    return (_camera.ability & ability) == ability ? YES : NO;
+//    return (_camera.ability & ability) == ability ? YES : NO;
+    return [_camera.ability containsObject:@(ability)];
 }
 
 
@@ -865,6 +868,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     self.snapButton.enabled = YES;
     self.mpbToggle.enabled = YES;
     self.settingButton.enabled = YES;
+    // AIBSP-603
+    [_ctrl.fileCtrl resetBusyToggle:NO];
     
     // DelayCapture Item
     if ([self capableOf:WifiCamAbilityDelayCapture]) {
@@ -950,6 +955,23 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     
     
     //self.autoDownloadThumbImage.hidden = YES;
+}
+
+- (void)setToCameraOnScene {
+    self.snapButton.enabled = NO;
+    self.mpbToggle.enabled = NO;
+    self.settingButton.enabled = NO;
+    self.videoToggle.enabled = NO;
+
+    if ([self capableOf:WifiCamAbilityTimeLapse]) {
+        self.timelapseToggle.enabled = NO;
+    }
+    
+    // AIBSP-603
+    if ([self capableOf:WifiCamAbilityZoom]) {
+        [_ctrl.fileCtrl resetBusyToggle:YES];
+        [self hideZoomController:YES];
+    }
 }
 
 - (void)setToVideoOffScene {
@@ -1241,7 +1263,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
             [self setToCameraOffScene];
             break;
         case WifiCamPreviewModeCameraOn:
-            //[self setToCameraOnScene];
+            [self setToCameraOnScene];
             break;
         case WifiCamPreviewModeVideoOff:
             [self setToVideoOffScene];
@@ -2737,6 +2759,11 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     if ([self capableOf:WifiCamAbilityDateStamp] && _camera.curDateStamp != ICH_CAM_DATE_STAMP_OFF) {
         return;
     }
+    
+    // AIBSP-603
+    if ([_ctrl.fileCtrl isBusy]) {
+        return;
+    }
     if ([self capableOf:WifiCamAbilityZoom] && _zoomSlider.hidden) {
         [self hideZoomController:NO];
         if (![_hideZoomControllerTimer isValid]) {
@@ -2955,8 +2982,13 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             dispatch_async(dispatch_get_main_queue(), ^{
                 dispatch_semaphore_signal(_previewSemaphore);
                 [self hideProgressHUD:YES];
+#if !USE_NEW_MPB
                 [self performSegueWithIdentifier:@"goMpbSegue" sender:sender];
-                
+#else
+                UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MPBHome" bundle:nil];
+                UINavigationController *nav = sb.instantiateInitialViewController;
+                [self presentViewController:nav animated:YES completion:nil];
+#endif
             });
         }
     });

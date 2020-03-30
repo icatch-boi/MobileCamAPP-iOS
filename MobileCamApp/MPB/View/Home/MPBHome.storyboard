@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aCE-x3-FBW">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--相薄-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ICatchMPBHomeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zsu-Bh-YFy">
+                                <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="cFO-BZ-f9P"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Qdi-Kr-TwG"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="jtu-Ld-ncM"/>
+                            </scrollView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vVo-VZ-CGe">
+                                <rect key="frame" x="0.0" y="88" width="320" height="480"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iea-wc-kLG">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MPBHomeCell" id="xq1-OM-ltO" customClass="ICatchHomeCollectionCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7No-eX-htY">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="iC0-lb-IXN"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Xrf-D6-tT0"/>
+                                </connections>
+                            </collectionView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bBa-tq-rKd">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="D3f-og-ELd"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem systemItem="trash" id="BeS-VL-a5y">
+                                        <connections>
+                                            <action selector="deleteClick:" destination="BYZ-38-t0r" id="cbU-FA-kGU"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="4j4-Qq-xQz"/>
+                                    <barButtonItem systemItem="action" id="0pH-h2-gc6">
+                                        <connections>
+                                            <action selector="actionClick:" destination="BYZ-38-t0r" id="PjJ-gU-Hjg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="vVo-VZ-CGe" secondAttribute="bottom" id="2jp-H8-Cq3"/>
+                            <constraint firstItem="Zsu-Bh-YFy" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6aD-vO-ZGk"/>
+                            <constraint firstItem="bBa-tq-rKd" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Cri-uW-pAA"/>
+                            <constraint firstItem="vVo-VZ-CGe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="44" id="aLv-Ug-C9o"/>
+                            <constraint firstItem="vVo-VZ-CGe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bFY-fe-E1v"/>
+                            <constraint firstItem="Zsu-Bh-YFy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="kNj-bY-wl0"/>
+                            <constraint firstItem="vVo-VZ-CGe" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oNp-Qn-rGF"/>
+                            <constraint firstItem="bBa-tq-rKd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pZ0-63-uuo"/>
+                            <constraint firstItem="Zsu-Bh-YFy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vVz-iK-Y1d"/>
+                            <constraint firstItem="bBa-tq-rKd" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="x8I-aa-FcU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="相薄" id="VyC-6t-MAY">
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="done" id="CoE-cl-V7A">
+                                <connections>
+                                    <action selector="backClick:" destination="BYZ-38-t0r" id="Fow-mW-lX6"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" id="acV-G8-NeW">
+                                <connections>
+                                    <action selector="editClick:" destination="BYZ-38-t0r" id="PuA-xV-V9u"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="ic_filter_list_white_24dp" id="MNO-hh-684">
+                            <connections>
+                                <action selector="filterClick:" destination="BYZ-38-t0r" id="4RD-7K-Y9Q"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="actionButtonItem" destination="0pH-h2-gc6" id="9do-6W-MF0"/>
+                        <outlet property="collectionView" destination="vVo-VZ-CGe" id="nhB-NS-NJn"/>
+                        <outlet property="deleteButtonItem" destination="BeS-VL-a5y" id="8fM-aR-jcT"/>
+                        <outlet property="doneButtonItem" destination="CoE-cl-V7A" id="WLA-qo-gDm"/>
+                        <outlet property="editButtonItem" destination="acV-G8-NeW" id="zFm-Ql-gGw"/>
+                        <outlet property="filterButtonItem" destination="MNO-hh-684" id="aMq-o1-Jh6"/>
+                        <outlet property="flowLayout" destination="iea-wc-kLG" id="LDD-7z-1d0"/>
+                        <outlet property="scrollView" destination="Zsu-Bh-YFy" id="tre-MG-FgR"/>
+                        <outlet property="toolbar" destination="bBa-tq-rKd" id="9jJ-Rp-Zjc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1128.75" y="138.38028169014083"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8ai-ME-VhX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="aCE-x3-FBW" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="djG-N9-eBf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="eeU-5j-UJG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TQt-Sv-Tx5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="131.25" y="138.38028169014083"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ic_filter_list_white_24dp" width="32" height="32"/>
+    </resources>
+</document>

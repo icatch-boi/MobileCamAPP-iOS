@@ -800,7 +800,7 @@ struct ifaddrs *interfaces;
                                 [self hideGCDiscreetNoteView:YES];
                                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                                 appDelegate.isReconnecting = NO;
-                                if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PREVIEW]) {
+                                if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PLAYBACK]) {
                                     [self enterMPBActionWithSender:sender];
                                 } else {
                                     [self performSegueWithIdentifier:@"newPreviewSegue" sender:sender];

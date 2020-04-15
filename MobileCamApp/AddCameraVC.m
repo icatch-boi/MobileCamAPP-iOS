@@ -190,7 +190,7 @@ NSFetchedResultsControllerDelegate
                         if ([[SDK instance] isSDKInitialized]) {
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [self hideProgressHUD:YES];
-                                if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PREVIEW]) {
+                                if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PLAYBACK]) {
                                     [self enterMPBActionWithSender:sender];
                                 } else {
                                     [self performSegueWithIdentifier:@"newPreviewSegue01" sender:sender];

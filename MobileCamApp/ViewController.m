@@ -3859,6 +3859,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 - (void)postMovieRecordTime
 {
     TRACE();
+    self.movieRecordElapsedTimeInSeconds = 0;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (![_videoCaptureTimer isValid]) {
             self.videoCaptureTimer = [NSTimer scheduledTimerWithTimeInterval:1.0

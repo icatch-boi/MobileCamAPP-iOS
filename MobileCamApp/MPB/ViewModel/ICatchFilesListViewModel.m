@@ -37,7 +37,7 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
     int startIndex = 1;
     int endIndex = kOnceRequestMaxNumber;
 
-    if (![self capableOf:WifiCamAbilityDefaultToPlayback] || ![self capableOf:WifiCamAbilityGetFileByPagination] || ![[SDK instance] checkCameraCapabilities:ICH_CAM_SUPPORT_GET_FILE_BY_PAGINATION]) {
+    if (![self capableOf:WifiCamAbilityDefaultToPlayback] || ![self capableOf:WifiCamAbilityGetFileByPagination] || ![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
         pullup = NO;
     }
     
@@ -169,7 +169,7 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
     AppLog(@"Start getFileList from startIndex: %d to endIndex: %d", startIndex, endIndex);
 //    vector<shared_ptr<ICatchFile>> fileList = [[SDK instance] requestFileListOfType:wcFileType startIndex:startIndex endIndex:endIndex];
     vector<shared_ptr<ICatchFile>> fileList;
-    if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [self capableOf:WifiCamAbilityGetFileByPagination] && [[SDK instance] checkCameraCapabilities:ICH_CAM_SUPPORT_GET_FILE_BY_PAGINATION]) {
+    if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [self capableOf:WifiCamAbilityGetFileByPagination] && [[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
         fileList = [[SDK instance] requestFileListOfType:wcFileType startIndex:startIndex endIndex:endIndex];
     } else {
         fileList = [[SDK instance] requestFileListOfType:wcFileType];

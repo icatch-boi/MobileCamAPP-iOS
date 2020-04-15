@@ -292,7 +292,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 #pragma mark - Action
 - (IBAction)backClick:(id)sender {
-    if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PREVIEW]) {
+    if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PLAYBACK]) {
            [self.view.window.rootViewController dismissViewControllerAnimated:YES completion: ^{
                [[SDK instance] destroySDK];
                [[PanCamSDK instance] destroypanCamSDK];

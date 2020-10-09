@@ -216,21 +216,45 @@
 
 -(NSDictionary *)awbDict
 {
-  return @{@(ICH_CAM_WB_AUTO):@"awb_auto",
-           @(ICH_CAM_WB_CLOUDY):@"awb_cloudy",
-           @(ICH_CAM_WB_DAYLIGHT):@"awb_daylight",
-           @(ICH_CAM_WB_FLUORESCENT):@"awb_fluoresecent",
-           @(ICH_CAM_WB_TUNGSTEN):@"awb_incadescent",
-           @(ICH_CAM_WB_UNDEFINED):@"undef"
-  };
+//  return @{@(ICH_CAM_WB_AUTO):@"awb_auto",
+//           @(ICH_CAM_WB_CLOUDY):@"awb_cloudy",
+//           @(ICH_CAM_WB_DAYLIGHT):@"awb_daylight",
+//           @(ICH_CAM_WB_FLUORESCENT):@"awb_fluoresecent",
+//           @(ICH_CAM_WB_TUNGSTEN):@"awb_incadescent",
+//           @(ICH_CAM_WB_UNDEFINED):@"undef"
+//  };
+    
+    return @{
+        @(PTPDpcWhiteBalance_AUTO):@"awb_auto",
+        @(PTPDpcWhiteBalance_CLOUDY):@"awb_cloudy",
+        @(PTPDpcWhiteBalance_DAYLIGHT):@"awb_daylight",
+        /*
+         @(WB_FLUORESCENT):@"awb_fluoresecent",
+         @(WB_TUNGSTEN):@"awb_incadescent",
+         */
+        @(PTPDpcWhiteBalance_TUNGSTEN):@"awb_incadescent",
+        @(PTPDpcWhiteBalance_FLUORESCENT):@"awb_fluoresecent",
+        @(PTPDpcWhiteBalance_UNDERWATER):@"awb_underwater"
+    };
 }
 
 -(NSDictionary *)burstNumberDict
 {
-  return @{@(ICH_CAM_BRUST_NUMBER_HS):@(0),
-           @(ICH_CAM_BURST_NUMBER_10):@(10),
-           @(ICH_CAM_BURST_NUMBER_5):@(5),
-           @(ICH_CAM_BURST_NUMBER_3):@(3)};
+//  return @{@(ICH_CAM_BRUST_NUMBER_HS):@(0),
+//           @(ICH_CAM_BURST_NUMBER_10):@(10),
+//           @(ICH_CAM_BURST_NUMBER_5):@(5),
+//           @(ICH_CAM_BURST_NUMBER_3):@(3)};
+    
+    return @{
+        @(PTPDpcBurstNumber_HS):@(0),
+        @(PTPDpcBurstNumber_OFF):@(0),
+        @(PTPDpcBurstNumber_3):@(3),
+        @(PTPDpcBurstNumber_5):@(5),
+        @(PTPDpcBurstNumber_10):@(10),
+        @(PTPDpcBurstNumber_7):@(7),
+        @(PTPDpcBurstNumber_15):@(15),
+        @(PTPDpcBurstNumber_30):@(30)
+    };
 }
 
 -(NSDictionary *)delayCaptureDict
@@ -246,15 +270,24 @@
 
 -(NSDictionary *)whiteBalanceDict
 {
-  return @{@(ICH_CAM_WB_AUTO):NSLocalizedString(@"SETTING_AWB_AUTO", @""),
-           @(ICH_CAM_WB_CLOUDY):NSLocalizedString(@"SETTING_AWB_CLOUDY", @""),
-           @(ICH_CAM_WB_DAYLIGHT):NSLocalizedString(@"SETTING_AWB_DAYLIGHT", @""),
-           @(ICH_CAM_WB_FLUORESCENT):NSLocalizedString(@"SETTING_AWB_FLUORESECENT", @""),
-           @(ICH_CAM_WB_TUNGSTEN):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
-           @(ICH_CAM_WB_UNDEFINED):@"undef"
-  };
+//  return @{@(ICH_CAM_WB_AUTO):NSLocalizedString(@"SETTING_AWB_AUTO", @""),
+//           @(ICH_CAM_WB_CLOUDY):NSLocalizedString(@"SETTING_AWB_CLOUDY", @""),
+//           @(ICH_CAM_WB_DAYLIGHT):NSLocalizedString(@"SETTING_AWB_DAYLIGHT", @""),
+//           @(ICH_CAM_WB_FLUORESCENT):NSLocalizedString(@"SETTING_AWB_FLUORESECENT", @""),
+//           @(ICH_CAM_WB_TUNGSTEN):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
+//           @(ICH_CAM_WB_UNDEFINED):@"undef"
+//    };
+    return @{
+        @(PTPDpcWhiteBalance_AUTO):NSLocalizedString(@"SETTING_AWB_AUTO", @""),
+        @(PTPDpcWhiteBalance_CLOUDY):NSLocalizedString(@"SETTING_AWB_CLOUDY", @""),
+        @(PTPDpcWhiteBalance_DAYLIGHT):NSLocalizedString(@"SETTING_AWB_DAYLIGHT", @""),
+        @(PTPDpcWhiteBalance_TUNGSTEN):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
+        @(PTPDpcWhiteBalance_FLUORESCENT):NSLocalizedString(@"SETTING_AWB_FLUORESECENT", @""),
+        @(PTPDpcWhiteBalance_UNDERWATER):NSLocalizedString(@"SETTING_AWB_UNDERWATER", @"")
+    };
+  
 }
-
+/*
 -(NSDictionary *)whiteBalanceDict2
 {
     return @{@(1):NSLocalizedString(@"SETTING_AWB_AUTO", @""),
@@ -264,20 +297,30 @@
              @(5):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
              @(6):NSLocalizedString(@"SETTING_AWB_UNDERWATER", @""),
              @(ICH_CAM_WB_UNDEFINED):@"undef"};
-}
+}*/
 
 -(NSDictionary *)burstNumberStringDict
 {
-  return @{@(ICH_CAM_BRUST_NUMBER_HS):@[NSLocalizedString(@"SETTING_BURST_HIGHEST_SPEED", nil), @""],
-           @(ICH_CAM_BURST_NUMBER_OFF):@[NSLocalizedString(@"SETTING_BURST_OFF", nil), @""],
-           @(ICH_CAM_BURST_NUMBER_3):@[NSLocalizedString(@"SETTING_BURST_3_PHOTOS", nil), @"continuous_shot_1"],
-           @(ICH_CAM_BURST_NUMBER_5):@[NSLocalizedString(@"SETTING_BURST_5_PHOTOS", nil), @"continuous_shot_2"],
-           @(ICH_CAM_BURST_NUMBER_10):@[NSLocalizedString(@"SETTING_BURST_10_PHOTOS", nil), @"continuous_shot_3"],
-           @(ICH_CAM_BURST_NUMBER_UNDEFINED):@"undef",
-           @(PTPDpcBurstNumber_7):@[NSLocalizedString(@"SETTING_BURST_7_PHOTOS", nil), @"continuous_shot_7"],
-           @(PTPDpcBurstNumber_15):@[NSLocalizedString(@"SETTING_BURST_15_PHOTOS", nil), @"continuous_shot_15"],
-           @(PTPDpcBurstNumber_30):@[NSLocalizedString(@"SETTING_BURST_30_PHOTOS", nil), @"continuous_shot_30"],
-  };
+//  return @{@(ICH_CAM_BRUST_NUMBER_HS):@[NSLocalizedString(@"SETTING_BURST_HIGHEST_SPEED", nil), @""],
+//           @(ICH_CAM_BURST_NUMBER_OFF):@[NSLocalizedString(@"SETTING_BURST_OFF", nil), @""],
+//           @(ICH_CAM_BURST_NUMBER_3):@[NSLocalizedString(@"SETTING_BURST_3_PHOTOS", nil), @"continuous_shot_1"],
+//           @(ICH_CAM_BURST_NUMBER_5):@[NSLocalizedString(@"SETTING_BURST_5_PHOTOS", nil), @"continuous_shot_2"],
+//           @(ICH_CAM_BURST_NUMBER_10):@[NSLocalizedString(@"SETTING_BURST_10_PHOTOS", nil), @"continuous_shot_3"],
+//           @(ICH_CAM_BURST_NUMBER_UNDEFINED):@"undef",
+//           @(PTPDpcBurstNumber_7):@[NSLocalizedString(@"SETTING_BURST_7_PHOTOS", nil), @"continuous_shot_7"],
+//           @(PTPDpcBurstNumber_15):@[NSLocalizedString(@"SETTING_BURST_15_PHOTOS", nil), @"continuous_shot_15"],
+//           @(PTPDpcBurstNumber_30):@[NSLocalizedString(@"SETTING_BURST_30_PHOTOS", nil), @"continuous_shot_30"],
+//  };
+    return @{
+        @(PTPDpcBurstNumber_HS):@[NSLocalizedString(@"SETTING_BURST_HIGHEST_SPEED", nil), @""],
+        @(PTPDpcBurstNumber_OFF):@[NSLocalizedString(@"SETTING_BURST_OFF", nil), @""],
+        @(PTPDpcBurstNumber_3):@[NSLocalizedString(@"SETTING_BURST_3_PHOTOS", nil), @"continuous_shot_1"],
+        @(PTPDpcBurstNumber_5):@[NSLocalizedString(@"SETTING_BURST_5_PHOTOS", nil), @"continuous_shot_2"],
+        @(PTPDpcBurstNumber_10):@[NSLocalizedString(@"SETTING_BURST_10_PHOTOS", nil), @"continuous_shot_3"],
+        @(PTPDpcBurstNumber_7):@[NSLocalizedString(@"SETTING_BURST_7_PHOTOS", nil), @"continuous_shot_7"],
+        @(PTPDpcBurstNumber_15):@[NSLocalizedString(@"SETTING_BURST_15_PHOTOS", nil), @"continuous_shot_15"],
+        @(PTPDpcBurstNumber_30):@[NSLocalizedString(@"SETTING_BURST_30_PHOTOS", nil), @"continuous_shot_30"],
+    };
 }
 
 -(NSDictionary *)powerFrequencyDict

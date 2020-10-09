@@ -20,9 +20,11 @@
 #import "GCDiscreetNotificationView.h"
 
 #import "PanCamSDK.h"
+#if 0
 #import <BuglyHotfix/Bugly.h>
-#import <GoogleSignIn/GoogleSignIn.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#endif
+//#import <GoogleSignIn/GoogleSignIn.h>
+//#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -54,10 +56,12 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 
 @implementation AppDelegate
 
+#if 0
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
+#if 0
     if ([[url scheme] isEqualToString:@"fb295583287549917"]){
         return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                               openURL:url
@@ -68,19 +72,31 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
                                    sourceApplication:sourceApplication
                                           annotation:annotation];
     }
+#else
+    return [[GIDSignIn sharedInstance] handleURL:url
+    sourceApplication:sourceApplication
+           annotation:annotation];
+#endif
 }
+#endif
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if 0
     [Bugly startWithAppId:nil]; //add bugly SDK 2016.12.28
+#endif
     // Exception handler
     [self registerDefaultsFromSettingsBundle];
+#if 0
     // Set app's client ID for |GIDSignIn|.
     [GIDSignIn sharedInstance].clientID = kClientID;
+#endif
     
+#if 0
     // Facebook delegate
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
+#endif
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults stringForKey:@"RTMPURL"]) {
@@ -283,7 +299,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
      return;
      }
      */
-    [FBSDKAppEvents activateApp];
+//    [FBSDKAppEvents activateApp];
     
     if ([self.delegate respondsToSelector:@selector(applicationDidBecomeActive:)]) {
         [self.delegate applicationDidBecomeActive:nil];

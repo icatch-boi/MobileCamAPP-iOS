@@ -14,54 +14,64 @@
 class MpbSDKEventListener : public ICatchIPancamListener
 {
 private:
-  VideoPlaybackViewController *controller;
+    VideoPlaybackViewController *controller;
 protected:
-  void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt);
-  MpbSDKEventListener(VideoPlaybackViewController *controller);
-  void updateVideoPbProgress(shared_ptr<ICatchGLEvent> icatchEvt);
-  void updateVideoPbProgressState(shared_ptr<ICatchGLEvent> icatchEvt);
-  void stopVideoPb(shared_ptr<ICatchGLEvent> icatchEvt);
-  void showServerStreamError(shared_ptr<ICatchGLEvent> icatchEvt);
+    void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt);
+    MpbSDKEventListener(VideoPlaybackViewController *controller);
+    void updateVideoPbProgress(shared_ptr<ICatchGLEvent> icatchEvt);
+    void updateVideoPbProgressState(shared_ptr<ICatchGLEvent> icatchEvt);
+    void stopVideoPb(shared_ptr<ICatchGLEvent> icatchEvt);
+    void showServerStreamError(shared_ptr<ICatchGLEvent> icatchEvt);
+    void notifyInsufficientPerformanceInfo(shared_ptr<ICatchGLEvent> icatchEvt);
 };
 
 
 class VideoPbProgressListener : public MpbSDKEventListener
 {
 private:
-  void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
-    updateVideoPbProgress(icatchEvt);
-  }
+    void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
+        updateVideoPbProgress(icatchEvt);
+    }
 public:
-  VideoPbProgressListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
+    VideoPbProgressListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
 };
 
 class VideoPbProgressStateListener : public MpbSDKEventListener
 {
 private:
-  void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
-    updateVideoPbProgressState(icatchEvt);
-  }
+    void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
+        updateVideoPbProgressState(icatchEvt);
+    }
 public:
-  VideoPbProgressStateListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
+    VideoPbProgressStateListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
 };
 
 class VideoPbDoneListener : public MpbSDKEventListener
 {
 private:
-  void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
-    stopVideoPb(icatchEvt);
-  }
+    void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
+        stopVideoPb(icatchEvt);
+    }
 public:
-  VideoPbDoneListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
+    VideoPbDoneListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
 };
 
 class VideoPbServerStreamErrorListener : public MpbSDKEventListener {
 private:
-  void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
-    showServerStreamError(icatchEvt);
-  }
+    void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
+        showServerStreamError(icatchEvt);
+    }
 public:
-  VideoPbServerStreamErrorListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
+    VideoPbServerStreamErrorListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
+};
+
+class VideoPbInsufficientPerformanceListener : public MpbSDKEventListener {
+private:
+    void eventNotify(shared_ptr<ICatchGLEvent> icatchEvt) {
+        notifyInsufficientPerformanceInfo(icatchEvt);
+    }
+public:
+    VideoPbInsufficientPerformanceListener(VideoPlaybackViewController *controller):MpbSDKEventListener(controller){}
 };
 
 #endif

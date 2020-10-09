@@ -274,6 +274,9 @@ alpha:1.0]
 {
     NSDictionary *ifs = [self fetchSSIDInfo];
     current_ssid= [ifs objectForKey:@"SSID"];
+    if(!current_ssid) {
+        current_ssid = @"camera";
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.fetchedResultsController.sections.count > 0) {
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex:0];
@@ -545,6 +548,7 @@ struct ifaddrs *interfaces;
             abort();
 #endif
         }
+        /*
         if (self.fetchedResultsController.sections.count > 0) {
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex:0];
             if([sectionInfo numberOfObjects] > 0) {
@@ -559,7 +563,7 @@ struct ifaddrs *interfaces;
                 }
             }
         } // --- Check redundance ---
-        
+        */
         [self performSegueWithIdentifier:@"addCameraSegue" sender:@[@(btn.tag)]];
     } else {
         /* Open a camera */
@@ -744,6 +748,10 @@ struct ifaddrs *interfaces;
     }
     NSLog(@"ssid : %@", ssid);
     //NSLog(@"bssid: %@", bssid);
+    
+    if(!ssid) {
+        ssid = @"camera";
+    }
     
     return ssid;
 }
@@ -950,14 +958,15 @@ struct ifaddrs *interfaces;
     // Browser
     NSMutableArray *photos = [[NSMutableArray alloc] init];
     NSMutableArray *thumbs = [[NSMutableArray alloc] init];
-    //MWPhoto *photo, *thumb;
+//    MWPhoto *photo, *thumb;
     BOOL displayActionButton = YES;
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = YES;
     BOOL enableGrid = YES;
     BOOL startOnGrid = YES;
     BOOL autoPlayOnAppear = NO;
-    /*@synchronized(_assets) {
+    /*
+   @synchronized(_assets) {
         NSMutableArray *copy = [_assets copy];
         if (NSClassFromString(@"PHAsset")) {
             // Photos library
@@ -972,36 +981,40 @@ struct ifaddrs *interfaces;
                     [photos addObject:[MWPhoto photoWithAsset:asset targetSize:imageTargetSize]];
                     [thumbs addObject:[MWPhoto photoWithAsset:asset targetSize:thumbTargetSize]];
                 } else if (sender.tag == 12 && asset.mediaType == PHAssetMediaTypeVideo) {
-                    [photos addObject:[MWPhoto photoWithAsset:asset targetSize:imageTargetSize]];
-                    [thumbs addObject:[MWPhoto photoWithAsset:asset targetSize:thumbTargetSize]];
+//                    [photos addObject:[MWPhoto photoWithAsset:asset targetSize:imageTargetSize]];
+//                    [thumbs addObject:[MWPhoto photoWithAsset:asset targetSize:thumbTargetSize]];
                 }
             }
         } else {
             // Assets library
-            for (ALAsset *asset in copy) {
-                if (sender.tag == 11 && [asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
-                    photo = [MWPhoto photoWithURL:asset.defaultRepresentation.url];
-                    [photos addObject:photo];
-                    thumb = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
-                    [thumbs addObject:thumb];
-                } else if (sender.tag == 12 && [asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
-                    photo = [MWPhoto photoWithURL:asset.defaultRepresentation.url];
-                    [photos addObject:photo];
-                    thumb = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
-                    [thumbs addObject:thumb];
-                    photo.videoURL = asset.defaultRepresentation.url;
-                    thumb.isVideo = YES;
-                }
-
-            }
+//            for (ALAsset *asset in copy) {
+//                if (sender.tag == 11 && [asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+//                    photo = [MWPhoto photoWithURL:asset.defaultRepresentation.url];
+//                    [photos addObject:photo];
+//                    thumb = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+//                    [thumbs addObject:thumb];
+//                } else if (sender.tag == 12 && [asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
+//                    photo = [MWPhoto photoWithURL:asset.defaultRepresentation.url];
+//                    [photos addObject:photo];
+//                    thumb = [MWPhoto photoWithImage:[UIImage imageWithCGImage:asset.thumbnail]];
+//                    [thumbs addObject:thumb];
+//                    photo.videoURL = asset.defaultRepresentation.url;
+//                    thumb.isVideo = YES;
+//                }
+//
+//            }
         }
     }*/
+    
     if (sender.tag == 11) {
         @synchronized (_photosAssets) {
             NSMutableArray *copy = [_photosAssets copy];
             for (NSURL *photoURL in copy) {
                 @autoreleasepool {
                     [photos addObject:[MWPhoto photoWithURL:photoURL]];
+                    // scaling set to 100.0 makes the image 1/100 the size.
+//                    UIImage *thumb = [UIImage imageWithData:[NSData dataWithContentsOfURL:photoURL] scale:100.0];
+//                    [thumbs addObject:[MWPhoto photoWithImage:thumb]];
                     [thumbs addObject:[MWPhoto photoWithURL:photoURL]];
                 }
             }
@@ -1017,7 +1030,7 @@ struct ifaddrs *interfaces;
             }
         }
     }
-    
+
     self.photos = photos;
     self.thumbs = thumbs;
     
@@ -1057,13 +1070,13 @@ struct ifaddrs *interfaces;
 
     
     // Test reloading of data after delay
-    double delayInSeconds = 3;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        
-
-        
-    });
+//    double delayInSeconds = 3;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//
+//
+//
+//    });
 }
 /*
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -1301,7 +1314,7 @@ struct ifaddrs *interfaces;
     } else {
         // Assets library
 //        [self performLoadAssets];
-        [self performLoadLocalAssets];
+//        [self performLoadLocalAssets];
     }
 }
 
@@ -1500,65 +1513,65 @@ struct ifaddrs *interfaces;
         
     } else {
         
-        /*
-         ALAssetsLibrary：代表整个PhotoLibrary，我们可以生成一个它的实例对象，这个实例对象就相当于是照片库的句柄。
-         ALAssetsGroup：照片库的分组，我们可以通过ALAssetsLibrary的实例获取所有的分组的句柄。
-         ALAsset：一个ALAsset的实例代表一个资产，也就是一个photo或者video，我们可以通过他的实例获取对应的缩略图或者原图等等。
-         */
-        
-        // Assets Library iOS < 8
-        _ALAssetsLibrary = [[ALAssetsLibrary alloc] init];
-        // Run in the background as it takes a while to get all assets from the library
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
-            NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
-            
-            // Process assets
-            void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                if (result) {
-                    NSString *assetType = [result valueForProperty:ALAssetPropertyType];
-                    
-                    if (_photoThumb.tag == 0 && [assetType isEqualToString:ALAssetTypePhoto]) {
-                        [self loadFirstPhotoThumbnail:result];
-                    } else if (_videoThumb.tag == 0 && [assetType isEqualToString:ALAssetTypeVideo]) {
-                        [self loadFirstVideoThumbnail:result];
-                    }
-                    
-                    if ([assetType isEqualToString:ALAssetTypePhoto] || [assetType isEqualToString:ALAssetTypeVideo]) {
-                        [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
-                        NSURL *url = result.defaultRepresentation.url;
-                        [_ALAssetsLibrary assetForURL:url
-                                          resultBlock:^(ALAsset *asset) {
-                                              if (asset) {
-                                                  @synchronized(_assets) {
-                                                      [_assets addObject:asset];
-                                                  }
-                                              }
-                                          }
-                                         failureBlock:^(NSError *error){
-                                             NSLog(@"operation was not successfull!");
-                                         }];
-                    }
-                }
-            };
-            
-            // Process groups
-            void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
-                if (group) {
-                    [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
-                    [assetGroups addObject:group];
-                }
-            };
-            
-            // Process!
-            [_ALAssetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
-                                            usingBlock:assetGroupEnumerator
-                                          failureBlock:^(NSError *error) {
-                                              NSLog(@"There is an error");
-                                          }];
-            
-        });
+//        /*
+//         ALAssetsLibrary：代表整个PhotoLibrary，我们可以生成一个它的实例对象，这个实例对象就相当于是照片库的句柄。
+//         ALAssetsGroup：照片库的分组，我们可以通过ALAssetsLibrary的实例获取所有的分组的句柄。
+//         ALAsset：一个ALAsset的实例代表一个资产，也就是一个photo或者video，我们可以通过他的实例获取对应的缩略图或者原图等等。
+//         */
+//
+//        // Assets Library iOS < 8
+//        _ALAssetsLibrary = [[ALAssetsLibrary alloc] init];
+//        // Run in the background as it takes a while to get all assets from the library
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//            NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
+//            NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
+//
+//            // Process assets
+//            void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+//                if (result) {
+//                    NSString *assetType = [result valueForProperty:ALAssetPropertyType];
+//
+//                    if (_photoThumb.tag == 0 && [assetType isEqualToString:ALAssetTypePhoto]) {
+//                        [self loadFirstPhotoThumbnail:result];
+//                    } else if (_videoThumb.tag == 0 && [assetType isEqualToString:ALAssetTypeVideo]) {
+//                        [self loadFirstVideoThumbnail:result];
+//                    }
+//
+//                    if ([assetType isEqualToString:ALAssetTypePhoto] || [assetType isEqualToString:ALAssetTypeVideo]) {
+//                        [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
+//                        NSURL *url = result.defaultRepresentation.url;
+//                        [_ALAssetsLibrary assetForURL:url
+//                                          resultBlock:^(ALAsset *asset) {
+//                                              if (asset) {
+//                                                  @synchronized(_assets) {
+//                                                      [_assets addObject:asset];
+//                                                  }
+//                                              }
+//                                          }
+//                                         failureBlock:^(NSError *error){
+//                                             NSLog(@"operation was not successfull!");
+//                                         }];
+//                    }
+//                }
+//            };
+//
+//            // Process groups
+//            void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
+//                if (group) {
+//                    [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetEnumerator];
+//                    [assetGroups addObject:group];
+//                }
+//            };
+//
+//            // Process!
+//            [_ALAssetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
+//                                            usingBlock:assetGroupEnumerator
+//                                          failureBlock:^(NSError *error) {
+//                                              NSLog(@"There is an error");
+//                                          }];
+//
+//        });
         
     }
     
@@ -1655,7 +1668,13 @@ struct ifaddrs *interfaces;
         /*if ([EAGLContext currentContext] == photoBrowser.context) {
             [EAGLContext setCurrentContext:nil];
         }*/
+        
+        [self.photos removeAllObjects];
+        [self.thumbs removeAllObjects];
+        self.photos = nil;
+        self.thumbs = nil;
     }];
+
 }
 
 - (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser deletePhotoAtIndex:(NSUInteger)index
@@ -1674,33 +1693,41 @@ struct ifaddrs *interfaces;
     }
     documentsDirectoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:filePath error:nil];
     
+    AppLog("Delete %@", [NSString stringWithFormat:@"%@/%@", filePath, documentsDirectoryContents[index]]);
     BOOL ret = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", filePath, documentsDirectoryContents[index]] error:nil];
     
+    
     if (ret) {
-        [self performLoadLocalAssets];
-        if (_photos.count) {
-            [_photos removeAllObjects];
-        }
-        if (_thumbs.count) {
-            [_thumbs removeAllObjects];
-        }
-        [NSThread sleepForTimeInterval:1.0];
+//        [self performLoadLocalAssets];
+//        if (_photos.count) {
+//            [_photos removeAllObjects];
+//        }
+//        if (_thumbs.count) {
+//            [_thumbs removeAllObjects];
+//        }
+//        [NSThread sleepForTimeInterval:1.0];
+//
+//        if (tag == 11) {
+//            for (NSURL *photoURL in _photosAssets) {
+//                [_photos addObject:[MWPhoto photoWithURL:photoURL]];
+//                UIImage *thumb = [UIImage imageWithData:[NSData dataWithContentsOfURL:photoURL] scale:100.0];
+//                AppLog(@"thumb's size: %f, %f", thumb.size.width, thumb.size.height);
+//                [_thumbs addObject:[MWPhoto photoWithImage:thumb]];
+//            }
+//        } else {
+//            for (NSURL *videoURL in _videosAssets) {
+//                [_photos addObject:[MWPhoto videoWithURL:videoURL]];
+//                [_thumbs addObject:[MWPhoto videoWithURL:videoURL]];
+//            }
+//        }
         
-        if (tag == 11) {
-            for (NSURL *photoURL in _photosAssets) {
-                [_photos addObject:[MWPhoto photoWithURL:photoURL]];
-                [_thumbs addObject:[MWPhoto photoWithURL:photoURL]];
-            }
-        } else {
-            for (NSURL *videoURL in _videosAssets) {
-                [_photos addObject:[MWPhoto videoWithURL:videoURL]];
-                [_thumbs addObject:[MWPhoto videoWithURL:videoURL]];
-            }
-        }
+        [self.photos removeObjectAtIndex:index];
+        [self.thumbs removeObjectAtIndex:index];
     }
     
     return ret;
 }
+
 
 - (void)panCamSDKinit {
     [[PanCamSDK instance] initImage];
@@ -1754,17 +1781,17 @@ struct ifaddrs *interfaces;
     glkView.photoBrowser = photoBrowser;
     glkView.photoNum = [photoBrowser numberOfPhotos];
     glkView.currentIndex = photoBrowser.currentPhotoIndex;*/
-    
+
     VideoPlaybackViewController *playView = [[VideoPlaybackViewController alloc] init];
     playView.videoURL = videoURL;
-    
+
     // Modal
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:playView];
     nc.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     nc.navigationBar.barTintColor = [UIColor blackColor];
     //glkView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     nc.modalPresentationStyle = UIModalPresentationFullScreen;
-    
+
     [photoBrowser presentViewController:nc animated:YES completion:nil];
 }
 

@@ -140,6 +140,10 @@ NSFetchedResultsControllerDelegate
     NSLog(@"ssid : %@", ssid);
     //NSLog(@"bssid: %@", bssid);
     
+    if(!ssid) {
+        ssid = @"camera";
+    }
+    
     return ssid;
 }
 
@@ -156,7 +160,8 @@ NSFetchedResultsControllerDelegate
         [_reconnAlert dismissWithClickedButtonIndex:0 animated:NO];
     }
     
-    NSString *connectingMessage = [NSString stringWithFormat:@"Connect to %@ ...", [self _checkSSID]];
+    NSString *ssid = [self _checkSSID];
+    NSString *connectingMessage = [NSString stringWithFormat:@"Connect to %@ ...", ssid];
     [self showProgressHUDWithMessage:connectingMessage];
     
     dispatch_async([[SDK instance] sdkQueue], ^{

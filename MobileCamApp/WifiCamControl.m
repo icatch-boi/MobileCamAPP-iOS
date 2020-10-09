@@ -197,7 +197,7 @@
 //                    abilities |= WifiCamAbilityDelayCapture;
 //                }
                 if ([abilities containsObject:@(WifiCamAbilityStillCapture)]) {
-                    [abilities addObject:@(WifiCamAbilityWhiteBalance)];
+                    [abilities addObject:@(WifiCamAbilityDelayCapture)];
                 }
                 break;
                 
@@ -206,7 +206,7 @@
 //                    abilities |= WifiCamAbilityImageSize;
 //                }
                 if ([abilities containsObject:@(WifiCamAbilityStillCapture)]) {
-                    [abilities addObject:@(WifiCamAbilityWhiteBalance)];
+                    [abilities addObject:@(WifiCamAbilityImageSize)];
                 }
                 break;
                 
@@ -214,7 +214,7 @@
 //                if ((abilities & WifiCamAbilityMovieRecord) == WifiCamAbilityMovieRecord) {
 //                    abilities |= WifiCamAbilityVideoSize;
 //                }
-                if ([abilities containsObject:@(WifiCamAbilityVideoSize)]) {
+                if ([abilities containsObject:@(WifiCamAbilityMovieRecord)]) {
                     [abilities addObject:@(WifiCamAbilityVideoSize)];
                 }
                 break;
@@ -354,10 +354,11 @@
     } else if( prop == 0xD83E) { //add - 2018.1.22 update current TimeZone . +0800 = GCM +8 = Taipei Time
         NSTimeZone *timeZone = [NSTimeZone localTimeZone];
         NSString *TimeString;
+        int t = (int)(timeZone.secondsFromGMT/3600);
         if( timeZone.secondsFromGMT >0 ){
-            TimeString = [NSString stringWithFormat:@"+%02d00", (int)timeZone.secondsFromGMT/3600];
+            TimeString = [NSString stringWithFormat:@"+%02d00", t];
         }else{
-            TimeString = [NSString stringWithFormat:@"-%02d00", (int)timeZone.secondsFromGMT/3600];
+            TimeString = [NSString stringWithFormat:@"-%02d00", -t];
         }
         AppLog(@"%@",TimeString);
         [sdk setCustomizeStringProperty:0xD83E value:TimeString];

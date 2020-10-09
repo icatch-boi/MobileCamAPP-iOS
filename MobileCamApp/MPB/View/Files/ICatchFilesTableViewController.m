@@ -307,4 +307,35 @@ static NSString * const kGroupHeaderReuseID = @"GroupHeader";
     return _mpbSemaphore;
 }
 
+#pragma mark -
+-(void)selectAll {
+    
+    if (self.currentFileTable.editState) {
+        
+        for(int section = 0; section < self.currentFileTable.groups.count; ++section) {
+            ICatchFileGroup *group = self.currentFileTable.groups[section];
+            NSInteger rows = 0;
+            if (group.isVisible) {
+                rows = group.fileInfos.count;
+            }
+            for (int i = 0; i<rows; ++i) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:section];
+                
+                ICatchFileGroup *group = self.currentFileTable.groups[indexPath.section];
+                ICatchFileInfo *fileInfo = group.fileInfos[indexPath.row];
+                
+                fileInfo.selected = !fileInfo.isSelected;
+                
+                //            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self selectFileHandleWithFileInfo:fileInfo];
+                
+                fileInfo.selected ? group.selectedCount++ : group.selectedCount--;
+                //            NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:indexPath.section];
+                //            [self.tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+        [self.tableView reloadData];
+    }
+}
+
 @end

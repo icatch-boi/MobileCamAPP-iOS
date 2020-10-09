@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aCE-x3-FBW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aCE-x3-FBW">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,8 +22,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="cFO-BZ-f9P"/>
                                 </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="Qdi-Kr-TwG"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="jtu-Ld-ncM"/>
                             </scrollView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vVo-VZ-CGe">
                                 <rect key="frame" x="0.0" y="88" width="320" height="480"/>
@@ -58,6 +56,12 @@
                                     <barButtonItem systemItem="trash" id="BeS-VL-a5y">
                                         <connections>
                                             <action selector="deleteClick:" destination="BYZ-38-t0r" id="cbU-FA-kGU"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Foa-h8-hdg"/>
+                                    <barButtonItem title="Select All" id="wWe-vG-Mkx">
+                                        <connections>
+                                            <action selector="selectAll:" destination="BYZ-38-t0r" id="tJT-fX-NNW"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="4j4-Qq-xQz"/>
@@ -112,6 +116,7 @@
                         <outlet property="filterButtonItem" destination="MNO-hh-684" id="aMq-o1-Jh6"/>
                         <outlet property="flowLayout" destination="iea-wc-kLG" id="LDD-7z-1d0"/>
                         <outlet property="scrollView" destination="Zsu-Bh-YFy" id="tre-MG-FgR"/>
+                        <outlet property="selectAllButtonItem" destination="wWe-vG-Mkx" id="U8c-NF-TW5"/>
                         <outlet property="toolbar" destination="bBa-tq-rKd" id="9jJ-Rp-Zjc"/>
                     </connections>
                 </viewController>

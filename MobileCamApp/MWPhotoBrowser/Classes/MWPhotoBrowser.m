@@ -440,7 +440,7 @@ static double __timestampA = 0;
         [_doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
         [_doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
         [_doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
-        self.navigationItem.rightBarButtonItem = _deleteButton;
+//        self.navigationItem.rightBarButtonItem = _deleteButton;
         self.navigationItem.leftBarButtonItem = _doneButton;
     } else {
         // We're not first so show back button
@@ -704,6 +704,9 @@ static double __timestampA = 0;
             [EAGLContext setCurrentContext:nil];
         }
     //}
+    
+    [self releaseAllUnderlyingPhotos:NO];
+    [_recycledPages removeAllObjects];
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
@@ -1378,12 +1381,14 @@ static double __timestampA = 0;
             }
             self.title = [NSString stringWithFormat:@"%lu %@", (unsigned long)numberOfPhotos, photosText];
         }
-    } else if (numberOfPhotos > 1) {
+        self.navigationItem.rightBarButtonItem = nil;
+    } else if (numberOfPhotos > 0) {
         if ([_delegate respondsToSelector:@selector(photoBrowser:titleForPhotoAtIndex:)]) {
             self.title = [_delegate photoBrowser:self titleForPhotoAtIndex:_currentPageIndex];
         } else {
             self.title = [NSString stringWithFormat:@"%lu %@ %lu", (unsigned long)(_currentPageIndex+1), NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), (unsigned long)numberOfPhotos];
         }
+        self.navigationItem.rightBarButtonItem = _deleteButton;
 	} else {
 		self.title = nil;
 	}

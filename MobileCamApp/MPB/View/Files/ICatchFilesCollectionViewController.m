@@ -140,7 +140,13 @@ static NSString * const kHeaderReuseIdentifier = @"FilesHeaderView";
         reusableView.delegate = self;
     }
     
-    return reusableView;
+//    return reusableView;
+    if (reusableView) {
+        return reusableView;
+    } else {
+        AppLog(@"Some exception message for unexpected 'UICollectionReusableView'");
+        abort();
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -274,6 +280,29 @@ static NSString * const kHeaderReuseIdentifier = @"FilesHeaderView";
     }
     
     return _mpbSemaphore;
+}
+
+#pragma mark -
+-(void)selectAll {
+    if (self.currentFileTable.editState) {
+        
+        for (int i = 0; i<_currentFileTable.totalFileCount; ++i) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            
+            ICatchFileGroup *group = self.currentFileTable.groups[indexPath.section];
+            ICatchFileInfo *fileInfo = group.fileInfos[indexPath.row];
+            
+            fileInfo.selected = !fileInfo.isSelected;
+            
+            //        [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+            [self selectFileHandleWithFileInfo:fileInfo];
+            
+            fileInfo.selected ? group.selectedCount++ : group.selectedCount--;
+            //        NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:indexPath.section];
+            //        [self.collectionView reloadSections:idxSet];
+        }
+        [self.collectionView reloadData];
+    }
 }
 
 @end

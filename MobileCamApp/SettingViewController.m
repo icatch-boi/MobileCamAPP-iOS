@@ -25,8 +25,9 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     SettingSectionTypeTimelapse = 1,
     SettingSectionTypeAlertAction = 2,
     SettingSectionTypeChangeSSID = 3,
-    SettingSectionTypeAbout = 4,
-    SettingSectionTypeAutoDownload = 5,
+    SettingSectionTypeAutoDownload = 4,
+    SettingSectionTypeNewFeature = 5,
+    SettingSectionTypeAbout = 6,
 };
 
 #define kSpaceViewTag 5566
@@ -54,9 +55,8 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 @property(nonatomic) NSInteger curSettingDetailItem;
 @property(nonatomic) BOOL facebooklogined;
 @property(nonatomic) NSString * facebookName;
-
+@property(nonatomic) NSMutableArray  *mainMenuNewFeatureTable;
 @property(nonatomic) UITextField *rtmpUrlFiled;
-
 @property(nonatomic) MBProgressHUD *progressHUD;
 @end
 
@@ -80,8 +80,10 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 //    [_ctrl.propCtrl updateAllProperty:_camera];
+#if 0
     self.facebookName = [self fetchUserInfo];
-
+#endif
+    
     self.title = NSLocalizedString(@"SETTING", @"");
     
     // The whole
@@ -93,12 +95,13 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     self.mainMenuAutoDownloadTable = [[NSMutableArray alloc] init];
     self.mainMenuAboutTable = [[NSMutableArray alloc] init];
     self.subMenuTable = [[NSMutableArray alloc] init];
-    
+    self.mainMenuNewFeatureTable = [[NSMutableArray alloc] initWithCapacity:4];
     
     NSDictionary *formatSDTable = @{@(SettingTableTextLabel): NSLocalizedString(@"SETTING_FORMAT", @"")};
 //    NSDictionary *udpateFWTable = @{@(SettingTableTextLabel): NSLocalizedString(@"UpdateFW", @"")};
     NSDictionary *clearAppTempDirectoryTable = @{@(SettingTableTextLabel): NSLocalizedString(@"ClearAppTemp", @"")};
     
+#if 0
     NSString * facebookButtonTitle;
     if (self.facebooklogined) {
         facebookButtonTitle = [NSString stringWithFormat:@"%@ %@",self.facebookName,NSLocalizedString(@"FacebookLogout", @"")];
@@ -106,7 +109,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
         facebookButtonTitle = [NSString stringWithFormat:@"%@",NSLocalizedString(@"FacebookLogin", @"")];
     }
     NSDictionary *facebookLogin = @{@(SettingTableTextLabel): facebookButtonTitle };
-    
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     NSString *liveBroadcast = [defaults stringForKey:@"PreferenceSpecifier:LiveBroadcast"];
@@ -117,10 +120,12 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     
     if (isLive && [liveBroadcast isEqualToString:@"立即直播"]) {
         NSDictionary *rtmpUrlTable = @{@(SettingTableTextLabel):NSLocalizedString(@"LIVEURL", @"")};
-        [_mainMenuShowTable addObjectsFromArray:@[clearAppTempDirectoryTable, formatSDTable, facebookLogin, rtmpUrlTable]];
+        [_mainMenuShowTable addObjectsFromArray:@[clearAppTempDirectoryTable, formatSDTable, /*facebookLogin,*/ rtmpUrlTable]];
     } else {
-        [_mainMenuShowTable addObjectsFromArray:@[clearAppTempDirectoryTable, formatSDTable, facebookLogin, /*udpateFWTable, */]];
+        [_mainMenuShowTable addObjectsFromArray:@[clearAppTempDirectoryTable, formatSDTable, /*facebookLogin,*/ /*udpateFWTable, */]];
     }
+#endif
+    [_mainMenuShowTable addObjectsFromArray:@[clearAppTempDirectoryTable, formatSDTable]];
     
 //    [_mainMenuShowTable addObjectsFromArray:@[clearAppTempDirectoryTable, formatSDTable, /*udpateFWTable, */]];
 //    NSDictionary *audioToggleTable = @{@(SettingTableTextLabel):NSLocalizedString(@"AUDIO", @"")};
@@ -136,10 +141,12 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
                          atIndex:SettingSectionTypeAlertAction];
     [_mainMenuTable insertObject:_mainMenuChangeSSIDSlideTable
                          atIndex:SettingSectionTypeChangeSSID];
-    [_mainMenuTable insertObject:_mainMenuAboutTable
-                         atIndex:SettingSectionTypeAbout];
     [_mainMenuTable insertObject:_mainMenuAutoDownloadTable
                          atIndex:SettingSectionTypeAutoDownload];
+    [_mainMenuTable insertObject:_mainMenuNewFeatureTable
+                         atIndex:SettingSectionTypeNewFeature];
+    [_mainMenuTable insertObject:_mainMenuAboutTable
+                         atIndex:SettingSectionTypeAbout];
     self.formatAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SETTING_FORMAT_CONFIRM", @"")
                                                       message:NSLocalizedString(@"SETTING_FORMAT_DESC", @"")
                                                      delegate:self
@@ -178,6 +185,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
         [self fillMainMenuAutoDownloadTable];
         [self fillMainMenuTimelapseSlideTable];
         [self fillMainMenuAboutTable];
+        [self fillMainMenuNewFeatureTable];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -325,14 +333,42 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 }
 
 - (void)fillMainMenuAutoDownloadTable {
+    NSDictionary *table = nil;
     [_mainMenuAutoDownloadTable removeAllObjects];
 //    
 //    NSDictionary *audioToggleTable = @{@(SettingTableTextLabel):NSLocalizedString(@"AUDIO", @"")};
 //    [_mainMenuAutoDownloadTable addObjectsFromArray:@[audioToggleTable]];
     
     if ([[SDK instance] isSupportAutoDownload]) {
-        NSDictionary *table = @{@(SettingTableTextLabel): NSLocalizedString(@"AutoDownload", @"")};
+        table = @{@(SettingTableTextLabel): NSLocalizedString(@"AutoDownload", @"")};
         [_mainMenuAutoDownloadTable addObject:table];
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetPowerOnAutoRecord] && _camera.previewMode == WifiCamPreviewModeVideoOff) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetPowerOnAutoRecord", @""),
+                  @(SettingTableDetailType):@(SettingDetailTypePowerOnAutoRecord)};
+        
+        if (table) {
+            [_mainMenuAutoDownloadTable addObject:table];
+        }
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetImageStabilization] && _camera.previewMode == WifiCamPreviewModeVideoOff) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetImageStabilization", @""),
+                  @(SettingTableDetailType):@(SettingDetailTypeImageStabilization)};
+        
+        if (table) {
+            [_mainMenuAutoDownloadTable addObject:table];
+        }
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetWindNoiseReduction] && _camera.previewMode == WifiCamPreviewModeVideoOff) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetWindNoiseReduction", @""),
+                  @(SettingTableDetailType):@(SettingDetailTypeWindNoiseReduction)};
+        
+        if (table) {
+            [_mainMenuAutoDownloadTable addObject:table];
+        }
     }
 }
 
@@ -464,6 +500,133 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     return table;
 }
 
+- (void)fillMainMenuNewFeatureTable
+{
+    NSDictionary *table = nil;
+    [_mainMenuNewFeatureTable removeAllObjects];
+    
+    if ([self capableOf:WifiCamAbilityGetScreenSaverTime]) {
+        table = [self fillScreenSaverTable];
+        if (table) {
+            [_mainMenuNewFeatureTable addObject:table];
+        }
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetAutoPowerOffTime]) {
+        table = [self fillAutoPowerOffTable];
+        if (table) {
+            [_mainMenuNewFeatureTable addObject:table];
+        }
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetExposureCompensation]) {
+        table = [self fillExposureCompensationTable];
+        if (table) {
+            [_mainMenuNewFeatureTable addObject:table];
+        }
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetVideoFileLength] && _camera.previewMode == WifiCamPreviewModeVideoOff) {
+        table = [self fillVideoFileLengthTable];
+        if (table) {
+            [_mainMenuNewFeatureTable addObject:table];
+        }
+    }
+    
+    if ([self capableOf:WifiCamAbilityGetFastMotionMovie] && _camera.previewMode == WifiCamPreviewModeVideoOff) {
+        table = [self fillFastMotionMovieTable];
+        if (table) {
+            [_mainMenuNewFeatureTable addObject:table];
+        }
+    }
+}
+
+- (NSDictionary *)fillScreenSaverTable
+{
+    NSDictionary *table = nil;
+    uint curScreenSaver = [[SDK instance] retrieveCurrentScreenSaver];
+    WifiCamAlertTable *ssArray = [_ctrl.propCtrl prepareDataForScreenSaver:curScreenSaver];
+    
+    if (ssArray.array) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetScreenSaver", @""),
+                  @(SettingTableDetailTextLabel):[_ctrl.propCtrl calcScreenSaverTime:curScreenSaver],
+                  @(SettingTableDetailType):@(SettingDetailTypeScreenSaver),
+                  @(SettingTableDetailData):ssArray.array,
+                  @(SettingTableDetailLastItem):@(ssArray.lastIndex)};
+    }
+    
+    return table;
+}
+
+- (NSDictionary *)fillAutoPowerOffTable
+{
+    NSDictionary *table = nil;
+    uint curAutoPowerOff = [[SDK instance] retrieveCurrentAutoPowerOff];
+    WifiCamAlertTable *apo = [_ctrl.propCtrl prepareDataForAutoPowerOff:curAutoPowerOff];
+    
+    if (apo.array) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetAutoPowerOff", @""),
+                  @(SettingTableDetailTextLabel):[_ctrl.propCtrl calcAutoPowerOffTime:curAutoPowerOff],
+                  @(SettingTableDetailType):@(SettingDetailTypeAutoPowerOff),
+                  @(SettingTableDetailData):apo.array,
+                  @(SettingTableDetailLastItem):@(apo.lastIndex)};
+    }
+    
+    return table;
+}
+
+- (NSDictionary *)fillExposureCompensationTable
+{
+    NSDictionary *table = nil;
+    uint curExposureCompensation = [[SDK instance] retrieveCurrentExposureCompensation];
+    WifiCamAlertTable *ec = [_ctrl.propCtrl prepareDataForExposureCompensation:curExposureCompensation];
+    
+    if (ec.array) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetExposureCompensation", @""),
+                  @(SettingTableDetailTextLabel):[_ctrl.propCtrl calcExposureCompensationValue:curExposureCompensation],
+                  @(SettingTableDetailType):@(SettingDetailTypeExposureCompensation),
+                  @(SettingTableDetailData):ec.array,
+                  @(SettingTableDetailLastItem):@(ec.lastIndex)};
+    }
+    
+    return table;
+}
+
+- (NSDictionary *)fillVideoFileLengthTable
+{
+    NSDictionary *table = nil;
+    uint curVideoFileLength = [[SDK instance] retrieveCurrentVideoFileLength];
+    WifiCamAlertTable *vfl = [_ctrl.propCtrl prepareDataForVideoFileLength:curVideoFileLength];
+    
+    if (vfl.array) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetVideoFileLength", @""),
+                  @(SettingTableDetailTextLabel):[_ctrl.propCtrl calcVideoFileLength:curVideoFileLength],
+                  @(SettingTableDetailType):@(SettingDetailTypeVideoFileLength),
+                  @(SettingTableDetailData):vfl.array,
+                  @(SettingTableDetailLastItem):@(vfl.lastIndex)};
+    }
+    
+    return table;
+}
+
+- (NSDictionary *)fillFastMotionMovieTable
+{
+    NSDictionary *table = nil;
+    uint curFastMotionMovie = [[SDK instance] retrieveCurrentFastMotionMovie];
+    WifiCamAlertTable *fmm = [_ctrl.propCtrl prepareDataForFastMotionMovie:curFastMotionMovie];
+    
+    if (fmm.array) {
+        table = @{@(SettingTableTextLabel):NSLocalizedString(@"SetFastMotionMovie", @""),
+                  @(SettingTableDetailTextLabel):[_ctrl.propCtrl calcFastMotionMovieRate:curFastMotionMovie],
+                  @(SettingTableDetailType):@(SettingDetailTypeFastMotionMovie),
+                  @(SettingTableDetailData):fmm.array,
+                  @(SettingTableDetailLastItem):@(fmm.lastIndex)};
+    }
+    
+    return table;
+}
+
+
 - (NSDictionary *)fillImageSizeTable
 {
     WifiCamAlertTable *isArray = [_ctrl.propCtrl prepareDataForImageSize:_camera.curImageSize];
@@ -520,7 +683,8 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 - (NSDictionary *)fillWhiteBalanceTable
 {
     WifiCamAlertTable *awbArray = [_ctrl.propCtrl prepareDataForWhiteBalance:_camera.curWhiteBalance];
-    NSDictionary *whiteBalanceTable = [[WifiCamStaticData instance] whiteBalanceDict2]; //[[WifiCamStaticData instance] whiteBalanceDict];
+    //NSDictionary *whiteBalanceTable = [[WifiCamStaticData instance] whiteBalanceDict2];
+    NSDictionary *whiteBalanceTable = [[WifiCamStaticData instance] whiteBalanceDict];
     NSString *currentAWB = [whiteBalanceTable objectForKey:@(_camera.curWhiteBalance)];
     NSString *textLabel = currentAWB ? currentAWB : @"unknown";
     NSDictionary *table = @{@(SettingTableTextLabel): NSLocalizedString(@"SETTING_AWB", @""),
@@ -739,12 +903,33 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier4 forIndexPath:indexPath];
         
         UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        if (indexPath.row == 0) {
-            [switchView addTarget:self action:@selector(updateAudioSwitch:) forControlEvents:UIControlEventValueChanged];
-            switchView.on = _camera.enableAudio;
-        } else if (indexPath.row == 1) {
-            [switchView addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
-            switchView.on = _camera.enableAutoDownload;
+//        if (indexPath.row == 0) {
+//            [switchView addTarget:self action:@selector(updateAudioSwitch:) forControlEvents:UIControlEventValueChanged];
+//            switchView.on = _camera.enableAudio;
+//        } else if (indexPath.row == 1) {
+//            [switchView addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
+//            switchView.on = _camera.enableAutoDownload;
+//        }
+        switch ([(_mainMenuAutoDownloadTable[indexPath.row])[@(SettingTableDetailType)] intValue]) {
+            case SettingDetailTypePowerOnAutoRecord:
+                [switchView addTarget:self action:@selector(updatePowerOnAutoRecondSwitch:) forControlEvents:UIControlEventValueChanged];
+                switchView.on = [[SDK instance] retrieveCurrentPowerOnAutoRecord];
+                break;
+                
+            case SettingDetailTypeImageStabilization:
+                [switchView addTarget:self action:@selector(updateImageStabilizationSwitch:) forControlEvents:UIControlEventValueChanged];
+                switchView.on = [[SDK instance] retrieveCurrentImageStabilization];
+                break;
+                
+            case SettingDetailTypeWindNoiseReduction:
+                [switchView addTarget:self action:@selector(updateWindNoiseReductionSwitch:) forControlEvents:UIControlEventValueChanged];
+                switchView.on = [[SDK instance] retrieveCurrentWindNoiseReduction];
+                break;
+                
+            default:
+                [switchView addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
+                switchView.on = _camera.enableAutoDownload;
+                break;
         }
         cell.accessoryView = switchView;
         //cell.backgroundColor = [UIColor redColor];
@@ -760,6 +945,8 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     else if (indexPath.section == SettingSectionTypeTimelapse) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     } else if (indexPath.section == SettingSectionTypeAbout) {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    } else if (indexPath.section == SettingSectionTypeNewFeature) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     }
     
@@ -785,6 +972,39 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     lab.tag = kSpaceViewTag;
 
     return lab;
+}
+
+- (IBAction)updatePowerOnAutoRecondSwitch:(id)sender {
+    UISwitch *switchView = (UISwitch *)sender;
+    
+    if ([switchView isOn])
+        AppLog(@"PowerOnAutoRecord On");
+    else
+        AppLog(@"PowerOnAutoRecord Off");
+    
+    [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_PowerOnAutoRecord value:switchView.isOn];
+}
+
+- (IBAction)updateImageStabilizationSwitch:(id)sender {
+    UISwitch *switchView = (UISwitch *)sender;
+    
+    if ([switchView isOn])
+        AppLog(@"ImageStabilization On");
+    else
+        AppLog(@"ImageStabilization Off");
+    
+    [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_ImageStabilization value:switchView.isOn];
+}
+
+- (IBAction)updateWindNoiseReductionSwitch:(id)sender {
+    UISwitch *switchView = (UISwitch *)sender;
+    
+    if ([switchView isOn])
+        AppLog(@"WindNoiseReduction On");
+    else
+        AppLog(@"WindNoiseReduction Off");
+    
+    [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_WindNoiseReduction value:switchView.isOn];
 }
 
 - (IBAction)updateAudioSwitch:(id)sender {
@@ -891,13 +1111,13 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
                 [_formatAlertView setTag:0];
                 [_formatAlertView show];
             }
-        }  else if( indexPath.row == 2 ) {
+        }  /*else if( indexPath.row == 2 ) {
             if( self.facebooklogined ) {
                 [self facebooklogout];
             } else {
                 [self facebooklogin];
             }
-        } else {
+        }*/ else {
             UIAlertView *inputUrlAlert = [[UIAlertView alloc] initWithTitle:@"Server URL"
                                                          message           :@"please enter server URL:"
                                                          delegate          :self
@@ -1116,6 +1336,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     });
 }
 
+#if 0
 #pragma mark - facebook
 - (void)facebooklogout
 {
@@ -1227,7 +1448,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     }
     return name;
 }
-
+#endif
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     /*
@@ -1244,7 +1465,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [self fetchUserInfo];
+//    [self fetchUserInfo];
 }
 
 @end

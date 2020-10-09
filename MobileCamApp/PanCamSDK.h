@@ -73,6 +73,7 @@ enum RenderType {
 - (BOOL)openAudio:(BOOL)isOpen;
 - (WifiCamAVData *)getVideoData;
 - (WifiCamAVData *)getAudioData;
+- (UIImage *)getPreviewThumbnail;
 
 #pragma mark - CONTROL
 - (void)addObserver:(ICatchGLEventID)eventTypeId listener:(shared_ptr<ICatchIPancamListener>)listener isCustomize:(BOOL)isCustomize;

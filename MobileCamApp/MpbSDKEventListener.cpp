@@ -45,3 +45,15 @@ void MpbSDKEventListener::showServerStreamError(shared_ptr<ICatchGLEvent> icatch
   AppLog(@"I received an event: *Server Stream Error: %f,%f,%f", icatchEvt->getDoubleValue1(), icatchEvt->getDoubleValue2(), icatchEvt->getDoubleValue3());
   [controller showServerStreamError];
 }
+
+
+void MpbSDKEventListener::notifyInsufficientPerformanceInfo(shared_ptr<ICatchGLEvent> icatchEvt) {
+    AppLog(@"I received an event: *Insufficient Performance at playback: %lld, %lld,%lld, %f, %f",
+         icatchEvt->getLongValue1(), icatchEvt->getLongValue2(), icatchEvt->getLongValue3(),
+         icatchEvt->getDoubleValue1(), icatchEvt->getDoubleValue2());
+  [controller notifyInsufficientPerformanceInfo:icatchEvt->getLongValue1()
+                                          width:icatchEvt->getLongValue2()
+                                         height:icatchEvt->getLongValue3()
+                                  frameInterval:icatchEvt->getDoubleValue1()
+                                     decodeTime:icatchEvt->getDoubleValue2()];
+}

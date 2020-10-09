@@ -164,7 +164,111 @@
     return retVal;
 }
 
+- (BOOL)changeScreenSaver:(uint)curScreenSaver
+{
+    __block BOOL retVal = NO;
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        retVal = [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_ScreenSaver value:curScreenSaver];
+    });
+    
+    return retVal;
+}
 
+- (uint)parseScreenSaverInArray:(NSInteger)index
+{
+    __block vector<uint> vSSs = vector<uint>();
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        vSSs = [[SDK instance] retrieveSupportedScreenSaver];
+    });
+    
+    return vSSs.at(index);
+}
+
+- (BOOL)changeAutoPowerOff:(uint)curAutoPowerOff
+{
+    __block BOOL retVal = NO;
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        retVal = [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_AutoPowerOff value:curAutoPowerOff];
+    });
+    
+    return retVal;
+}
+-(int)setPIV {
+    __block int retVal = -1;
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        retVal = [[SDK instance] setCustomizeIntProperty:0xD72A value:1];
+    });
+    return retVal;
+}
+- (uint)parseAutoPowerOffInArray:(NSInteger)index
+{
+    __block vector<uint> vAPOs = vector<uint>();
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        vAPOs = [[SDK instance] retrieveSupportedAutoPowerOff];
+    });
+    
+    return vAPOs.at(index);
+}
+
+- (BOOL)changeExposureCompensation:(uint)curExposureCompensation
+{
+    __block BOOL retVal = NO;
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        retVal = [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_EXposureCompensation value:curExposureCompensation];
+    });
+    
+    return retVal;
+}
+
+- (uint)parseExposureCompensationInArray:(NSInteger)index
+{
+    __block vector<uint> vECs = vector<uint>();
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        vECs = [[SDK instance] retrieveSupportedExposureCompensation];
+    });
+    
+    return vECs.at(index);
+}
+
+- (BOOL)changeVideoFileLength:(uint)curVideoFileLength
+{
+    __block BOOL retVal = NO;
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        retVal = [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_VideoFileLength value:curVideoFileLength];
+    });
+    
+    return retVal;
+}
+
+- (uint)parseVideoFileLengthInArray:(NSInteger)index
+{
+    __block vector<uint> vVFLs = vector<uint>();
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        vVFLs = [[SDK instance] retrieveSupportedVideoFileLength];
+    });
+    
+    return  vVFLs.at(index);
+}
+
+- (BOOL)changeFastMotionMovie:(uint)curFastMotionMovie
+{
+    __block BOOL retVal = NO;
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        retVal = [[SDK instance] setCustomizeIntProperty:CustomizePropertyID_FastMotionMovie value:curFastMotionMovie];
+    });
+    
+    return retVal;
+}
+
+- (uint)parseFastMotionMovieInArray:(NSInteger)index
+{
+    __block vector<uint> vFMMs = vector<uint>();
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        vFMMs = [[SDK instance] retrieveSupportedFastMotionMovie];
+    });
+    
+    return vFMMs.at(index);
+}
 
 - (unsigned int)retrieveDelayedCaptureTime {
     __block unsigned int retVal = -1;
@@ -629,7 +733,8 @@
 
         TAA.array = [[NSMutableArray alloc] initWithCapacity:vWBs.size()];
         int i = 0;
-        NSDictionary *dict = [[WifiCamStaticData instance] whiteBalanceDict2];
+        //NSDictionary *dict = [[WifiCamStaticData instance] whiteBalanceDict2];
+        NSDictionary *dict = [[WifiCamStaticData instance] whiteBalanceDict];
             
         for (vector <unsigned int>::iterator it = vWBs.begin();
              it != vWBs.end();
@@ -862,6 +967,247 @@
         }
     });
     return TAA;
+}
+
+- (WifiCamAlertTable *)prepareDataForScreenSaver:(uint)curScreenSaver
+{
+    WifiCamAlertTable *TAA = [[WifiCamAlertTable alloc] init];
+    
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        BOOL InvalidSelectedIndex = NO;
+        
+        vector<uint> vDSSs = [[SDK instance] retrieveSupportedScreenSaver];
+        
+        TAA.array = [[NSMutableArray alloc] initWithCapacity:vDSSs.size()];
+        int i = 0;
+        NSString *s = nil;
+        
+        AppLogInfo(AppLogTagAPP, @"curScreenSaver: %d", curScreenSaver);
+        for (vector<uint>::iterator it = vDSSs.begin(); it != vDSSs.end(); ++it, ++i) {
+            s = [self calcScreenSaverTime:*it];
+            
+            if (s) {
+                [TAA.array addObject:s];
+            }
+            
+            if (*it == curScreenSaver && !InvalidSelectedIndex) {
+                TAA.lastIndex = i;
+                InvalidSelectedIndex = YES;
+            }
+        }
+        
+        if (!InvalidSelectedIndex) {
+            AppLogError(AppLogTagAPP, @"Undefined Number");
+            TAA.lastIndex = UNDEFINED_NUM;
+        }
+    });
+    
+    return TAA;
+}
+
+- (NSString *)calcScreenSaverTime:(uint)curScreenSaver
+{
+    if (curScreenSaver == 0) {
+        return @"Off";
+    } else {
+        return [NSString stringWithFormat:@"%ds", curScreenSaver];
+    }
+}
+
+- (WifiCamAlertTable *)prepareDataForAutoPowerOff:(uint)curAutoPowerOff
+{
+    WifiCamAlertTable *TAA = [[WifiCamAlertTable alloc] init];
+    
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        BOOL InvalidSelectedIndex = NO;
+        
+        vector<uint> vDAPs = [[SDK instance] retrieveSupportedAutoPowerOff];
+        
+        TAA.array = [[NSMutableArray alloc] initWithCapacity:vDAPs.size()];
+        int i = 0;
+        NSString *s = nil;
+        
+        AppLogInfo(AppLogTagAPP, @"curAutoPowerOff: %d", curAutoPowerOff);
+        for (vector<uint>::iterator it = vDAPs.begin(); it != vDAPs.end(); ++it, ++i) {
+            s = [self calcAutoPowerOffTime:*it];
+            
+            if (s) {
+                [TAA.array addObject:s];
+            }
+            
+            if (*it == curAutoPowerOff && !InvalidSelectedIndex) {
+                TAA.lastIndex = i;
+                InvalidSelectedIndex = YES;
+            }
+        }
+        
+        if (!InvalidSelectedIndex) {
+            AppLogError(AppLogTagAPP, @"Undefined Number");
+            TAA.lastIndex = UNDEFINED_NUM;
+        }
+    });
+    
+    return TAA;
+}
+
+- (NSString *)calcAutoPowerOffTime:(uint)curAutoPowerOff
+{
+    if (0 == curAutoPowerOff) {
+        return @"Off";
+    } else {
+        return [NSString stringWithFormat:@"%ds", curAutoPowerOff];
+    }
+}
+
+- (WifiCamAlertTable *)prepareDataForExposureCompensation:(uint)curExposureCompensation
+{
+    WifiCamAlertTable *TAA = [[WifiCamAlertTable alloc] init];
+    
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        BOOL InvalidSelectedIndex = NO;
+        
+        vector<uint> vDECs = [[SDK instance] retrieveSupportedExposureCompensation];
+        
+        TAA.array = [[NSMutableArray alloc] initWithCapacity:vDECs.size()];
+        int i = 0;
+        NSString *s = nil;
+        
+        AppLogInfo(AppLogTagAPP, @"curExposureCompensation: %d", curExposureCompensation);
+        for (vector<uint>::iterator it = vDECs.begin(); it != vDECs.end(); ++it, ++i) {
+            s = [self calcExposureCompensationValue:*it];
+            
+            if (s) {
+                [TAA.array addObject:s];
+            }
+            
+            if (*it == curExposureCompensation && !InvalidSelectedIndex) {
+                TAA.lastIndex = i;
+                InvalidSelectedIndex = YES;
+            }
+        }
+        
+        if (!InvalidSelectedIndex) {
+            AppLogError(AppLogTagAPP, @"Undefined Number");
+            TAA.lastIndex = UNDEFINED_NUM;
+        }
+    });
+    
+    return TAA;
+}
+
+- (NSString *)calcExposureCompensationValue:(uint)curExposureCompensation
+{
+    int Threshold = 0x80000000;
+    int rateThreshold = 0x40000000;
+    float rate = 1.0;
+    NSString *prefix = nil;
+    
+    // 最高位为1表示负值，为0表示正值
+    if (curExposureCompensation & Threshold) {
+        prefix = @"EV -";
+    } else {
+        prefix = @"EV ";
+    }
+    
+    // 第二位表示小数点向左移动的位数 1：移动一位 0：不移动
+    if (rateThreshold & curExposureCompensation) {
+        rate = 10.0;
+    }
+    
+    int temp = ~(Threshold | rateThreshold);
+    int value = curExposureCompensation & temp;
+    
+    return [prefix stringByAppendingFormat:@"%.1f", value / rate];
+}
+
+- (WifiCamAlertTable *)prepareDataForVideoFileLength:(uint)curVideoFileLength
+{
+    WifiCamAlertTable *TAA = [[WifiCamAlertTable alloc] init];
+    
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        BOOL InvalidSelectedIndex = NO;
+        
+        vector<uint> vDVFLs = [[SDK instance] retrieveSupportedVideoFileLength];
+        
+        TAA.array = [[NSMutableArray alloc] initWithCapacity:vDVFLs.size()];
+        int i = 0;
+        NSString *s = nil;
+        
+        AppLogInfo(AppLogTagAPP, @"curVideoFileLength: %d", curVideoFileLength);
+        for (vector<uint>::iterator it = vDVFLs.begin(); it != vDVFLs.end(); ++it, ++i) {
+            s = [self calcVideoFileLength:*it];
+            
+            if (s) {
+                [TAA.array addObject:s];
+            }
+            
+            if (*it == curVideoFileLength && !InvalidSelectedIndex) {
+                TAA.lastIndex = i;
+                InvalidSelectedIndex = YES;
+            }
+        }
+        
+        if (!InvalidSelectedIndex) {
+            AppLogError(AppLogTagAPP, @"Undefined Number");
+            TAA.lastIndex = UNDEFINED_NUM;
+        }
+    });
+    
+    return TAA;
+}
+
+- (NSString *)calcVideoFileLength:(uint)curVideoFileLength
+{
+    if (curVideoFileLength == 0) {
+        return NSLocalizedString(@"unlimited", @"");
+    } else {
+        return [NSString stringWithFormat:@"%ds", curVideoFileLength];
+    }
+}
+
+- (WifiCamAlertTable *)prepareDataForFastMotionMovie:(uint)curFastMotionMovie
+{
+    WifiCamAlertTable *TAA = [[WifiCamAlertTable alloc] init];
+    
+    dispatch_sync([[SDK instance] sdkQueue], ^{
+        BOOL InvalidSelectedIndex = NO;
+        
+        vector<uint> vDFMMs = [[SDK instance] retrieveSupportedFastMotionMovie];
+        
+        TAA.array = [[NSMutableArray alloc] initWithCapacity:vDFMMs.size()];
+        int i = 0;
+        NSString *s = nil;
+        
+        AppLogInfo(AppLogTagAPP, @"curFastMotionMovie: %d", curFastMotionMovie);
+        for (vector<uint>::iterator it = vDFMMs.begin(); it != vDFMMs.end(); ++it, ++i) {
+            s = [self calcFastMotionMovieRate:*it];
+            
+            if (s) {
+                [TAA.array addObject:s];
+            }
+            
+            if (*it == curFastMotionMovie && !InvalidSelectedIndex) {
+                TAA.lastIndex = i;
+                InvalidSelectedIndex = YES;
+            }
+        }
+        
+        if (!InvalidSelectedIndex) {
+            AppLogError(AppLogTagAPP, @"Undefined Number");
+            TAA.lastIndex = UNDEFINED_NUM;
+        }
+    });
+    
+    return TAA;
+}
+
+- (NSString *)calcFastMotionMovieRate:(uint)curFastMotionMovie
+{
+    if (curFastMotionMovie == 0) {
+        return @"Off";
+    } else {
+        return [NSString stringWithFormat:@"%dx", curFastMotionMovie];
+    }
 }
 
 - (shared_ptr<ICatchVideoFormat>)retrieveVideoFormat

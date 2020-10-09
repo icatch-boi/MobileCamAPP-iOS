@@ -24,7 +24,8 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
 @implementation ICatchFilesListViewModel
 
 - (void)requestFileListOfType:(NSUInteger)fileType pullup:(BOOL)pullup takenBy:(NSUInteger)takenBy {
-    if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
+    if (/*[self capableOf:WifiCamAbilityDefaultToPlayback]*/
+        [[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE] ) {
         [[SDK instance] setFileListAttribute:fileType order:0x01 takenBy:takenBy];
     }
     
@@ -37,7 +38,7 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
     int startIndex = 1;
     int endIndex = kOnceRequestMaxNumber;
 
-    if (![self capableOf:WifiCamAbilityDefaultToPlayback] || ![self capableOf:WifiCamAbilityGetFileByPagination] || ![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+    if (/*![self capableOf:WifiCamAbilityDefaultToPlayback] || */ ![self capableOf:WifiCamAbilityGetFileByPagination] || ![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
         pullup = NO;
     }
     
@@ -52,11 +53,12 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
                     return;
                 }
 #endif
-                if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
+                //if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
                     self.videoTable.totalFileCount = [[SDK instance] requestFileCount];
-                }
+                //}
                 
-                endIndex = MIN((int)self.videoTable.totalFileCount, endIndex);
+//                endIndex = MIN((int)self.videoTable.totalFileCount, endIndex);
+                endIndex = (int)self.videoTable.totalFileCount;
             } else {
                 size_t currentCount = self.videoTable.originalFileList.count;
                 startIndex += currentCount;
@@ -78,10 +80,11 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
                     return;
                 }
 #endif
-                if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
+                //if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
                     self.emergencyVideoTable.totalFileCount = [[SDK instance] requestFileCount];
-                }
-                endIndex = MIN((int)self.emergencyVideoTable.totalFileCount, endIndex);
+                //}
+//                endIndex = MIN((int)self.emergencyVideoTable.totalFileCount, endIndex);
+                endIndex = (int)self.emergencyVideoTable.totalFileCount;
             } else {
                 size_t currentCount = self.emergencyVideoTable.originalFileList.count;
                 startIndex += currentCount;
@@ -105,10 +108,11 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
                     return;
                 }
 #endif
-                if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
+                //if ([self capableOf:WifiCamAbilityDefaultToPlayback]) {
                     self.imageTable.totalFileCount = [[SDK instance] requestFileCount];
-                }
-                endIndex = MIN((int)self.imageTable.totalFileCount, endIndex);
+                //}
+//                endIndex = MIN((int)self.imageTable.totalFileCount, endIndex);
+                endIndex = (int)self.imageTable.totalFileCount;
             } else {
                 size_t currentCount = self.imageTable.originalFileList.count;
                 startIndex += currentCount;
@@ -169,9 +173,36 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
     AppLog(@"Start getFileList from startIndex: %d to endIndex: %d", startIndex, endIndex);
 //    vector<shared_ptr<ICatchFile>> fileList = [[SDK instance] requestFileListOfType:wcFileType startIndex:startIndex endIndex:endIndex];
     vector<shared_ptr<ICatchFile>> fileList;
-    if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [self capableOf:WifiCamAbilityGetFileByPagination] && [[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
-        fileList = [[SDK instance] requestFileListOfType:wcFileType startIndex:startIndex endIndex:endIndex];
+    if (/*[self capableOf:WifiCamAbilityDefaultToPlayback] && */[self capableOf:WifiCamAbilityGetFileByPagination] /*&& [[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]*/) {
+        AppLog(@"==> Get files in segments <==");
+        
+        int once = 400;
+        if(endIndex >= startIndex) {
+            if (endIndex > once) {
+                int num = endIndex/once;
+                for (int i = 0; i<(num+1); ++i) {
+                    int sIdx = i*once + 1;
+                    int eIdx = MIN(once*(i+1), endIndex);
+                    vector<shared_ptr<ICatchFile>> tempList;
+                    tempList = [[SDK instance] requestFileListOfType:wcFileType
+                                                          startIndex:sIdx
+                                                            endIndex:eIdx];
+                    if (tempList.size() > 0) {
+                        fileList.insert(fileList.end(), tempList.begin(), tempList.end());
+                    }
+                }
+            }else {
+                fileList = [[SDK instance] requestFileListOfType:wcFileType
+                                                      startIndex:startIndex
+                                                        endIndex:endIndex];
+            }
+        } else {
+            AppLog(@"Wrong Parameters!");
+            return;
+        }
+
     } else {
+        AppLog(@"==> Use the old way to get files <==");
         fileList = [[SDK instance] requestFileListOfType:wcFileType];
     }
     AppLog(@"End getFileList, file count: %lu", fileList.size());
@@ -181,6 +212,7 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
        // 20160219T000000
        // @"yyyyMMdd'T'HHmmss"
        NSString *dateString = [self dateTransformFromString:[NSString stringWithUTF8String:f->getFileDate().c_str()]];
+//       AppLog("dateString: %@", dateString);
        ICatchFileInfo *fileInfo = [ICatchFileInfo fileInfoWithFile:f];
        
        if ([tempTable.fileList.allKeys containsObject:dateString]) {
@@ -198,9 +230,9 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
        }
    }
     
-    if (![self capableOf:WifiCamAbilityDefaultToPlayback]) {
+    //if (![self capableOf:WifiCamAbilityDefaultToPlayback]) {
         tempTable.totalFileCount = fileList.size();
-    }
+    //}
     
     [tempTable prepareFileGroupData];
 }

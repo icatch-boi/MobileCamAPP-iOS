@@ -13,7 +13,7 @@
 #endif
 
 #import <VideoToolbox/VideoToolbox.h>
-#include "SignInViewController.h"
+//#include "SignInViewController.h"
 #import <GoogleSignIn/GoogleSignIn.h>
 #import "WifiCamEvent.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -55,7 +55,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     TRACE();
     [super viewDidLoad];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-    _Living = NO;
+    //_Living = NO;
     
     //GLKView
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
@@ -141,9 +141,9 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 //            _liveTitle_YouTube.hidden = YES;
 //            _liveResolution.hidden = YES;
 //        }
-        
+#if 0
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        BOOL isLive = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"] || [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"];
+        BOOL isLive = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"]/* || [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"]*/;
         BOOL curModeStatus = (curMode == WifiCamPreviewModeVideoOff || curMode == WifiCamPreviewModeVideoOn);
         
         self.liveResolution.hidden = !(isLive && curModeStatus);
@@ -151,10 +151,11 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
         BOOL isHideFacebookIcon = [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"] && curModeStatus;
         self.liveSwitch_Facebook.hidden = !isHideFacebookIcon;
         self.liveTitle_Facebook.hidden = !isHideFacebookIcon;
-        
+
         BOOL isHideYouTubeIcon = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"] && curModeStatus;
         self.liveSwitch_YouTube.hidden = !isHideYouTubeIcon;
         self.liveTitle_YouTube.hidden = !isHideYouTubeIcon;
+#endif
     });
 }
 
@@ -201,6 +202,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     }
     [self updatePanoramaTyprOnScreen];
     
+#if 0
     GIDGoogleUser *user = [GIDSignIn sharedInstance].currentUser;
     if (user == nil) {
         [self liveFailedUpdateGUI];
@@ -228,6 +230,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
             [self liveErrorHandle:100 andMessage:@"未通过授权"];
         }
     }
+#endif
 }
 
 -(void)reconnectNotification:(NSNotification*)notification
@@ -253,12 +256,14 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     }
 //    [self showLiveGUIIfNeeded:_camera.previewMode];
     
+#if 0
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning", nil)
                                          message           :NSLocalizedString(@"Support iCatch 360Cam & SBC", nil)//NSLocalizedString(@"Only for iCatch 360Cam.", nil)
                                          delegate          :self
                                          cancelButtonTitle :NSLocalizedString(@"OK", nil)
                                          otherButtonTitles :nil, nil];
     [alert show];
+#endif
     
     if ([self capableOf:WifiCamAbilityBatteryLevel]) {
         [self updateBatteryLevelIcon];
@@ -425,7 +430,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 - (void)viewWillDisappear:(BOOL)animated {
     TRACE();
     if (self.currentVideoData.length == 0) {
-        self.savedCamera.thumbnail = (id)_preview.image;
+//        self.savedCamera.thumbnail = (id)_preview.image;
     }
     
     [super viewWillDisappear:animated];
@@ -1307,10 +1312,12 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
         //int ret = [[SDK instance] startMediaStream:mode];
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        BOOL isLive = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"] || [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"];
+#if 0
+        BOOL isLive = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"] /*|| [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"]*/;
+#endif
         BOOL isUseSDKDecode = [defaults boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
         
-        BOOL isEnableLive = isLive && (_camera.previewMode == WifiCamPreviewModeVideoOff || _camera.previewMode == WifiCamPreviewModeVideoOn);
+        BOOL isEnableLive = false; //isLive && (_camera.previewMode == WifiCamPreviewModeVideoOff || _camera.previewMode == WifiCamPreviewModeVideoOn);
 //        int ret = [[SDK instance] startMediaStream:mode enableAudio:self.AudioRun enableLive:isEnableLive];
 //        int ret = [_ctrl.actCtrl startPreview:mode withAudioEnabled:self.AudioRun enableLive:isEnableLive];
         int ret = [_ctrl.actCtrl startPreview:mode withAudioEnabled:YES enableLive:isEnableLive];
@@ -1964,7 +1971,11 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (void)saveLastVideoFrame:(UIImage *)image {
+#if 0
     CGSize size = CGSizeMake(120, 120);
+#else
+    CGSize size = image.size;
+#endif
     UIGraphicsBeginImageContext(size);
     [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
     self.savedCamera.thumbnail = UIGraphicsGetImageFromCurrentImageContext();
@@ -2397,8 +2408,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         case WifiCamPreviewModeVideoOn:
             [self stopMovieRec];
             break;
-        case WifiCamPreviewModeCameraOn:
-            break;
+//        case WifiCamPreviewModeCameraOn:
+//            break;
         case WifiCamPreviewModeTimelapseOff:
             if (_camera.curTimelapseInterval != 0 && _camera.curTimelapseDuration>0) {
                 [self startTimelapseRec];
@@ -2516,7 +2527,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 }
             } else if ([self capableOf:WifiCamAbilityBurstNumber] && _burstCaptureCount > 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.burstCaptureTimer = [NSTimer scheduledTimerWithTimeInterval:0.15
+                    self.burstCaptureTimer = [NSTimer scheduledTimerWithTimeInterval:/*0.15*/0.75
                                                                             target  :self
                                                                             selector:@selector(burstCaptureTimerCallback:)
                                                                             userInfo:nil
@@ -2542,12 +2553,25 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             });
             return;
         }
-        if (_camera.storageSpaceForVideo==0 && [_ctrl.propCtrl connected]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil)
-                                   showTime:1.0];
-            });
-            return;
+        if( [self capableOf:WifiCamAbilityGetVideoFileLength] )
+        {
+            if( [[SDK instance] retrieveCurrentVideoFileLength] == 0){
+                if (_camera.storageSpaceForVideo==0 && [_ctrl.propCtrl connected]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil)
+                                           showTime:1.0];
+                    });
+                    return;
+                }
+            }
+        }else{
+            if (_camera.storageSpaceForVideo==0 && [_ctrl.propCtrl connected]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil)
+                                       showTime:1.0];
+                });
+                return;
+            }
         }
         
         if ([self capableOf:WifiCamAbilityGetMovieRecordedTime]) {
@@ -2570,7 +2594,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 [self updatePreviewSceneByMode:WifiCamPreviewModeVideoOn];
                 [self addMovieRecListener];
                 
-                if (![self capableOf:WifiCamAbilityGetMovieRecordedTime]) {
+                //if (![self capableOf:WifiCamAbilityGetMovieRecordedTime]) {
                     if (![_videoCaptureTimer isValid]) {
                         self.videoCaptureTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                                 target  :self
@@ -2578,7 +2602,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                                                                                 userInfo:nil
                                                                                 repeats :YES];
                     }
-                }
+                //}
                 [self hideProgressHUD:YES];
                 _Recording = YES;
             } else {
@@ -2615,12 +2639,12 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         TRACE();
         dispatch_async(dispatch_get_main_queue(), ^{
             if (ret) {
-                if (!_Living) {
-                    [self updatePreviewSceneByMode:WifiCamPreviewModeVideoOff];
-                } else {
-                    _camera.previewMode = WifiCamPreviewModeVideoOff;
-                }
-//                [self updatePreviewSceneByMode:WifiCamPreviewModeVideoOff];
+//                if (!_Living) {
+//                    [self updatePreviewSceneByMode:WifiCamPreviewModeVideoOff];
+//                } else {
+//                    _camera.previewMode = WifiCamPreviewModeVideoOff;
+//                }
+                [self updatePreviewSceneByMode:WifiCamPreviewModeVideoOff];
                 [self remMovieRecListener];
                 if ([_videoCaptureTimer isValid]) {
                     [_videoCaptureTimer invalidate];
@@ -3310,6 +3334,10 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (IBAction)returnBackToHome:(id)sender {
+    BOOL isUseSDKDecode = [[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
+    if (isUseSDKDecode) {
+        self.savedCamera.thumbnail = [[PanCamSDK instance] getPreviewThumbnail];
+    }
     
     [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_ERROR_CAPTURING_CAPTURE", nil)];
     self.PVRun = NO;
@@ -4160,6 +4188,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     });
 }
     
+#if 0
 #pragma mark - YouTube live
 - (IBAction)liveSwitchClink:(id)sender {
     if (!_liveQueue) {
@@ -4426,7 +4455,9 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         [self liveErrorHandle:LiveErrorCreateLiveBroadCast andMessage:nil];
     }
 }
+#endif
 
+#if 0
 #pragma mark - Facebook live
 - (IBAction)facebookLiveSwithClick:(id)sender {
     _facebookLiveQueue = dispatch_queue_create("WifiCam.GCD.Queue.FacebookLive", DISPATCH_QUEUE_SERIAL);
@@ -4543,5 +4574,6 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         });
     }
 }
-
+#endif
+    
 @end

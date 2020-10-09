@@ -31,4 +31,9 @@
 - (void)updateVideoPbProgressState:(BOOL)caching;
 - (void)stopVideoPb;
 - (void)showServerStreamError;
+-(void)notifyInsufficientPerformanceInfo:(long long)codec
+                                   width:(long long)width
+                                  height:(long long)height
+                           frameInterval:(double)frameInterval
+                              decodeTime:(double)decodeTime;
 @end

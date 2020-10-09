@@ -37,7 +37,16 @@
 -(BOOL)changeSSID:(NSString *)ssid;
 -(BOOL)changePassword:(NSString *)password;
 
-
+- (BOOL)changeScreenSaver:(uint)curScreenSaver;
+- (uint)parseScreenSaverInArray:(NSInteger)index;
+- (BOOL)changeAutoPowerOff:(uint)curAutoPowerOff;
+- (uint)parseAutoPowerOffInArray:(NSInteger)index;
+- (BOOL)changeExposureCompensation:(uint)curExposureCompensation;
+- (uint)parseExposureCompensationInArray:(NSInteger)index;
+- (BOOL)changeVideoFileLength:(uint)curVideoFileLength;
+- (uint)parseVideoFileLengthInArray:(NSInteger)index;
+- (BOOL)changeFastMotionMovie:(uint)curFastMotionMovie;
+- (uint)parseFastMotionMovieInArray:(NSInteger)index;
    
 // Figure out property value using index value within array
 -(unsigned int)parseDelayCaptureInArray:(NSInteger)index;
@@ -75,6 +84,17 @@
 
 -(WifiCamAlertTable *)prepareDataForTimelapseInterval:(unsigned int)curVideoTimelapseInterval;
 -(WifiCamAlertTable *)prepareDataForTimelapseDuration:(unsigned int)curVideoTimelapseDuration;
+
+- (WifiCamAlertTable *)prepareDataForScreenSaver:(uint)curScreenSaver;
+- (NSString *)calcScreenSaverTime:(uint)curScreenSaver;
+- (WifiCamAlertTable *)prepareDataForAutoPowerOff:(uint)curAutoPowerOff;
+- (NSString *)calcAutoPowerOffTime:(uint)curAutoPowerOff;
+- (WifiCamAlertTable *)prepareDataForExposureCompensation:(uint)curExposureCompensation;
+- (NSString *)calcExposureCompensationValue:(uint)curExposureCompensation;
+- (WifiCamAlertTable *)prepareDataForVideoFileLength:(uint)curVideoFileLength;
+- (NSString *)calcVideoFileLength:(uint)curVideoFileLength;
+- (WifiCamAlertTable *)prepareDataForFastMotionMovie:(uint)curFastMotionMovie;
+- (NSString *)calcFastMotionMovieRate:(uint)curFastMotionMovie;
 
 //
 -(unsigned int)retrieveDelayedCaptureTime;

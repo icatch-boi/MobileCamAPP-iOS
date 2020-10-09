@@ -608,6 +608,85 @@
     return mode;
 }
 
+- (vector<uint>)retrieveSupportedScreenSaver
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_ScreenSaver];
+}
+
+- (uint)retrieveCurrentScreenSaver
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_ScreenSaver];
+}
+
+- (vector<uint>)retrieveSupportedAutoPowerOff
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_AutoPowerOff];
+}
+
+- (uint)retrieveCurrentAutoPowerOff
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_AutoPowerOff];
+}
+
+- (vector<uint>)retrieveSupportedPowerOnAutoRecord
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_PowerOnAutoRecord];
+}
+
+- (BOOL)retrieveCurrentPowerOnAutoRecord
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_PowerOnAutoRecord] ? YES : NO;
+}
+
+- (vector<uint>)retrieveSupportedExposureCompensation
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_EXposureCompensation];
+}
+
+- (uint)retrieveCurrentExposureCompensation
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_EXposureCompensation];
+}
+
+- (vector<uint>)retrieveSupportedImageStabilization
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_ImageStabilization];
+}
+
+- (BOOL)retrieveCurrentImageStabilization
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_ImageStabilization] ? YES : NO;
+}
+
+- (vector<uint>)retrieveSupportedVideoFileLength
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_VideoFileLength];
+}
+
+- (uint)retrieveCurrentVideoFileLength
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_VideoFileLength];
+}
+
+- (vector<uint>)retrieveSupportedFastMotionMovie
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_FastMotionMovie];
+}
+
+- (uint)retrieveCurrentFastMotionMovie
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_FastMotionMovie];
+}
+
+- (vector<uint>)retrieveSupportedWindNoiseReduction
+{
+    return [self getCustomizeSupportedPropertyIntValues:CustomizePropertyID_WindNoiseReduction];
+}
+
+- (BOOL)retrieveCurrentWindNoiseReduction
+{
+    return [self getCustomizePropertyIntValue:CustomizePropertyID_WindNoiseReduction] ? YES : NO;
+}
 #pragma mark - Change properties
 -(int)changeImageSize:(string)size {
     int newSize = ICH_UNKNOWN_ERROR;
@@ -1074,6 +1153,7 @@
      }
     
     int ret = _playback->setFileListAttribute(static_cast<unsigned int>(type), static_cast<unsigned int>(order), static_cast<unsigned int>(takenBy));
+    AppLog(@"Set fileList attribute, ret: %d", ret);
     if (ret != ICH_SUCCEED) {
         AppLog(@"Set fileList attribute failed, ret: %d", ret);
         return NO;
@@ -1093,11 +1173,13 @@
         }
     }
 
+    AppLog(@"Current file count: %d", fileCount);
     return fileCount;
 }
 
 - (vector<shared_ptr<ICatchFile>>)requestFileListOfType:(WCFileType)fileType startIndex:(int)startIndex endIndex:(int)endIndex
 {
+    AppLog(@"Get files using segmentation, startIndex: %d, endIndex: %d", startIndex, endIndex);
     int ret = -1;
     vector<shared_ptr<ICatchFile>> list;
     if (_playback) {
@@ -1767,6 +1849,22 @@
     
     AppLog(@"setProperty id:%d, value:%@, ret : %d",propid,value, ret);
     return ret == ICH_SUCCEED ? YES : NO;
+}
+
+- (vector<uint>)getCustomizeSupportedPropertyIntValues:(CustomizePropertyID)proid {
+    vector<uint> value;
+    int i = 0;
+    
+    if (_prop) {
+        _prop->getSupportedPropertyValues(proid, value);
+        for (vector<uint>::iterator it = value.begin(); it != value.begin(); ++it, ++i) {
+            printf("getSupportedProperty is index: %d - value: %d\n", i, *it);
+        }
+    } else {
+        AppLog(@"SDK doesn't working.");
+    }
+    
+    return value;
 }
 
 // check the customerid is valid or not

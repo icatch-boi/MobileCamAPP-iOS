@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>5188</string>
+			<string>5602</string>
 			<key>Key</key>
 			<string>PreferenceSpecifiers:2</string>
 			<key>Title</key>
@@ -90,58 +90,6 @@
 			<array>
 				<string>Video</string>
 				<string>Audio</string>
-			</array>
-		</dict>
-		<dict>
-			<key>Title</key>
-			<string>Facebook Live</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<false/>
-			<key>Key</key>
-			<string>PreferenceSpecifier:Facebook_Live</string>
-			<key>Title</key>
-			<string>Facebook Live</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-		</dict>
-		<dict>
-			<key>Title</key>
-			<string>YouTube Live</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<false/>
-			<key>Key</key>
-			<string>PreferenceSpecifier:YouTube_Live</string>
-			<key>Title</key>
-			<string>YouTube Live</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-		</dict>
-		<dict>
-			<key>DefaultValue</key>
-			<string>立即直播</string>
-			<key>Key</key>
-			<string>PreferenceSpecifier:LiveBroadcast</string>
-			<key>Title</key>
-			<string>直播</string>
-			<key>Titles</key>
-			<array>
-				<string>立即直播</string>
-				<string>直播活动</string>
-			</array>
-			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
-			<key>Values</key>
-			<array>
-				<string>立即直播</string>
-				<string>直播活动</string>
 			</array>
 		</dict>
 	</array>

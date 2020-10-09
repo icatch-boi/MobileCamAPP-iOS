@@ -181,14 +181,13 @@
         [self imageLoadingComplete];
         
     } else if (_photoURL) {
-        
         // Check what type of url it is
         if ([[[_photoURL scheme] lowercaseString] isEqualToString:@"assets-library"]) {
             
             // Load from assets library
             [self _performLoadUnderlyingImageAndNotifyWithAssetsLibraryURL: _photoURL];
             
-        } else if ([_photoURL isFileReferenceURL]) {
+        } else if (/*[_photoURL isFileReferenceURL]*/[[[_photoURL scheme] lowercaseString] isEqualToString:@"file"]) {
             
             // Load from local file async
             [self _performLoadUnderlyingImageAndNotifyWithLocalFileURL: _photoURL];
@@ -321,13 +320,28 @@
     
     return image;
 }
-
+/*
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    //UIGraphicsBeginImageContext(newSize);
+    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+    // Pass 1.0 to force exact pixel size.
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+*/
 // Load from local file
 - (void)_performLoadUnderlyingImageAndNotifyWithLocalFileURL:(NSURL *)url {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @autoreleasepool {
             @try {
                 self.underlyingImage = [UIImage imageWithContentsOfFile:url.path];
+                
+//                UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+//                self.underlyingImage = [self imageWithImage:image scaledToSize:CGSizeMake(image.size.width/50, image.size.height/50)];
+                
                 if (!_underlyingImage) {
                     MWLog(@"Error loading photo from path: %@", url.path);
                 }

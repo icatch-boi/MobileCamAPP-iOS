@@ -163,6 +163,24 @@ enum WCRetrunType {
 -(uint)retrieveCurrentSlowMotion;
 -(unsigned int)retrieveCurrentCameraMode;
 
+// Customize Property
+- (vector<uint>)retrieveSupportedScreenSaver;
+- (uint)retrieveCurrentScreenSaver;
+- (vector<uint>)retrieveSupportedAutoPowerOff;
+- (uint)retrieveCurrentAutoPowerOff;
+- (vector<uint>)retrieveSupportedPowerOnAutoRecord;
+- (BOOL)retrieveCurrentPowerOnAutoRecord;
+- (vector<uint>)retrieveSupportedExposureCompensation;
+- (uint)retrieveCurrentExposureCompensation;
+- (vector<uint>)retrieveSupportedImageStabilization;
+- (BOOL)retrieveCurrentImageStabilization;
+- (vector<uint>)retrieveSupportedVideoFileLength;
+- (uint)retrieveCurrentVideoFileLength;
+- (vector<uint>)retrieveSupportedFastMotionMovie;
+- (uint)retrieveCurrentFastMotionMovie;
+- (vector<uint>)retrieveSupportedWindNoiseReduction;
+- (BOOL)retrieveCurrentWindNoiseReduction;
+
 // Change properties
 -(int)changeImageSize:(string)size;
 -(int)changeVideoSize:(string)size;

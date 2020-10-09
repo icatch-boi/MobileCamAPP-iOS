@@ -9,21 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 typedef enum SettingDetailType{
-  SettingDetailTypeWhiteBalance = 0,
-  SettingDetailTypePowerFrequency,
-  SettingDetailTypeBurstNumber,
-  SettingDetailTypeAbout,
-  SettingDetailTypeDateStamp,
-  SettingDetailTypeTimelapseType,
-  SettingDetailTypeTimelapseInterval,
-  SetttngDetailTypeTimelapseDuration,
-  SettingDetailTypeUpsideDown,
-  SettingDetailTypeSlowMotion,
-  SettingDetailTypeImageSize,
-  SettingDetailTypeVideoSize,
-  SettingDetailTypeCaptureDelay,
-  SettingDetailTypeLiveSize,
-    //add - 2017.3.17
+    SettingDetailTypeWhiteBalance = 0,
+    SettingDetailTypePowerFrequency,
+    SettingDetailTypeBurstNumber,
+    SettingDetailTypeAbout,
+    SettingDetailTypeDateStamp,
+    SettingDetailTypeTimelapseType,
+    SettingDetailTypeTimelapseInterval,
+    SetttngDetailTypeTimelapseDuration,
+    SettingDetailTypeUpsideDown,
+    SettingDetailTypeSlowMotion,
+    SettingDetailTypeImageSize,
+    SettingDetailTypeVideoSize,
+    SettingDetailTypeCaptureDelay,
+    SettingDetailTypeLiveSize,
+    
     SettingDetailTypeScreenSaver,
     SettingDetailTypeAutoPowerOff,
     SettingDetailTypeExposureCompensation,
@@ -32,7 +32,7 @@ typedef enum SettingDetailType{
     SettingDetailTypePowerOnAutoRecord,
     SettingDetailTypeImageStabilization,
     SettingDetailTypeWindNoiseReduction,
-  
+    
 }SettingDetailType;
 
 @interface SettingDetailViewController : UITableViewController <AppDelegateProtocol>

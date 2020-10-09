@@ -169,4 +169,14 @@
     [self layoutSubviews];
 }
 
+#pragma mark -
+-(void)selectAll{
+    if (self.currentViewController == self.filesTableView
+        || self.currentViewController == self.filesNoIconTableView) {
+        [self.filesTableView selectAll];
+    } else if(self.currentViewController == self.filesCollectionView) {
+        [self.filesCollectionView selectAll];
+    }
+}
+
 @end

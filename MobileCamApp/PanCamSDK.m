@@ -136,9 +136,11 @@
             break;
         }
         
-        self.videoFrameBuffer = make_shared<ICatchFrameBuffer>(640 * 480 * 2);
+//        self.videoFrameBuffer = make_shared<ICatchFrameBuffer>(640 * 480 * 2);
+        self.videoFrameBuffer = make_shared<ICatchFrameBuffer>(3840 * 2160 * 2); //4K: 3840x2160
         self.audioFrameBuffer = make_shared<ICatchFrameBuffer>(640 * 480 * 2);
-        self.videoRange = NSMakeRange(0, 640 * 480 * 2);
+//        self.videoRange = NSMakeRange(0, 640 * 480 * 2);
+        self.videoRange = NSMakeRange(0, 3840 * 2160 * 2);
         self.audioRange = NSMakeRange(0, 1024 * 50);
         self.videoData = [[NSMutableData alloc] init];
         self.audioData = [[NSMutableData alloc] init];
@@ -753,7 +755,7 @@
     uint cacheTime = [[SDK instance] previewCacheTime];
     AppLog(@"cacheTime: %d", cacheTime);
     
-    ICatchPancamConfig::getInstance()->setPreviewCacheParam(0);
+    ICatchPancamConfig::getInstance()->setPreviewCacheParam(200);
 
 //    if (codec == ICH_CODEC_H264) {
 //        AppLog(@"%s - start h264", __func__);
@@ -901,7 +903,7 @@
     RunLog(@"getVideoData begin");
     int retVal = _panCamPreviewProvider->getNextVideoFrame(_videoFrameBuffer);
     RunLog(@"getVideoData end");
-    RunLog(@"video frame presentation time: %f", _videoFrameBufferA->getPresentationTime());
+    RunLog(@"video frame presentation time: %f", _videoFrameBuffer->getPresentationTime());
     if (retVal == ICH_SUCCEED) {
         [_videoData setLength:_videoRange.length];
         [_videoData replaceBytesInRange:_videoRange withBytes:_videoFrameBuffer->getBuffer()];
@@ -937,6 +939,29 @@
     }
     
     return audioTrackData;
+}
+
+- (UIImage *)getPreviewThumbnail {
+    UIImage *thumbnail = nil;
+    
+    if (!_panCamPreview) {
+        AppLog(@"PanCamSDK doesn't work!!!");
+        return thumbnail;
+    }
+    
+    int ret = _panCamPreview->getThumbnail(_videoFrameBuffer, 10);
+    if (ret == ICH_SUCCEED) {
+        AppLog(@"Get preview thumbnail success, size: %d", _videoFrameBuffer->getFrameSize());
+
+        NSData *data = [[NSData alloc] initWithBytes:_videoFrameBuffer->getBuffer() length:_videoFrameBuffer->getFrameSize()];
+        if (data) {
+            thumbnail = [[UIImage alloc] initWithData:data];
+        }
+    } else {
+        AppLog(@"Get preview thumbnail failed, ret: %d", ret);
+    }
+    
+    return thumbnail;
 }
 
 #pragma mark - CONTROL
@@ -1090,7 +1115,7 @@
     NSString *filePath = fileURL.path;
     AppLog(@"filePath: %@", filePath);
     
-    auto file = make_shared<ICatchFile>(0, WCFileTypeVideo, filePath.UTF8String, "test.MP4", NSIntegerMax);
+    auto file = make_shared<ICatchFile>(0, WCFileTypeVideo, filePath.UTF8String, NSIntegerMax);
     
     int ret = _panCamVPlayback->play(file, disableAudio, fromRemote);
     if (ret != ICH_SUCCEED) {

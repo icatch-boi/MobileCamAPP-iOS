@@ -45,6 +45,7 @@
     shared_ptr<VideoPbProgressStateListener> videoPbProgressStateListener;
     shared_ptr<VideoPbDoneListener> videoPbDoneListener;
     shared_ptr<VideoPbServerStreamErrorListener> videoPbServerStreamErrorListener;
+    shared_ptr<VideoPbInsufficientPerformanceListener> videoPbInsufficientPerformanceListener;
     
     CGPoint pointP;
     float cDistance;
@@ -63,6 +64,7 @@
 @property(nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property(nonatomic) IBOutlet UIBarButtonItem *actionButton;
 @property(nonatomic) IBOutlet UIBarButtonItem *returnBackButton;
+@property(nonatomic) IBOutlet UILabel *InsufficientPerformanceLabel;
 @property(nonatomic) BOOL PlaybackRun;
 @property(nonatomic, getter = isPlayed) BOOL played;
 @property(nonatomic, getter = isPanCampaused) BOOL panCampaused;
@@ -133,8 +135,8 @@
 //        auto file = _gallery.videoTable.fileList.at(index);
         self.title = [[NSString alloc] initWithFormat:@"%s", /*file*/self.currentFile->getFileName().c_str()];
     } else {
-        NSString *prefix = @"/var/mobile/Containers/Data/Application/9473B6CA-0B87-465D-9BAD-66B57DF3E941/Documents/MobileCamApp-Medias/Videos/";
-        self.title = [_videoURL.path substringFromIndex:prefix.length];
+//        NSString *prefix = @"/var/mobile/Containers/Data/Application/9473B6CA-0B87-465D-9BAD-66B57DF3E941/Documents/MobileCamApp-Medias/Videos/";
+//        self.title = [_videoURL.path substringFromIndex:prefix.length];
         [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     }
     /*
@@ -194,6 +196,15 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     ICatchWificamConfig::getInstance()->enableDumpMediaStream(false, documentsDirectory.UTF8String);
 #endif
+    
+    // Insufficient performance notice lable
+    self.InsufficientPerformanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height/2 - 60, self.view.frame.size.width, 120)];
+    self.InsufficientPerformanceLabel.hidden = YES;
+    self.InsufficientPerformanceLabel.numberOfLines = 4;
+    self.InsufficientPerformanceLabel.textColor = [UIColor whiteColor];
+    self.InsufficientPerformanceLabel.textAlignment = NSTextAlignmentCenter;
+    self.InsufficientPerformanceLabel.font = [UIFont systemFontOfSize:10];
+    [self.view addSubview:self.InsufficientPerformanceLabel];
     
     // Panel
     self.pbCtrlPanel = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 52, self.view.frame.size.width, 52)];
@@ -315,6 +326,8 @@
         UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         [self.view addGestureRecognizer:pinchGesture];
     }
+    
+    
 }
 
 - (void)setupPanoramaTypeChangeButton {
@@ -368,7 +381,7 @@
         if (_videoURL == nil) {
             [[PanCamSDK instance] initStreamWithRenderType:RenderType_AutoSelect isPreview:NO file:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile];
         } else {
-            [[PanCamSDK instance] initStreamWithRenderType:RenderType_EnableGL isPreview:NO file:nil];
+            [[PanCamSDK instance] initStreamWithRenderType:/*RenderType_EnableGL*/RenderType_AutoSelect isPreview:NO file:nil];
         }
     } else {
         [[PanCamSDK instance] initStreamWithRenderType:RenderType_Disable isPreview:NO file:nil];
@@ -591,6 +604,12 @@
     auto streamPlayingLister = make_shared<StreamSDKEventListener>(self, @selector(streamPlayingStatusCallback:));
     self.streamPalyingStObserver = [[StreamObserver alloc] initWithListener:streamPlayingLister eventType:ICH_GL_EVENT_VIDEO_STREAM_PLAYING_STATUS isCustomized:NO isGlobal:NO];
     [[PanCamSDK instance] addObserver:self.streamPalyingStObserver];
+    
+    videoPbInsufficientPerformanceListener = make_shared<VideoPbInsufficientPerformanceListener>(self);
+    AppLog(@"Add Observer: [id]0x%x, [listener]%p", ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE, videoPbInsufficientPerformanceListener.get());
+    [[PanCamSDK instance] addObserver:ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE
+                             listener:videoPbInsufficientPerformanceListener
+                          isCustomize:NO];
 }
 
 - (void)removePlaybackObserver
@@ -617,6 +636,7 @@
         }*/
         videoPbProgressStateListener.reset();
     }
+    
     if (videoPbDoneListener) {
 //        if (_videoURL) {
             AppLog(@"Remove Observer: [id]0x%x, [listener]%p", ICH_GL_EVENT_VIDEO_STREAM_PLAYING_ENDED, videoPbDoneListener.get());
@@ -645,9 +665,23 @@
         self.streamPalyingStObserver.listener.reset();
         self.streamPalyingStObserver = nil;
     }
+    
+    if(videoPbInsufficientPerformanceListener) {
+        AppLog(@"Remove Observer: [id]0x%x, [listener]%p", ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE, videoPbInsufficientPerformanceListener.get());
+        [[PanCamSDK instance] removeObserver:ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE
+                                    listener:videoPbInsufficientPerformanceListener
+                                 isCustomize:NO];
+    }
 }
 
 - (void)streamPlayingStatusCallback:(WifiCamEvent *)event {
+    BOOL isUseSDKDecode = [[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
+    if (isUseSDKDecode) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _previewThumb.hidden = YES;
+        });
+    }
+
     if (!_seeking) {
         self.playedSecs = event.doubleValue1;
         
@@ -709,6 +743,7 @@
                 });
             } else {
 //                [[PanCamSDK instance] panCamStopPreview];
+                
                 [self.motionManager stopGyroUpdates];
                 
                 if (_videoURL) {
@@ -750,6 +785,22 @@
                            showTime:2.0];
     });
     [self stopVideoPb];
+}
+
+-(void)notifyInsufficientPerformanceInfo:(long long)codec
+                                   width:(long long)width
+                                  height:(long long)height
+                           frameInterval:(double)frameInterval
+                              decodeTime:(double)decodeTime{
+    AppLog(@"Insufficient performance: %lld, %lld", width, height);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(self.InsufficientPerformanceLabel.hidden) {
+            NSString *notice = [NSString stringWithFormat:@"Warning, Insufficient performance.\nVideo width: %lld, height: %lld.\n Frame interval:%f, decode time: %f.\nThe playback will stutter.", width, height, frameInterval, decodeTime];
+            self.InsufficientPerformanceLabel.hidden = NO;
+            self.InsufficientPerformanceLabel.text = notice;
+        }
+    });
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -1005,6 +1056,7 @@
                         AppLog(@"call play");
                         if (_videoURL) {
                             self.totalSecs = [[PanCamSDK instance] playFile:self.videoURL enableAudio:YES isRemote:NO];
+                            [[PanCamSDK instance] seek:0]; // JIRA: MOBILEAPP-90 workaround
                         } else {
 //                            auto file = _gallery.videoTable.fileList.at(index);
 //                            auto file1 = make_shared<ICatchFile>(*file.get());
@@ -1051,7 +1103,7 @@
                                             withAnimated:YES withAcvity:YES];
                             
                             if (isUseSDKDecode) {
-                                _previewThumb.hidden = YES;
+//                                _previewThumb.hidden = YES;
                                 self.glkView.hidden = NO;
                                 [self startGLKAnimation];
                                 if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile])) {
@@ -2299,39 +2351,6 @@ static double __timestampA = 0;
     _popController = nil;
 }
 
--(void)applicationDidEnterBackground:(UIApplication *)application {
-    if (_played) {
-        self.PlaybackRun = NO;
-        [self stopGLKAnimation];
-        dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
-        if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
-            AppLog(@"Timeout!");
-        } else {
-            dispatch_semaphore_signal(self.semaphore);
-            
-            if (_videoURL) {
-                self.played = ![[PanCamSDK instance] stop];
-            } else {
-                self.played = ![_ctrl.pbCtrl stop];
-            }
-            [self removePlaybackObserver];
-            [_pbTimer invalidate];
-            [[SDK instance] destroySDK];
-            
-            [[PanCamSDK instance] panCamStopPreview];
-            [self.motionManager stopGyroUpdates];
-            [EAGLContext setCurrentContext:self.context];
-            
-            [[PanCamSDK instance] destroypanCamSDK];
-            
-            if ([EAGLContext currentContext] == self.context) {
-                [EAGLContext setCurrentContext:nil];
-            }
-        }
-    }
-}
-
-
 #pragma mark -
 -(void)streamCloseCallback {
     self.PlaybackRun = NO;
@@ -2435,6 +2454,40 @@ static double __timestampA = 0;
 }
 
 #pragma mark AppDelegateProtocol
+-(void)applicationDidEnterBackground:(UIApplication *)application {
+    if (_played) {
+        self.PlaybackRun = NO;
+        [self stopGLKAnimation];
+        dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
+        if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
+            AppLog(@"Timeout!");
+        } else {
+            dispatch_semaphore_signal(self.semaphore);
+            [_pbTimer invalidate];
+            [self removePlaybackObserver];
+            
+            if (_videoURL) {
+                self.played = ![[PanCamSDK instance] stop];
+            } else {
+                self.played = ![_ctrl.pbCtrl stop];
+            }
+            
+            
+            [[SDK instance] destroySDK];
+            
+            [[PanCamSDK instance] panCamStopPreview];
+            [self.motionManager stopGyroUpdates];
+            [EAGLContext setCurrentContext:self.context];
+            
+            [[PanCamSDK instance] destroypanCamSDK];
+            
+            if ([EAGLContext currentContext] == self.context) {
+                [EAGLContext setCurrentContext:nil];
+            }
+        }
+    }
+}
+
 - (void)sdcardRemoveCallback
 {
     dispatch_async(dispatch_get_main_queue(), ^{

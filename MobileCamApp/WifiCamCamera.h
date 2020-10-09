@@ -85,14 +85,14 @@ typedef NS_OPTIONS(NSUInteger, WifiCamAbility) {
     WifiCamAbilityDefaultToPlayback,
     WifiCamAbilityGetFileByPagination,
     //add - 2017.3.17
-    WifiCamAbilityGetScreenSaverTime,
-    WifiCamAbilityGetAutoPowerOffTime,
-    WifiCamAbilityGetPowerOnAutoRecord,
-    WifiCamAbilityGetExposureCompensation,
-    WifiCamAbilityGetImageStabilization,
-    WifiCamAbilityGetVideoFileLength,
-    WifiCamAbilityGetFastMotionMovie,
-    WifiCamAbilityGetWindNoiseReduction,
+    WifiCamAbilityGetScreenSaverTime,       //0xD720
+    WifiCamAbilityGetAutoPowerOffTime,      //0xD721
+    WifiCamAbilityGetPowerOnAutoRecord,     //0xD722
+    WifiCamAbilityGetExposureCompensation,  //0xD723
+    WifiCamAbilityGetImageStabilization,    //0xD724
+    WifiCamAbilityGetVideoFileLength,       //0xD725
+    WifiCamAbilityGetFastMotionMovie,       //0xD726
+    WifiCamAbilityGetWindNoiseReduction,    //0xD727
     //add - 2017.6.21
     WifiCamAbilityNewCaptureWay,
     WifiCamAbilityPIV,

@@ -34,6 +34,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionButtonItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *selectAllButtonItem;
 
 @property (nonatomic, weak) UIButton *changeButton;
 
@@ -134,6 +135,17 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     self.toolbar.hidden = YES;
     self.deleteButtonItem.enabled = NO;
     self.actionButtonItem.enabled = NO;
+    
+    if ([[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+        // hide
+        self.selectAllButtonItem.enabled = NO;
+        self.selectAllButtonItem.title = nil;
+    } else {
+        // display
+        self.selectAllButtonItem.enabled = YES;
+        self.selectAllButtonItem.title = NSLocalizedString(@"All", nil);
+        self.selectAllButtonItem.tag = 0;
+    }
 }
 
 - (void)setupNavigationItem {
@@ -193,9 +205,9 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     self.actionButtonItem.enabled = enable;
 }
 
-- (void)updateButtonItemState {
-    self.editButtonItem.enabled = self.currentFileTable.filteredFileList.count != 0;
-}
+//- (void)updateButtonItemState {
+//    self.editButtonItem.enabled = self.currentFileTable.filteredFileList.count != 0;
+//}
 
 #pragma mark - Load data
 - (void)loadDataIsPullup:(BOOL)pullup {
@@ -208,7 +220,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
             [self hideProgressHUD:YES];
             [self.collectionView reloadData];
             
-            [self updateButtonItemState];
+            //[self updateButtonItemState];
         });
     });
 }
@@ -316,6 +328,12 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     [self.collectionView reloadData];
     
     [self updateButtonEnableState:NO];
+    
+    if (![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+        if(1 == self.selectAllButtonItem.tag) {
+            [self selectAll:self.selectAllButtonItem];
+        }
+    }
 }
 
 - (IBAction)filterClick:(id)sender {
@@ -453,6 +471,21 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 - (IBAction)actionClick:(id)sender {
     [self showActionConfirm];
+}
+
+- (IBAction)selectAll:(id)sender {
+    UIBarButtonItem *sel = sender;
+    if (0==sel.tag) {
+        sel.title = NSLocalizedString(@"Cancel", nil);
+    } else {
+        sel.title = NSLocalizedString(@"All", nil);
+    }
+    [self.collectionView reloadData];
+    sel.tag = !sel.tag;
+    
+    NSIndexPath *ip = [NSIndexPath indexPathForItem:0 inSection:0];
+    ICatchHomeCollectionCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"MPBHomeCell" forIndexPath:ip];
+    [cell selectAll];
 }
 
 #pragma mark - UICollectonViewDataSource
@@ -1393,6 +1426,18 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 //            self.selItemsTable.count = 0;
             [self updateButtonEnableState:NO];
             
+            if (![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+                if(1 == self.selectAllButtonItem.tag) {
+                    UIBarButtonItem *sel = self.selectAllButtonItem;
+                    if (0==sel.tag) {
+                        sel.title = NSLocalizedString(@"Cancel", nil);
+                    } else {
+                        sel.title = NSLocalizedString(@"All", nil);
+                    }
+                    sel.tag = !sel.tag;
+                }
+            }
+            
             if (!_cancelDownload) {
                 NSString *message = nil;
                 if (downloadFailedCount > 0) {
@@ -1633,12 +1678,18 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
         }
         
         // Update the UICollectionView's data source
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.currentFileTable clearFileTableData];
-            [self loadDataIsPullup:NO];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.currentFileTable clearFileTableData];
+//            [self loadDataIsPullup:NO];
+//        });
+        
+        // TODO: Delete those files instead of delete all
+        [self.currentFileTable clearFileTableData];
+        [self.listViewModel requestFileListOfType:[self fileTypeMap] pullup:NO takenBy:self.takenBy];
+        
         dispatch_semaphore_signal(self.mpbSemaphore);
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
             if (failedCount != self.currentFileTable.selectedFiles.count) {
                 [self.currentFileTable.selectedFiles removeAllObjects];
                 [self updateButtonEnableState:NO];
@@ -1647,7 +1698,6 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
             }
             
             NSString *noticeMessage = nil;
-            
             if (failedCount > 0) {
                 noticeMessage = NSLocalizedString(@"DeleteMultiError", nil);
                 NSString *failedCountString = [NSString stringWithFormat:@"%d", failedCount];
@@ -1667,7 +1717,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
         change                :(NSDictionary *)change
         context               :(void *)context
 {
-    AppLog(@"%s", __func__);
+//    AppLog(@"%s", __func__);
     if ([keyPath isEqualToString:@"count"]) {
 //        if (self.selItemsTable.count > 0) {
 //            [self prepareForAction];
@@ -1774,7 +1824,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 - (void)updateProgressHUDWithMessage:(NSString *)message
                       detailsMessage:(NSString *)dMessage {
-    AppLog(@"%s", __func__);
+//    AppLog(@"%s", __func__);
     if (message) {
         self.progressHUD.labelText = message;
     }

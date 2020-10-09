@@ -58,4 +58,31 @@ typedef NS_ENUM(NSInteger, PTPDpcBurstNumber) {
     PTPDpcBurstNumber_30,
 };
 
+
+typedef NS_ENUM(NSInteger, PTPDpcWhiteBalance) {
+    PTPDpcWhiteBalance_AUTO = 0x0001,
+    PTPDpcWhiteBalance_DAYLIGHT,
+    PTPDpcWhiteBalance_CLOUDY,
+    /*
+     原本sdk 定義的與FW 不同
+    PTPDpcWhiteBalance_FLUORESCENT,
+    PTPDpcWhiteBalance_TUNGSTEN,
+     */
+    PTPDpcWhiteBalance_TUNGSTEN,
+    PTPDpcWhiteBalance_FLUORESCENT,
+
+    PTPDpcWhiteBalance_UNDERWATER,
+};
+
+typedef NS_ENUM(NSInteger, CustomizePropertyID) {
+    CustomizePropertyID_ScreenSaver = 0xd720,
+    CustomizePropertyID_AutoPowerOff,
+    CustomizePropertyID_PowerOnAutoRecord,
+    CustomizePropertyID_EXposureCompensation,
+    CustomizePropertyID_ImageStabilization,
+    CustomizePropertyID_VideoFileLength,
+    CustomizePropertyID_FastMotionMovie,
+    CustomizePropertyID_WindNoiseReduction,
+};
+
 #endif /* SDKPrivate_h */

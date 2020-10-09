@@ -86,6 +86,26 @@
         case SettingDetailTypeLiveSize:
             title = NSLocalizedString(@"LIVE_RESOLUTION", @"");
             break;
+        
+        case SettingDetailTypeScreenSaver:
+            title = NSLocalizedString(@"SetScreenSaver", @"");
+            break;
+            
+        case SettingDetailTypeAutoPowerOff:
+            title = NSLocalizedString(@"SetAutoPowerOff", @"");
+            break;
+            
+        case SettingDetailTypeExposureCompensation:
+            title = NSLocalizedString(@"SetExposureCompensation", @"");
+            break;
+            
+        case SettingDetailTypeVideoFileLength:
+            title = NSLocalizedString(@"SetVideoFileLength", @"");
+            break;
+            
+        case SettingDetailTypeFastMotionMovie:
+            title = NSLocalizedString(@"SetFastMotionMovie", @"");
+            break;
             
         default:
             break;
@@ -370,7 +390,50 @@
             }
             break;
         }
+        case SettingDetailTypeScreenSaver:
+        {
+            uint value = [_ctrl.propCtrl parseScreenSaverInArray:indexPath.row];
+            if ([_ctrl.propCtrl changeScreenSaver:value] == WCRetSuccess) {
+                errorHappen = YES;
+            }
+            break;
+        }
             
+        case SettingDetailTypeAutoPowerOff:
+        {
+            uint value = [_ctrl.propCtrl parseAutoPowerOffInArray:indexPath.row];
+            if ([_ctrl.propCtrl changeAutoPowerOff:value] == WCRetSuccess) {
+                errorHappen = YES;
+            }
+            break;
+        }
+            
+        case SettingDetailTypeExposureCompensation:
+        {
+            uint value = [_ctrl.propCtrl parseExposureCompensationInArray:indexPath.row];
+            if ([_ctrl.propCtrl changeExposureCompensation:value] == WCRetSuccess) {
+                errorHappen = YES;
+            }
+            break;
+        }
+            
+        case SettingDetailTypeVideoFileLength:
+        {
+            uint value = [_ctrl.propCtrl parseVideoFileLengthInArray:indexPath.row];
+            if ([_ctrl.propCtrl changeVideoFileLength:value] == WCRetSuccess) {
+                errorHappen = YES;
+            }
+            break;
+        }
+            
+        case SettingDetailTypeFastMotionMovie:
+        {
+            uint value = [_ctrl.propCtrl parseFastMotionMovieInArray:indexPath.row];
+            if ([_ctrl.propCtrl changeFastMotionMovie:value] == WCRetSuccess) {
+                errorHappen = YES;
+            }
+            break;
+        }
         case SettingDetailTypeAbout:
         default:
             break;

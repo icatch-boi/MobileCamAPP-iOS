@@ -23,7 +23,7 @@
     
 //    self.thumbnailImgView.backgroundColor = [UIColor orangeColor];
     self.selectedImgView.backgroundColor = RGB_HEX(0xF2F2F2, 1.0);
-    self.thumbnailImgView.contentMode = UIViewContentModeCenter;
+    self.thumbnailImgView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 - (void)setThumbnail:(UIImage *)thumbnail {

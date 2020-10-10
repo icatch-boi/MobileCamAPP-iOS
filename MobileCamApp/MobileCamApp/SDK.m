@@ -1088,6 +1088,7 @@
 //    }
 //    
 //    return retVal;
+    
     bool retVal;
     
     if (!_control) {
@@ -1095,13 +1096,17 @@
         return NO;
     }
     
-    int ret = _control->isSDCardExist(retVal);
-    if (ret == ICH_SUCCEED) {
-        return retVal;
-    } else {
-        AppLog(@"CheckSDExist failed. %d", ret);
-        return NO;
-    }
+//    int ret = _control->isSDCardExist(retVal);
+//    if (ret == ICH_SUCCEED) {
+//        return retVal;
+//    } else {
+//        AppLog(@"CheckSDExist failed. %d", ret);
+//        return NO;
+//    }
+    
+    _control->isSDCardExist(retVal);
+    AppLog(@"isSDCardExist: %d", retVal);
+    return  retVal;
 }
 
 - (BOOL)zoomIn {

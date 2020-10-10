@@ -326,9 +326,9 @@
 }
 
 - (NSString *)selectValue {
-    NSString *month = self.month.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.month.integerValue] : [NSString stringWithFormat:@"0%ld", self.month.integerValue];
-    NSString *day = self.day.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.day.integerValue] : [NSString stringWithFormat:@"0%ld", self.day.integerValue];
-    NSString *hour = self.hour.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.hour.integerValue] : [NSString stringWithFormat:@"0%ld", self.hour.integerValue];
+    NSString *month = self.month.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.month.integerValue] : [NSString stringWithFormat:@"0%ld", (long)self.month.integerValue];
+    NSString *day = self.day.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.day.integerValue] : [NSString stringWithFormat:@"0%ld", (long)self.day.integerValue];
+    NSString *hour = self.hour.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.hour.integerValue] : [NSString stringWithFormat:@"0%ld", (long)self.hour.integerValue];
     
     _selectValue = [NSString stringWithFormat:@"%ld-%@-%@ %@", (long)[self.year integerValue], month, day, hour];
     return _selectValue;

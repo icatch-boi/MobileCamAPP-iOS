@@ -104,7 +104,6 @@ static NSString * const kHeaderReuseIdentifier = @"FilesHeaderView";
     return self.currentFileTable.groups.count;
 }
 
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     ICatchFileGroup *group = self.currentFileTable.groups[section];
     if (group.isVisible) {

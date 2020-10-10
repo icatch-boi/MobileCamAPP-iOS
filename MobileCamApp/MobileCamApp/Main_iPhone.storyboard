@@ -489,7 +489,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When you already connect to camera by Wi-Fi" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOx-Ex-c4X">
-                                <rect key="frame" x="20" y="52" width="280" height="21"/>
+                                <rect key="frame" x="20" y="58" width="280" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="IfS-QD-ZJP"/>
                                 </constraints>
@@ -498,7 +498,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For new camera, and the camera supports bluetooth low energy." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJD-sB-xY7">
-                                <rect key="frame" x="20" y="119" width="280" height="38"/>
+                                <rect key="frame" x="20" y="125" width="280" height="38"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="38" id="7eU-ak-bW8"/>
                                 </constraints>
@@ -507,14 +507,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ot2-NO-09C">
-                                <rect key="frame" x="20" y="165" width="280" height="30"/>
+                                <rect key="frame" x="20" y="171" width="280" height="30"/>
                                 <state key="normal" title="Bluetooth Pair"/>
                                 <connections>
                                     <action selector="blePair:" destination="xbY-EC-EsP" eventType="touchUpInside" id="9pb-Yt-Stg"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jjc-tH-SuD">
-                                <rect key="frame" x="20" y="81" width="280" height="30"/>
+                                <rect key="frame" x="20" y="87" width="280" height="30"/>
                                 <state key="normal" title="Wi-Fi Connect"/>
                                 <connections>
                                     <action selector="wifiConnect:" destination="xbY-EC-EsP" eventType="touchUpInside" id="NGU-oc-OJv"/>
@@ -634,7 +634,7 @@
                 <navigationController id="I21-2B-KMp" customClass="PortraitNavVC" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="w1d-pc-kfT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -962,7 +962,7 @@
                 <navigationController id="Dvz-PH-1Rw" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="sCr-ig-0KZ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="5tg-or-e2d">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -1108,7 +1108,7 @@
             <objects>
                 <tableViewController id="9Pe-fa-O21" customClass="ChangeSSIDViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="uYK-PX-i57">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="430"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -1379,7 +1379,7 @@
         <scene sceneID="5ue-Nu-ge8">
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="5Ze-W0-53N" customClass="MpbViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="7on-9B-xRt">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="7on-9B-xRt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

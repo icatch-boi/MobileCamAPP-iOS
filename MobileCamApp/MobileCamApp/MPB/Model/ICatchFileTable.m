@@ -14,14 +14,12 @@
     [self.fileList removeAllObjects];
     [self.originalFileList removeAllObjects];
     [self.fileDateArray removeAllObjects];
-//    [self.selectedFiles removeAllObjects];
+    [self.selectedFiles removeAllObjects];
+    [self.groups removeAllObjects];
     self.totalFileCount = 0;
     self.totalDownloadSize = 0;
-#if 0
-    self.groups = [NSArray array];
-#else
-    [self clearSelectedState];
-#endif
+    
+//    [self clearSelectedState];
 }
 
 - (void)clearSelectedState {
@@ -62,7 +60,7 @@
     }
 #endif
     
-    self.groups = temp.copy;
+    self.groups = temp/*.copy*/;
     self.filteredFileList = self.originalFileList.copy;
 }
 
@@ -156,7 +154,7 @@
     
     AppLog(@"Group count: %lu", (unsigned long)temp.count);
     
-    self.groups = temp.copy;
+    self.groups = temp/*.copy*/;
     self.filteredFileList = filteredFileList.copy;
 }
 

@@ -2534,9 +2534,10 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                                                                             repeats :YES];
                 });
             }
-        } else // use old capture procedure
+        } else {
+            // use old capture procedure
             [_ctrl.actCtrl capturePhoto];
-        
+        }
 
     });
 }

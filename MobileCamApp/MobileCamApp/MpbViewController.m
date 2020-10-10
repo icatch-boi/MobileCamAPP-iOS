@@ -72,7 +72,7 @@ static NSString *kCellID = @"cellID";
     AppLog(@"%s", __func__);
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(recoverFromDisconnection)
@@ -197,7 +197,7 @@ static NSString *kCellID = @"cellID";
 {
     AppLog(@"%s", __func__);
     [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.run = NO;
     
     if (_popController.popoverVisible) {
@@ -239,6 +239,10 @@ static NSString *kCellID = @"cellID";
     [_mpbCache removeAllObjects];
     self.doneButton = nil;
     self.browser = nil;
+}
+
+-(BOOL)prefersStatusBarHidden {
+    return NO;
 }
 
 -(void)recoverFromDisconnection

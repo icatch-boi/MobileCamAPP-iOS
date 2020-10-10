@@ -2230,7 +2230,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         [self playbackVideoMJPEG];
         
     } else if (format->getCodec() == ICH_CODEC_H264) {
-#if 0
+/*
         int w = format->getVideoW();
         int h = format->getVideoH();
         if (w == 1920 && h == 1080) {
@@ -2238,8 +2238,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         }
         float scale = w / h;
         
-//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//        BOOL isLive = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"] || [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"];
+        //        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        //        BOOL isLive = [defaults boolForKey:@"PreferenceSpecifier:YouTube_Live"] || [defaults boolForKey:@"PreferenceSpecifier:Facebook_Live"];
         
         if (scale == 2 || scale == 0.5) {
             AppLog(@"playbackVideoH264 ---- MobileCamApp");
@@ -2253,7 +2253,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             });
             [self playbackVideoH264];
         } else {
-#endif
+*/
             AppLog(@"playbackVideoH264 ---- SBC");
 #ifdef HW_DECODE_H264
             // HW decode
@@ -2269,13 +2269,13 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             });
 #endif
             [self playbackVideoH264:format];
-//        }
-    } else {
-        AppLog(@"Unknown codec.");
+            //        }
+        } else {
+            AppLog(@"Unknown codec.");
+        }
+        
+        AppLog(@"Break video");
     }
-
-    AppLog(@"Break video");
-}
 
 - (void)playbackAudio {
     /*
@@ -3757,7 +3757,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     }
 }
 
-#pragma mark - ICatchWificamListener
+// MARK: - sICatchWificamListener
 
 - (void)updateMovieRecState:(MovieRecState)state
 {
@@ -4438,7 +4438,6 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     return [UIImage  imageWithCIImage:outputImage];
 }
 
-#pragma mark - createLiveChannel
 - (void)createLiveChannel
 {
     [self showProgressHUDWithMessage:NSLocalizedString(@"Start Live", nil)];
@@ -4455,6 +4454,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         [self liveErrorHandle:LiveErrorCreateLiveBroadCast andMessage:nil];
     }
 }
+#else
+- (IBAction)liveSwitchClink:(id)sender {}
 #endif
 
 #if 0
@@ -4574,6 +4575,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         });
     }
 }
+#else
+- (IBAction)facebookLiveSwithClick:(id)sender {}
 #endif
     
 @end

@@ -1856,7 +1856,7 @@
     int i = 0;
     
     if (_prop) {
-        _prop->getSupportedPropertyValues(proid, value);
+        _prop->getSupportedPropertyValues((int)proid, value);
         for (vector<uint>::iterator it = value.begin(); it != value.begin(); ++it, ++i) {
             printf("getSupportedProperty is index: %d - value: %d\n", i, *it);
         }

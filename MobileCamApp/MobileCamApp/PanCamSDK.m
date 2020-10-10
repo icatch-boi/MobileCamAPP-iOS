@@ -1493,53 +1493,54 @@
 }
 
 #pragma mark - PanCamStream
-#if 0
 - (BOOL)panCamUpdateFormat {
-    if (!_panCamPreview) {
-        AppLog(@"initStream doesn't work!!!");
-        return NO;
-    }
-    
-    int ret = _panCamPreview->updateFormat(1920, 960, ICH_CODEC_YUV_NV12);
-    if (ret != ICH_SUCCEED) {
-        AppLog(@"panCamUpdateFormat failed, ret: %d", ret);
-        return NO;
-    } else return YES;
+//    if (!_panCamPreview) {
+//        AppLog(@"initStream doesn't work!!!");
+//        return NO;
+//    }
+//
+//    int ret = _panCamPreview->updateFormat(1920, 960, ICH_CODEC_YUV_NV12);
+//    if (ret != ICH_SUCCEED) {
+//        AppLog(@"panCamUpdateFormat failed, ret: %d", ret);
+//        return NO;
+//    } else return YES;
+    return NO;
 }
 
-- (BOOL)panCamUpdateFormat:(ICatchVideoFormat)format {
-    if (!_panCamPreview) {
-        AppLog(@"initStream doesn't work!!!");
-        return NO;
-    }
-    
-    int h = format->getVideoH();
-    if (format->getVideoW() == 1920 && h == 1080) {
-        h = 960;
-    }
-    
-    int ret = _panCamPreview->updateFormat(format->getVideoW(), h, ICH_CODEC_YUV_NV12);
-    if (ret != ICH_SUCCEED) {
-        AppLog(@"panCamUpdateFormat failed, ret: %d", ret);
-        return NO;
-    } else return YES;
+- (BOOL)panCamUpdateFormat:(shared_ptr<ICatchVideoFormat>)format {
+//    if (!_panCamPreview) {
+//        AppLog(@"initStream doesn't work!!!");
+//        return NO;
+//    }
+//
+//    int h = format->getVideoH();
+//    if (format->getVideoW() == 1920 && h == 1080) {
+//        h = 960;
+//    }
+//
+//    int ret = _panCamPreview->updateFormat(format->getVideoW(), h, ICH_CODEC_YUV_NV12);
+//    if (ret != ICH_SUCCEED) {
+//        AppLog(@"panCamUpdateFormat failed, ret: %d", ret);
+//        return NO;
+//    } else return YES;
+    return NO;
 }
 
 - (BOOL)panCamUpdateFrame:(uint8_t *)imgY andImageYsize:(int32_t)imgYsize
                 andImageU:(uint8_t *)imgU andImageUsize:(int32_t)imgUsize
                 andImageV:(uint8_t *)imgV andImageVsize:(int32_t)imgVsize {
-    if (!_panCamPreview) {
-        AppLog(@"initStream doesn't work!!!");
-        return NO;
-    }
-    
-    int ret = _panCamPreview->updateFrame(imgY, imgYsize, imgU, imgUsize, imgV, imgVsize);
-    if (ret != ICH_SUCCEED) {
-        AppLog(@"panCamUpdateFrame failed, ret: %d", ret);
-        return NO;
-    } else return YES;
+//    if (!_panCamPreview) {
+//        AppLog(@"initStream doesn't work!!!");
+//        return NO;
+//    }
+//
+//    int ret = _panCamPreview->updateFrame(imgY, imgYsize, imgU, imgUsize, imgV, imgVsize);
+//    if (ret != ICH_SUCCEED) {
+//        AppLog(@"panCamUpdateFrame failed, ret: %d", ret);
+//        return NO;
+//    } else return YES;
+    return NO;
 }
-#endif
 
 - (BOOL)panCamStopPreview {
     if (!_panCamPreview) {

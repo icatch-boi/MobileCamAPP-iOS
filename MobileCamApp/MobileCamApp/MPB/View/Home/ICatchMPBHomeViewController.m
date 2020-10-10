@@ -158,7 +158,12 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     [changeBtn setImage:image forState:UIControlStateNormal];
     
     UIBarButtonItem *changeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:changeBtn];
-    self.navigationItem.rightBarButtonItems = @[changeButtonItem, self.filterButtonItem];
+    if ([[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+        self.navigationItem.rightBarButtonItems = @[changeButtonItem, self.filterButtonItem];
+    } else {
+        self.navigationItem.rightBarButtonItems = @[changeButtonItem];
+    }
+    
     self.changeButton = changeBtn;
     
 //    [self.filterButtonItem setImage:[UIImage imageNamed:@"ic_filter_list_white_24dp"]];

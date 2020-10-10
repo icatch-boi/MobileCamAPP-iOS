@@ -1576,7 +1576,7 @@ struct ifaddrs *interfaces;
     }
     
 }
-
+/*
 - (void)loadFirstPhotoThumbnail:(ALAsset*)asset {
 //    NSString *photoURL=[NSString stringWithFormat:@"%@",asset.defaultRepresentation.url];
 //    NSLog(@"photoURL:%@", photoURL);
@@ -1611,7 +1611,7 @@ struct ifaddrs *interfaces;
         });
     }
 }
-
+*/
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {

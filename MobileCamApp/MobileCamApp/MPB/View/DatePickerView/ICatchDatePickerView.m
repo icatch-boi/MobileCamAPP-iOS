@@ -311,9 +311,9 @@
 
 - (void)show {
     self.year = self.selectDate[0];
-    self.month = [NSString stringWithFormat:@"%ld", [self.selectDate[1] integerValue]];
-    self.day = [NSString stringWithFormat:@"%ld", [self.selectDate[2] integerValue]];
-    self.hour = [NSString stringWithFormat:@"%ld", [self.selectDate[3] integerValue]];
+    self.month = [NSString stringWithFormat:@"%ld", (long)[self.selectDate[1] integerValue]];
+    self.day = [NSString stringWithFormat:@"%ld", (long)[self.selectDate[2] integerValue]];
+    self.hour = [NSString stringWithFormat:@"%ld", (long)[self.selectDate[3] integerValue]];
     
     [self.pickerView selectRow:[self.yearArray indexOfObject:self.year] inComponent:0 animated:NO];
     /// 重新格式化转一下，是因为如果是09月/日/时，数据源是9月/日/时,就会出现崩溃
@@ -326,11 +326,11 @@
 }
 
 - (NSString *)selectValue {
-    NSString *month = self.month.length == 2 ? [NSString stringWithFormat:@"%ld", self.month.integerValue] : [NSString stringWithFormat:@"0%ld", self.month.integerValue];
-    NSString *day = self.day.length == 2 ? [NSString stringWithFormat:@"%ld", self.day.integerValue] : [NSString stringWithFormat:@"0%ld", self.day.integerValue];
-    NSString *hour = self.hour.length == 2 ? [NSString stringWithFormat:@"%ld", self.hour.integerValue] : [NSString stringWithFormat:@"0%ld", self.hour.integerValue];
+    NSString *month = self.month.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.month.integerValue] : [NSString stringWithFormat:@"0%ld", self.month.integerValue];
+    NSString *day = self.day.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.day.integerValue] : [NSString stringWithFormat:@"0%ld", self.day.integerValue];
+    NSString *hour = self.hour.length == 2 ? [NSString stringWithFormat:@"%ld", (long)self.hour.integerValue] : [NSString stringWithFormat:@"0%ld", self.hour.integerValue];
     
-    _selectValue = [NSString stringWithFormat:@"%ld-%@-%@ %@", [self.year integerValue], month, day, hour];
+    _selectValue = [NSString stringWithFormat:@"%ld-%@-%@ %@", (long)[self.year integerValue], month, day, hour];
     return _selectValue;
 }
 
@@ -404,36 +404,36 @@
                 
                 // correction
                 if (self.month.integerValue > [self.currentDate[1] integerValue]) {
-                    [pickerView selectRow:[self.dataArray[1] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[1] integerValue]]] inComponent:1 animated:YES];
-                    self.month = [NSString stringWithFormat:@"%ld", [self.currentDate[1] integerValue]];
+                    [pickerView selectRow:[self.dataArray[1] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[1] integerValue]]] inComponent:1 animated:YES];
+                    self.month = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[1] integerValue]];
                 }
                 
                 if (self.day.integerValue > [self.currentDate[2] integerValue]) {
-                    [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
-                    self.day = [NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]];
+                    [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
+                    self.day = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]];
                 }
                 
                 if (self.hour.integerValue > [self.currentDate[3] integerValue]) {
-                    [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
-                    self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                    [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
+                    self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                 }
             } else if (year_integerValue.integerValue == currentValue) {
                 self.year = year_integerValue;
 
                 // correction
                 if (self.month.integerValue > [self.currentDate[1] integerValue]) {
-                    [pickerView selectRow:[self.dataArray[1] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[1] integerValue]]] inComponent:1 animated:YES];
-                    self.month = [NSString stringWithFormat:@"%ld", [self.currentDate[1] integerValue]];
+                    [pickerView selectRow:[self.dataArray[1] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[1] integerValue]]] inComponent:1 animated:YES];
+                    self.month = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[1] integerValue]];
                 }
                 
                 if (self.day.integerValue > [self.currentDate[2] integerValue]) {
-                    [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
-                    self.day = [NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]];
+                    [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
+                    self.day = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]];
                 }
                 
                 if (self.hour.integerValue > [self.currentDate[3] integerValue]) {
-                    [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
-                    self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                    [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
+                    self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                 }
             } else {
                 self.year = year_integerValue;
@@ -446,31 +446,31 @@
                 self.month = month_value;
             } else {
                 if (month_value.integerValue > currentValue) {
-                    [pickerView selectRow:[self.dataArray[component] indexOfObject:[NSString stringWithFormat:@"%ld", currentValue]] inComponent:component animated:YES];
-                    self.month = [NSString stringWithFormat:@"%ld", currentValue];
+                    [pickerView selectRow:[self.dataArray[component] indexOfObject:[NSString stringWithFormat:@"%ld", (long)currentValue]] inComponent:component animated:YES];
+                    self.month = [NSString stringWithFormat:@"%ld", (long)currentValue];
                     
                     // correction
                     if (self.day.integerValue > [self.currentDate[2] integerValue]) {
-                        [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
-                        self.day = [NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]];
+                        [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
+                        self.day = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]];
                     }
                     
                     if (self.hour.integerValue > [self.currentDate[3] integerValue]) {
-                        [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
-                        self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                        [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
+                        self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                     }
                 } else if (month_value.integerValue == currentValue) {
                     self.month = month_value;
 
                     // correction
                     if (self.day.integerValue > [self.currentDate[2] integerValue]) {
-                        [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
-                        self.day = [NSString stringWithFormat:@"%ld", [self.currentDate[2] integerValue]];
+                        [pickerView selectRow:[self.dataArray[2] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]]] inComponent:2 animated:YES];
+                        self.day = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[2] integerValue]];
                     }
                     
                     if (self.hour.integerValue > [self.currentDate[3] integerValue]) {
-                        [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
-                        self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                        [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
+                        self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                     }
                 } else {
                     self.month = month_value;
@@ -490,21 +490,21 @@
                     self.day = day_value;
                 } else if ([self.month integerValue] == [self.currentDate[1] integerValue]) {
                     if (day_value.integerValue > currentValue) {
-                        [pickerView selectRow:[self.dataArray[component] indexOfObject:[NSString stringWithFormat:@"%ld", currentValue]] inComponent:component animated:YES];
-                        self.day = [NSString stringWithFormat:@"%ld", currentValue];
+                        [pickerView selectRow:[self.dataArray[component] indexOfObject:[NSString stringWithFormat:@"%ld", (long)currentValue]] inComponent:component animated:YES];
+                        self.day = [NSString stringWithFormat:@"%ld", (long)currentValue];
                         
                         // correction
                         if (self.hour.integerValue > [self.currentDate[3] integerValue]) {
-                            [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
-                            self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                            [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
+                            self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                         }
                     } else if (day_value.integerValue == currentValue) {
                         self.day = day_value;
 
                         // correction
                         if (self.hour.integerValue > [self.currentDate[3] integerValue]) {
-                            [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
-                            self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                            [pickerView selectRow:[self.dataArray[3] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:3 animated:YES];
+                            self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                         }
                     } else {
                         self.day = day_value;
@@ -525,8 +525,8 @@
                         self.hour = hour_value;
                     } else if ([self.day integerValue] == [self.currentDate[2] integerValue]) {
                         if (hour_value.integerValue > currentValue) {
-                            [pickerView selectRow:[self.dataArray[component] indexOfObject:[NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]]] inComponent:component animated:YES];
-                            self.hour = [NSString stringWithFormat:@"%ld", [self.currentDate[3] integerValue]];
+                            [pickerView selectRow:[self.dataArray[component] indexOfObject:[NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]]] inComponent:component animated:YES];
+                            self.hour = [NSString stringWithFormat:@"%ld", (long)[self.currentDate[3] integerValue]];
                         } else {
                             self.hour = hour_value;
                         }

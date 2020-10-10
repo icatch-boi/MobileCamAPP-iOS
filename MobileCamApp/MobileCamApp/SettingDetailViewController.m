@@ -125,7 +125,7 @@
 {
     [super viewWillAppear:animated];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -139,7 +139,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -152,6 +152,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)prefersStatusBarHidden {
+    return NO;
 }
 
 -(void)recoverFromDisconnection

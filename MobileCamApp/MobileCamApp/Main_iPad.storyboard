@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="gNa-x6-8lg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="gNa-x6-8lg">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -41,7 +41,7 @@
                                 </connections>
                             </button>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="battery_0" translatesAutoresizingMaskIntoConstraints="NO" id="Y3b-QZ-lkH">
-                                <rect key="frame" x="0.0" y="8" width="72" height="36"/>
+                                <rect key="frame" x="0.0" y="8" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="4UJ-UH-U3M"/>
                                 </constraints>
@@ -58,7 +58,7 @@
                                     <action selector="changeDelayCaptureTime:" destination="hyS-oq-Fmf" eventType="touchDown" id="vLy-R8-K0O"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1n-rd-Fbz" userLabel="Button_size_bg">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1n-rd-Fbz" userLabel="Button_size_bg">
                                 <rect key="frame" x="616" y="8" width="72" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="iSu-aI-XGA"/>
@@ -80,7 +80,7 @@
                                 <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="awb_auto" translatesAutoresizingMaskIntoConstraints="NO" id="g56-6q-Le9">
-                                <rect key="frame" x="73" y="8" width="36" height="36"/>
+                                <rect key="frame" x="37" y="8" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="36" id="xeC-Ie-zlN"/>
                                 </constraints>
@@ -94,7 +94,7 @@
                                     <action selector="zoomValueChanged:" destination="hyS-oq-Fmf" eventType="valueChanged" id="chj-1v-HjD"/>
                                 </connections>
                             </slider>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gez-F4-2zZ">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gez-F4-2zZ">
                                 <rect key="frame" x="0.0" y="863" width="46" height="39"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <state key="normal" title="-">
@@ -114,7 +114,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jt6-5j-H7h">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jt6-5j-H7h">
                                 <rect key="frame" x="648" y="871" width="46" height="30"/>
                                 <state key="normal" title="+">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -151,21 +151,21 @@
                                 </connections>
                             </button>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timelapse_video" translatesAutoresizingMaskIntoConstraints="NO" id="TVk-5P-E8z">
-                                <rect key="frame" x="117" y="8" width="36" height="36"/>
+                                <rect key="frame" x="81" y="8" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="eNP-to-ieo"/>
                                     <constraint firstAttribute="width" constant="36" id="vQJ-0A-ywh"/>
                                 </constraints>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slow_motion" translatesAutoresizingMaskIntoConstraints="NO" id="3mA-VL-TRk">
-                                <rect key="frame" x="161" y="8" width="36" height="36"/>
+                                <rect key="frame" x="125" y="8" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="36" id="2zL-Rg-Jn9"/>
                                     <constraint firstAttribute="height" constant="36" id="jee-oP-ALO"/>
                                 </constraints>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="te_car_mode" translatesAutoresizingMaskIntoConstraints="NO" id="ENZ-7O-KJS">
-                                <rect key="frame" x="205" y="8" width="36" height="36"/>
+                                <rect key="frame" x="169" y="8" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="AYD-EB-hoD"/>
                                     <constraint firstAttribute="width" constant="36" id="FPa-MT-NJt"/>
@@ -190,7 +190,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="continuous_shot_1" translatesAutoresizingMaskIntoConstraints="NO" id="MZC-SF-b61">
-                                <rect key="frame" x="249" y="8" width="36" height="36"/>
+                                <rect key="frame" x="213" y="8" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="36" id="JgB-u1-eCN"/>
                                     <constraint firstAttribute="height" constant="36" id="oRX-U3-N5j"/>
@@ -258,7 +258,7 @@
                                 </connections>
                             </switch>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YouTube Live :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPu-NF-bW1">
-                                <rect key="frame" x="578" y="819" width="116" height="31"/>
+                                <rect key="frame" x="579" y="819" width="115" height="31"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -274,7 +274,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Facebook Live :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abf-Qq-fUz">
-                                <rect key="frame" x="568.5" y="778" width="125.5" height="31"/>
+                                <rect key="frame" x="569" y="778" width="125" height="31"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -292,7 +292,7 @@
                                     <constraint firstAttribute="width" constant="32" id="sXc-iN-Nkd"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TfY-0X-PPr" userLabel="PanoramaType">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TfY-0X-PPr" userLabel="PanoramaType">
                                 <rect key="frame" x="18" y="776" width="72" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="LfB-3u-M0A"/>
@@ -479,7 +479,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CVq-kZ-s71">
-                                            <rect key="frame" x="20" y="12" width="35.5" height="21.5"/>
+                                            <rect key="frame" x="20" y="12" width="35" height="21.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -906,7 +906,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="highlightedColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="8sN-ZB-Q8R">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="8sN-ZB-Q8R">
                                 <rect key="frame" x="28" y="64" width="712" height="168"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -922,7 +922,7 @@
                                     <outletCollection property="gestureRecognizers" destination="oi4-3W-X7T" appends="YES" id="T4z-Uk-OVI"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="VUP-RC-fia">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="VUP-RC-fia">
                                 <rect key="frame" x="28" y="239" width="712" height="168"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -946,7 +946,7 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="empty_thumb"/>
                             </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="eb0-Vz-PYq">
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="eb0-Vz-PYq">
                                 <rect key="frame" x="28" y="409" width="712" height="168"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -972,7 +972,7 @@
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mvf-K4-D7B">
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mvf-K4-D7B">
                                 <rect key="frame" x="20" y="666" width="356" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="AD9-BU-9uD"/>
@@ -984,7 +984,7 @@
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YO3-rB-hbF">
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YO3-rB-hbF">
                                 <rect key="frame" x="392" y="666" width="356" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="tWI-Vt-xoG"/>
@@ -1217,7 +1217,7 @@
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="flg-8Q-wac">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="flg-8Q-wac">
                                 <rect key="frame" x="20" y="87" width="728" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Kxt-fE-Tcy"/>
@@ -1236,7 +1236,7 @@
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dr1-kd-0NR">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dr1-kd-0NR">
                                 <rect key="frame" x="20" y="171" width="728" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="sX7-Nn-7yO"/>
@@ -1300,20 +1300,6 @@
             </objects>
             <point key="canvasLocation" x="-1422.65625" y="825.5859375"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="1wq-U5-OeJ">
-            <objects>
-                <navigationController id="6Da-yf-ZaT" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="NkY-8T-CuJ"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lmW-WH-xuo">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zer-WP-15r" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1828.125" y="1444.3359375"/>
-        </scene>
         <!--What's next?-->
         <scene sceneID="Iem-pU-4gY">
             <objects>
@@ -1344,7 +1330,7 @@
                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wqb-jW-ifM">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wqb-jW-ifM">
                                 <rect key="frame" x="20" y="986" width="728" height="30"/>
                                 <state key="normal" title="OK"/>
                                 <connections>
@@ -1422,7 +1408,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEI-AV-Uaw">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEI-AV-Uaw">
                                 <rect key="frame" x="20" y="986" width="728" height="30"/>
                                 <state key="normal" title="Setup"/>
                                 <connections>
@@ -1511,7 +1497,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5kG-29-ftk">
-                                            <rect key="frame" x="687.5" y="13" width="41.5" height="19.5"/>
+                                            <rect key="frame" x="687" y="13" width="42" height="19.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1541,21 +1527,10 @@
             </objects>
             <point key="canvasLocation" x="953.125" y="1444.3359375"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="9TE-Ra-hNb">
-            <objects>
-                <navigationController id="ABn-FF-xSM" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="2ya-lr-EfD"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6kh-Rs-cim">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="URh-OA-jMD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="194.53125" y="1444.3359375"/>
-        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="EON-D2-79e"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="ImageSelectedOn" width="44" height="44"/>
         <image name="addCamBtnBg" width="500" height="144"/>
@@ -1578,7 +1553,4 @@
         <image name="timelapse_video" width="72" height="72"/>
         <image name="video_off" width="82" height="49"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="EON-D2-79e"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -220,6 +220,7 @@ static void * ICatchFilterPopupViewContext = &ICatchFilterPopupViewContext;
         if (self.selectedItems == nil || self.selectedItems.count != self.dataSource.count || !isSelectedItemsValid) {
             NSMutableArray *mutableArray = [NSMutableArray array];
             for (NSArray *sectionItem in _dataSource) {
+                AppLog("sectionItem's count: %lu", (unsigned long)sectionItem.count);
 #if 0
                 [mutableArray addObject:sectionItem.firstObject];
 #else

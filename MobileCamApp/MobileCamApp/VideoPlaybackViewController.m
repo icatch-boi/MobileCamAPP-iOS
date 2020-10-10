@@ -494,6 +494,10 @@
     [self hideProgressHUD:YES];
 }
 
+-(BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -514,7 +518,7 @@
             break;
         default:
             [self.navigationController setNavigationBarHidden:NO];
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO];
             if (_controlHidden) {
                 _pbCtrlPanel.hidden = NO;
                 _bufferingBgView.hidden = NO;

@@ -165,7 +165,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 {
     [super viewWillAppear:animated];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -204,7 +204,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     if (!_updateFWAlertView.hidden) {
         [_updateFWAlertView dismissWithClickedButtonIndex:0 animated:NO];
     }
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     [self hideProgressHUD:YES];
 }
@@ -220,6 +220,10 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)prefersStatusBarHidden {
+    return NO;
 }
 
 -(void)recoverFromDisconnection

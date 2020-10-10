@@ -13,9 +13,11 @@
 @class VideoPlaybackViewController;
 
 @protocol VideoPlaybackControllerDelegate <NSObject>
+@optional
 - (BOOL)videoPlaybackController:(VideoPlaybackViewController *)controller
              deleteVideoAtIndex:(NSUInteger)index;
-- (BOOL)videoPlaybackController:(VideoPlaybackViewController *)controller deleteVideoFile:(shared_ptr<ICatchFile>)file;
+- (BOOL)videoPlaybackController:(VideoPlaybackViewController *)controller
+                deleteVideoFile:(shared_ptr<ICatchFile>)file;
 @end
 
 @interface VideoPlaybackViewController : PanCamGLKViewController <UIActionSheetDelegate, UIPopoverControllerDelegate, AppDelegateProtocol>

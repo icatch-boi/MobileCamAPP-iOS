@@ -21,9 +21,7 @@
 		386073D81F57DBA400E26EC1 /* WifiCamEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 386073D71F57DBA400E26EC1 /* WifiCamEvent.m */; };
 		38616A6923CEE97F00DB530A /* ICatchFilesListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38616A6823CEE97F00DB530A /* ICatchFilesListViewModel.m */; };
 		38616A6D23CEEA1D00DB530A /* ICatchFileTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 38616A6C23CEEA1D00DB530A /* ICatchFileTable.m */; };
-		386A182C2518A34F004C6776 /* libMWPhotoBrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC57EC721B058346000DC9B1 /* libMWPhotoBrowser.a */; };
 		38A2FF0C24076C7500F0866A /* MJRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A2FF0B24076C7500F0866A /* MJRefresh.framework */; };
-		38A2FF0D240770DC00F0866A /* MJRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A2FF0B24076C7500F0866A /* MJRefresh.framework */; };
 		38A2FF0E240770DC00F0866A /* MJRefresh.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38A2FF0B24076C7500F0866A /* MJRefresh.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38AF58FB23CDC3AC004F8DBC /* icon_revocation1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AF58C223CDC3AB004F8DBC /* icon_revocation1@2x.png */; };
 		38AF58FC23CDC3AC004F8DBC /* icon_select1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AF58C323CDC3AB004F8DBC /* icon_select1@3x.png */; };
@@ -762,7 +760,6 @@
 				38CC4A462522D33100298FF1 /* libpanorama_vr_iPhoneOS.a in Frameworks */,
 				BC975B1B1C86CB190084415B /* CoreBluetooth.framework in Frameworks */,
 				BCB5E6B71BA903B1005D9ADE /* libsqlite3.tbd in Frameworks */,
-				38A2FF0D240770DC00F0866A /* MJRefresh.framework in Frameworks */,
 				BCB5E6B51BA903AB005D9ADE /* libbz2.tbd in Frameworks */,
 				BCB5E6B31BA903A4005D9ADE /* libiconv.tbd in Frameworks */,
 				BCB5E6AE1BA90389005D9ADE /* libxml2.tbd in Frameworks */,
@@ -792,7 +789,6 @@
 				E65BF34518BF04CA00C44371 /* AudioToolbox.framework in Frameworks */,
 				38CC4A412522D33100298FF1 /* libavcodec.a in Frameworks */,
 				38CC4A472522D33100298FF1 /* libreliant_iPhoneOS.a in Frameworks */,
-				386A182C2518A34F004C6776 /* libMWPhotoBrowser.a in Frameworks */,
 				38CC4A432522D33100298FF1 /* libavdevice.a in Frameworks */,
 				E609F4BD1872851C00BB1A0A /* ImageIO.framework in Frameworks */,
 				38CC4A452522D33100298FF1 /* libswscale.a in Frameworks */,
@@ -2041,7 +2037,7 @@
 		E6BA7EA7185027C400FA101F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = iCatchTech;
 				TargetAttributes = {
 					E6BA7EAE185027C400FA101F = {
@@ -2062,10 +2058,9 @@
 			};
 			buildConfigurationList = E6BA7EAA185027C400FA101F /* Build configuration list for PBXProject "MobileCamApp" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 				"zh-Hans",
@@ -2355,7 +2350,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
@@ -2390,7 +2385,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

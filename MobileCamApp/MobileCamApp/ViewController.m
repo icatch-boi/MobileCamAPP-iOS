@@ -47,6 +47,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     NSInteger _ppsSize;
     CMVideoFormatDescriptionRef _decoderFormatDescription;
     VTDecompressionSessionRef _deocderSession;
+    
+    BOOL _isSDcardRemoved;
 }
 
 #pragma mark - Lifecycle
@@ -848,7 +850,10 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 - (void)updateImageSizeOnScreen:(string)imageSize {
     NSArray *imageArray = [_ctrl.propCtrl prepareDataForStorageSpaceOfImage: imageSize];
     _camera.storageSpaceForImage = [[imageArray lastObject] unsignedIntValue];
-    NSString *storage = [NSString stringWithFormat:@"%d", _camera.storageSpaceForImage];
+    NSString *storage = @"0";
+    if(!_isSDcardRemoved) {
+        storage = [NSString stringWithFormat:@"%d", _camera.storageSpaceForImage];
+    }
     [self updateSizeItemWithTitle:[imageArray firstObject]
                        andStorage:storage];
 }
@@ -856,7 +861,10 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 - (void)updateVideoSizeOnScreen:(string)videoSize {
     NSArray *videoArray = [_ctrl.propCtrl prepareDataForStorageSpaceOfVideo: videoSize];
     _camera.storageSpaceForVideo = [[videoArray lastObject] unsignedIntValue];
-    NSString *storage = [Tool translateSecsToString: _camera.storageSpaceForVideo];
+    NSString *storage = @"00:00:00";
+    if(!_isSDcardRemoved) {
+        storage = [Tool translateSecsToString: _camera.storageSpaceForVideo];
+    }
     [self updateSizeItemWithTitle:[videoArray firstObject] andStorage:storage];
 }
 
@@ -4174,8 +4182,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     return self.savedCamera.wifi_ssid;
 }
 
-- (void)sdcardRemoveCallback
-{
+- (void)sdcardRemoveCallback{
+    _isSDcardRemoved = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showProgressHUDNotice:NSLocalizedString(@"CARD_REMOVED", nil) showTime:2.0];
         [self updatePreviewSceneByMode:_camera.previewMode];
@@ -4183,6 +4191,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (void)sdcardInCallback {
+    _isSDcardRemoved = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showProgressHUDNotice:NSLocalizedString(@"CARD_INSERTED", nil) showTime:2.0];
         [self updatePreviewSceneByMode:_camera.previewMode];

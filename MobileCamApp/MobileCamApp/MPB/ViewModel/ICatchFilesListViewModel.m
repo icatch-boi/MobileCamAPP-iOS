@@ -213,6 +213,7 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
        // @"yyyyMMdd'T'HHmmss"
        NSString *dateString = [self dateTransformFromString:[NSString stringWithUTF8String:f->getFileDate().c_str()]];
 //       AppLog("dateString: %@", dateString);
+//       printf("f->getFileDate().c_str(): %s\n", f->getFileDate().c_str());
        ICatchFileInfo *fileInfo = [ICatchFileInfo fileInfoWithFile:f];
        
        if ([tempTable.fileList.allKeys containsObject:dateString]) {

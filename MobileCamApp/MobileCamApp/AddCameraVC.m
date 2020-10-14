@@ -9,12 +9,13 @@
 #import "AddCameraVC.h"
 #import "GCDiscreetNotificationView.h"
 #import "Camera.h"
-#import <SystemConfiguration/CaptiveNetwork.h>
+//#import <SystemConfiguration/CaptiveNetwork.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "Reachability+Ext.h"
 #import "WifiCamControl.h"
 #import "ViewController.h"
 #import "WiFiAPSetupVC.h"
+#import "Tool.h"
 
 @interface AddCameraVC ()
 <
@@ -72,7 +73,7 @@ NSFetchedResultsControllerDelegate
                                                                  queue:nil
                                                                options:nil];
     
-    NSString *ssid = [self _checkSSID];
+    NSString *ssid = [Tool sysSSID];//[self _checkSSID];
     if (ssid && _cameraSSID && [ssid isEqualToString:_cameraSSID]) {
         [_wifiConnectButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     } else {
@@ -82,17 +83,18 @@ NSFetchedResultsControllerDelegate
 }
 
 - (IBAction)wifiConnect:(id)sender {
-    NSString *ssid = [self _checkSSID];
-    if (![self _checkSSID]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Get Connected"
-                                                        message:@"Please turn on Wi-Fi."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
-    } else {
-        [self _connect:@[@(_idx), ssid]];
-    }
+    NSString *ssid = [Tool sysSSID];//[self _checkSSID];
+//    if (![self _checkSSID]) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Get Connected"
+//                                                        message:@"Please turn on Wi-Fi."
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil, nil];
+//        [alert show];
+//    } else {
+//        [self _connect:@[@(_idx), ssid]];
+//    }
+    [self _connect:@[@(_idx), ssid]];
 }
 
 - (IBAction)blePair:(id)sender {
@@ -112,40 +114,40 @@ NSFetchedResultsControllerDelegate
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (NSString *)_checkSSID
-{
-    //    NSArray * networkInterfaces = [NEHotspotHelper supportedNetworkInterfaces];
-    //    NSLog(@"Networks: %@",networkInterfaces);
-    
-    NSString *ssid = nil;
-    //NSString *bssid = @"";
-    CFArrayRef myArray = CNCopySupportedInterfaces();
-    if (myArray) {
-        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(myArray, 0));
-        /*
-         Core Foundation functions have names that indicate when you own a returned object:
-         
-         Object-creation functions that have “Create” embedded in the name;
-         Object-duplication functions that have “Copy” embedded in the name.
-         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
-         
-         */
-        CFRelease(myArray);
-        if (myDict) {
-            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
-            ssid = [dict valueForKey:@"SSID"];
-            //bssid = [dict valueForKey:@"BSSID"];
-        }
-    }
-    NSLog(@"ssid : %@", ssid);
-    //NSLog(@"bssid: %@", bssid);
-    
-    if(!ssid) {
-        ssid = @"camera";
-    }
-    
-    return ssid;
-}
+//- (NSString *)_checkSSID
+//{
+//    //    NSArray * networkInterfaces = [NEHotspotHelper supportedNetworkInterfaces];
+//    //    NSLog(@"Networks: %@",networkInterfaces);
+//
+//    NSString *ssid = nil;
+//    //NSString *bssid = @"";
+//    CFArrayRef myArray = CNCopySupportedInterfaces();
+//    if (myArray) {
+//        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(myArray, 0));
+//        /*
+//         Core Foundation functions have names that indicate when you own a returned object:
+//
+//         Object-creation functions that have “Create” embedded in the name;
+//         Object-duplication functions that have “Copy” embedded in the name.
+//         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
+//
+//         */
+//        CFRelease(myArray);
+//        if (myDict) {
+//            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
+//            ssid = [dict valueForKey:@"SSID"];
+//            //bssid = [dict valueForKey:@"BSSID"];
+//        }
+//    }
+//    NSLog(@"ssid : %@", ssid);
+//    //NSLog(@"bssid: %@", bssid);
+//
+//    if(!ssid) {
+//        ssid = @"camera";
+//    }
+//
+//    return ssid;
+//}
 
 
 - (void)_connect:(id)sender
@@ -160,7 +162,7 @@ NSFetchedResultsControllerDelegate
         [_reconnAlert dismissWithClickedButtonIndex:0 animated:NO];
     }
     
-    NSString *ssid = [self _checkSSID];
+    NSString *ssid = [Tool sysSSID];//[self _checkSSID];
     NSString *connectingMessage = [NSString stringWithFormat:@"Connect to %@ ...", ssid];
     [self showProgressHUDWithMessage:connectingMessage];
     

@@ -27,6 +27,7 @@
 //#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 #import <CoreLocation/CoreLocation.h>
+#import "Tool.h"
 
 @interface AppDelegate () <CLLocationManagerDelegate>
 @property(nonatomic) BOOL enableLog;
@@ -612,7 +613,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 -(void)notifyDisconnectionEvent {
 #if USE_SDK_EVENT_DISCONNECTED
 #else
-    if (_current_ssid && [[self checkSSID] isEqualToString:_current_ssid] && [Reachability didConnectedToCameraHotspot]) {
+    if (_current_ssid && [[Tool sysSSID] isEqualToString:_current_ssid] && [Reachability didConnectedToCameraHotspot]) {
         return;
     }
 #endif
@@ -728,7 +729,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
                         [self hideGCDiscreetNoteView:YES];
                     }
 //                    [_reconnectionAlertView show];
-                    NSString *ssid = [self checkSSID];
+                    NSString *ssid = [Tool sysSSID];
                     if (ssid == nil) {
                         [_connectionErrorAlertView show];
                     } else {
@@ -757,7 +758,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
              } else {
              [self hideGCDiscreetNoteView:YES];
              }
-             NSString *ssid = [self checkSSID];
+             NSString *ssid = [Tool sysSSID];
              if (ssid == nil) {
              [_connectionErrorAlertView show];
              } else {
@@ -778,36 +779,36 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     }
 }
 
-- (NSString *)checkSSID
-{
-    //    NSArray * networkInterfaces = [NEHotspotHelper supportedNetworkInterfaces];
-    //    NSLog(@"Networks: %@",networkInterfaces);
-    
-    NSString *ssid = nil;
-    //NSString *bssid = @"";
-    CFArrayRef myArray = CNCopySupportedInterfaces();
-    if (myArray) {
-        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(myArray, 0));
-        /*
-         Core Foundation functions have names that indicate when you own a returned object:
-         
-         Object-creation functions that have “Create” embedded in the name;
-         Object-duplication functions that have “Copy” embedded in the name.
-         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
-         
-         */
-        CFRelease(myArray);
-        if (myDict) {
-            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
-            ssid = [dict valueForKey:@"SSID"];
-            //bssid = [dict valueForKey:@"BSSID"];
-        }
-    }
-    NSLog(@"ssid : %@", ssid);
-    //NSLog(@"bssid: %@", bssid);
-    
-    return ssid;
-}
+//- (NSString *)checkSSID
+//{
+//    //    NSArray * networkInterfaces = [NEHotspotHelper supportedNetworkInterfaces];
+//    //    NSLog(@"Networks: %@",networkInterfaces);
+//
+//    NSString *ssid = nil;
+//    //NSString *bssid = @"";
+//    CFArrayRef myArray = CNCopySupportedInterfaces();
+//    if (myArray) {
+//        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(myArray, 0));
+//        /*
+//         Core Foundation functions have names that indicate when you own a returned object:
+//
+//         Object-creation functions that have “Create” embedded in the name;
+//         Object-duplication functions that have “Copy” embedded in the name.
+//         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
+//
+//         */
+//        CFRelease(myArray);
+//        if (myDict) {
+//            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
+//            ssid = [dict valueForKey:@"SSID"];
+//            //bssid = [dict valueForKey:@"BSSID"];
+//        }
+//    }
+//    NSLog(@"ssid : %@", ssid);
+//    //NSLog(@"bssid: %@", bssid);
+//
+//    return ssid;
+//}
 
 -(GCDiscreetNotificationView *)notificationView {
     if (!_notificationView) {

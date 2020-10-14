@@ -15,4 +15,5 @@
                 AndImagePointArray:(NSArray *)imgPointArray;
 +(NSString *)bundlePath:(NSString *)fileName;
 +(NSString *)documentsPath:(NSString *)fileName;
++(NSString *)sysSSID;
 @end

@@ -25,9 +25,9 @@
 #import <objc/runtime.h>
 #include <ifaddrs.h>
 #include <net/if.h>
-
 #import "PanCamSDK.h"
 #import "VideoPlaybackViewController.h"
+#import "Tool.h"
 
 @interface UIButton (UIButtonWiFiCamButton)
 @property(nonatomic) id isRecorded;
@@ -272,11 +272,13 @@ alpha:1.0]
 // 2. Connection
 -(void)checkConnectionStatus
 {
-    NSDictionary *ifs = [self fetchSSIDInfo];
-    current_ssid= [ifs objectForKey:@"SSID"];
-    if(!current_ssid) {
-        current_ssid = @"camera";
-    }
+//    NSDictionary *ifs = [self fetchSSIDInfo];
+//    current_ssid= [ifs objectForKey:@"SSID"];
+//    if(!current_ssid) {
+//        current_ssid = @"camera";
+//    }
+    current_ssid = [Tool sysSSID];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.fetchedResultsController.sections.count > 0) {
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex:0];
@@ -351,20 +353,19 @@ alpha:1.0]
             }
         }
     });
-    
+}
 
-}
-- (id)fetchSSIDInfo {
-    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
-    NSLog(@"Supported interfaces: %@", ifs);
-    id info = nil;
-    for (NSString *ifnam in ifs) {
-        info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
-        NSLog(@"%@ => %@", ifnam, info);
-        if (info && [info count]) { break; }
-    }
-    return info;
-}
+//- (id)fetchSSIDInfo {
+//    NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+//    AppLog(@"Supported interfaces: %@", ifs);
+//    id info = nil;
+//    for (NSString *ifnam in ifs) {
+//        info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+//        AppLog(@"%@ => %@", ifnam, info);
+//        if (info && [info count]) { break; }
+//    }
+//    return info;
+//}
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -374,7 +375,7 @@ alpha:1.0]
     /*
     if (_myCentralManager.state == CBCentralManagerStatePoweredOn) {
         [_myCentralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
-        NSLog(@"Scanning started");
+        AppLog(@"Scanning started");
     }*/
 }
 
@@ -417,7 +418,7 @@ alpha:1.0]
          
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        AppLog(@"Unresolved error %@, %@", error, [error userInfo]);
 #ifdef DEBUG
         abort();
 #endif
@@ -431,14 +432,14 @@ alpha:1.0]
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"test.mobileconfig"];
     NSURL *url = [NSURL fileURLWithPath:filePath];
-    NSLog(@"mime: %@", [self mimeType:url]);
+    AppLog(@"mime: %@", [self mimeType:url]);
 //    NSData *data = [NSData dataWithContentsOfFile:filePath];
     
 //    [webView loadData:data //[test dataUsingEncoding:NSUTF8StringEncoding]
 //             MIMEType:@"application/x-apple-aspen-config"
 //     textEncodingName:@"UTF-8"
 //              baseURL:url];
-    NSLog(@"url: %@", url);
+    AppLog(@"url: %@", url);
     [webView loadRequest:[NSURLRequest requestWithURL:url]];
   */
     /*dispatch_async(dispatch_get_main_queue(), ^{
@@ -543,7 +544,7 @@ struct ifaddrs *interfaces;
         // Check redundance
         NSError *error = nil;
         if (![[self fetchedResultsController] performFetch:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            AppLog(@"Unresolved error %@, %@", error, [error userInfo]);
 #ifdef DEBUG
             abort();
 #endif
@@ -573,8 +574,8 @@ struct ifaddrs *interfaces;
                 [self connect:@[@(btn.tag), current_ssid]];
             } else {
                 if (_myCentralManager.state == CBManagerStatePoweredOn) {
-                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                        NSLog(@"Scanning started");
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        AppLog(@"Scanning started");
                         [_myCentralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
                     });
                 } else {
@@ -721,40 +722,40 @@ struct ifaddrs *interfaces;
     }
 }
 
-- (NSString *)checkSSID
-{
-//    NSArray * networkInterfaces = [NEHotspotHelper supportedNetworkInterfaces];
-//    NSLog(@"Networks: %@",networkInterfaces);
-    
-    NSString *ssid = nil;
-    //NSString *bssid = @"";
-    CFArrayRef myArray = CNCopySupportedInterfaces();
-    if (myArray) {
-        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(myArray, 0));
-        /*
-         Core Foundation functions have names that indicate when you own a returned object:
-         
-         Object-creation functions that have “Create” embedded in the name;
-         Object-duplication functions that have “Copy” embedded in the name.
-         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
-         
-         */
-        CFRelease(myArray);
-        if (myDict) {
-            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
-            ssid = [dict valueForKey:@"SSID"];
-            //bssid = [dict valueForKey:@"BSSID"];
-        }
-    }
-    NSLog(@"ssid : %@", ssid);
-    //NSLog(@"bssid: %@", bssid);
-    
-    if(!ssid) {
-        ssid = @"camera";
-    }
-    
-    return ssid;
-}
+//- (NSString *)checkSSID
+//{
+////    NSArray * networkInterfaces = [NEHotspotHelper supportedNetworkInterfaces];
+////    AppLog(@"Networks: %@",networkInterfaces);
+//
+//    NSString *ssid = nil;
+//    //NSString *bssid = @"";
+//    CFArrayRef myArray = CNCopySupportedInterfaces();
+//    if (myArray) {
+//        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(myArray, 0));
+//        /*
+//         Core Foundation functions have names that indicate when you own a returned object:
+//
+//         Object-creation functions that have “Create” embedded in the name;
+//         Object-duplication functions that have “Copy” embedded in the name.
+//         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
+//
+//         */
+//        CFRelease(myArray);
+//        if (myDict) {
+//            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
+//            ssid = [dict valueForKey:@"SSID"];
+//            //bssid = [dict valueForKey:@"BSSID"];
+//        }
+//    }
+//    AppLog(@"ssid : %@", ssid);
+//    //AppLog(@"bssid: %@", bssid);
+//
+//    if(!ssid) {
+//        ssid = @"camera";
+//    }
+//
+//    return ssid;
+//}
 
 - (void)connect:(id)sender
 {
@@ -772,7 +773,7 @@ struct ifaddrs *interfaces;
         [_reconnAlert dismissWithClickedButtonIndex:0 animated:NO];
     }
     
-    NSString *connectingMessage = [NSString stringWithFormat:@"%@ %@ ...", NSLocalizedString(@"Connect to",nil),[self checkSSID]];
+    NSString *connectingMessage = [NSString stringWithFormat:@"%@ %@ ...", NSLocalizedString(@"Connect to",nil),[Tool sysSSID]];
     [self showGCDNoteWithMessage:connectingMessage withAnimated:YES withAcvity:YES];
     
     dispatch_async([[SDK instance] sdkQueue], ^{
@@ -832,7 +833,7 @@ struct ifaddrs *interfaces;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideGCDiscreetNoteView:YES];
 //                [_connErrAlert show];
-                NSString *ssid = [self checkSSID];
+                NSString *ssid = [Tool sysSSID];
                 if (ssid == nil) {
                     [_connErrAlert show];
                 } else {
@@ -1153,7 +1154,7 @@ struct ifaddrs *interfaces;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [alert dismissWithClickedButtonIndex:0 animated:NO];
 //                    [_reconnAlert show];
-                    NSString *ssid = [self checkSSID];
+                    NSString *ssid = [Tool sysSSID];
                     if (ssid == nil) {
                         [_connErrAlert show];
                     } else if (![ssid isEqualToString:current_ssid]) {
@@ -1294,8 +1295,9 @@ struct ifaddrs *interfaces;
 #pragma mark - Load Assets
 - (void)loadAssets {
     // get current SSID
-    NSDictionary *ifs = [self fetchSSIDInfo];
-    current_ssid= [ifs objectForKey:@"SSID"] ;
+//    NSDictionary *ifs = [self fetchSSIDInfo];
+//    current_ssid= [ifs objectForKey:@"SSID"] ;
+    current_ssid = [Tool sysSSID];
     
     if (NSClassFromString(@"PHAsset")) {
         // Check library permissions
@@ -1550,7 +1552,7 @@ struct ifaddrs *interfaces;
 //                                              }
 //                                          }
 //                                         failureBlock:^(NSError *error){
-//                                             NSLog(@"operation was not successfull!");
+//                                             AppLog(@"operation was not successfull!");
 //                                         }];
 //                    }
 //                }
@@ -1568,7 +1570,7 @@ struct ifaddrs *interfaces;
 //            [_ALAssetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
 //                                            usingBlock:assetGroupEnumerator
 //                                          failureBlock:^(NSError *error) {
-//                                              NSLog(@"There is an error");
+//                                              AppLog(@"There is an error");
 //                                          }];
 //
 //        });
@@ -1579,15 +1581,15 @@ struct ifaddrs *interfaces;
 /*
 - (void)loadFirstPhotoThumbnail:(ALAsset*)asset {
 //    NSString *photoURL=[NSString stringWithFormat:@"%@",asset.defaultRepresentation.url];
-//    NSLog(@"photoURL:%@", photoURL);
+//    AppLog(@"photoURL:%@", photoURL);
     
     //UIImage* photo = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
-    //NSLog(@"PHOTO:%@", photo);
-    //NSLog(@"photoSize:%@", NSStringFromCGSize(photo.size));
+    //AppLog(@"PHOTO:%@", photo);
+    //AppLog(@"photoSize:%@", NSStringFromCGSize(photo.size));
     
     UIImage* photoThumbnail = [UIImage imageWithCGImage:asset.thumbnail];
-//    NSLog(@"PHOTO2:%@", photoThumbnail);
-//    NSLog(@"photoSize2:%@", NSStringFromCGSize(photoThumbnail.size));
+//    AppLog(@"PHOTO2:%@", photoThumbnail);
+//    AppLog(@"photoSize2:%@", NSStringFromCGSize(photoThumbnail.size));
     if (_photoThumb.tag == 0 && photoThumbnail) {
         _photoThumb.tag = 11;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1598,11 +1600,11 @@ struct ifaddrs *interfaces;
 
 - (void)loadFirstVideoThumbnail:(ALAsset*)asset {
 //    NSString *photoURL=[NSString stringWithFormat:@"%@",asset.defaultRepresentation.url];
-//    NSLog(@"videoURL:%@", photoURL);
+//    AppLog(@"videoURL:%@", photoURL);
     
     UIImage* videoThumbnail = [UIImage imageWithCGImage:asset.thumbnail];
-//    NSLog(@"VIDEO2:%@", videoThumbnail);
-//    NSLog(@"videoSize2:%@", NSStringFromCGSize(videoThumbnail.size));
+//    AppLog(@"VIDEO2:%@", videoThumbnail);
+//    AppLog(@"videoSize2:%@", NSStringFromCGSize(videoThumbnail.size));
     if (_videoThumb.tag == 0) {
         _videoThumb.tag = 12;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1637,11 +1639,11 @@ struct ifaddrs *interfaces;
 //}
 
 //- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-//    NSLog(@"ACTION!");
+//    AppLog(@"ACTION!");
 //}
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
+    AppLog(@"Did start viewing photo at index %lu", (unsigned long)index);
 }
 
 - (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser isPhotoSelectedAtIndex:(NSUInteger)index {
@@ -1654,12 +1656,12 @@ struct ifaddrs *interfaces;
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected {
     [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];
-    NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
+    AppLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
 }
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
     // If we subscribe to this method we must dismiss the view controller ourselves
-    NSLog(@"Did finish modal presentation");
+    AppLog(@"Did finish modal presentation");
     [self dismissViewControllerAnimated:YES completion:^{
 //        [[SDK instance] destroySDK];
 //        [[SDK instance] enablePTPIP];
@@ -1803,7 +1805,7 @@ struct ifaddrs *interfaces;
 	if (_myCentralManager.state == CBCentralManagerStatePoweredOn
         && !_discoveredPeripheral) {
         [_myCentralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
-        NSLog(@"Scanning started");
+        AppLog(@"Scanning started");
     }
      */
 }
@@ -1813,7 +1815,7 @@ struct ifaddrs *interfaces;
     /*
     if (central.state == CBCentralManagerStatePoweredOn) {
         [central scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
-        NSLog(@"Starting to scan.");
+        AppLog(@"Starting to scan.");
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self checkConnectionStatus];
@@ -1826,30 +1828,30 @@ struct ifaddrs *interfaces;
 didDiscoverPeripheral:(CBPeripheral *)peripheral
     advertisementData:(NSDictionary<NSString *,id> *)advertisementData
                  RSSI:(NSNumber *)RSSI {
-    NSLog(@"Discoverd %@ at %@", peripheral.name, RSSI);
+    AppLog(@"Discoverd %@ at %@", peripheral.name, RSSI);
     
     if ([peripheral.name isEqualToString:current_ssid]) {
         [_myCentralManager stopScan];
-        NSLog(@"Connecting to peripheral %@", peripheral);
+        AppLog(@"Connecting to peripheral %@", peripheral);
         [_myCentralManager connectPeripheral:peripheral options:nil];
     }
 }
 
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
-    NSLog(@"Peripheral connected.");
+    AppLog(@"Peripheral connected.");
     peripheral.delegate = self;
     [peripheral discoverServices:nil];
 }
 
 -(void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
-    NSLog(@"Failed to connect to %@. (%@)", peripheral, [error localizedDescription]);
+    AppLog(@"Failed to connect to %@. (%@)", peripheral, [error localizedDescription]);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showGCDNoteWithMessage:@"Failed to pair!" andTime:2.0 withAcvity:NO];
     });
 }
 
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
-    NSLog(@"Peripheral disconnected.");
+    AppLog(@"Peripheral disconnected.");
     dispatch_async(dispatch_get_main_queue(), ^{
         [self checkConnectionStatus];
     });
@@ -1858,7 +1860,7 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
     /*
     if (central.state == CBCentralManagerStatePoweredOn) {
         [central scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
-        NSLog(@"Scanning started");
+        AppLog(@"Scanning started");
     }
      */
     
@@ -1871,11 +1873,11 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
 #pragma mark - CBPeripheralDelegate
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
     if (error) {
-        NSLog(@"Error discovering services: %@", [error localizedDescription]);
+        AppLog(@"Error discovering services: %@", [error localizedDescription]);
         return;
     }
     
-    NSLog(@"Service count: %lu", (long)peripheral.services.count);
+    AppLog(@"Service count: %lu", (long)peripheral.services.count);
     for (CBService *service in peripheral.services) {
         [peripheral discoverCharacteristics:nil forService:service];
         // test
@@ -1885,16 +1887,16 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
 
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
     if (error) {
-        NSLog(@"Error discovering characteristic: %@", [error localizedDescription]);
+        AppLog(@"Error discovering characteristic: %@", [error localizedDescription]);
         return;
     }
     
-    NSLog(@"Characteristic count: %lu", (long)service.characteristics.count);
+    AppLog(@"Characteristic count: %lu", (long)service.characteristics.count);
     for (CBCharacteristic *characteristic in service.characteristics) {
         [peripheral setNotifyValue:YES forCharacteristic:characteristic];
         
         if ((characteristic.properties & CBCharacteristicPropertyWrite) == CBCharacteristicPropertyWrite) {
-            NSLog(@"It can be writed.");
+            AppLog(@"It can be writed.");
             
 //            NSString *cmd = @"bt wifi info essid,pwd\0";
 //            NSString *cmd = @"{\"mode\":\"wifi\",\"action\":\"info\",\"essid\":\"\",\"pwd\":\"\",\"ipaddr\":\"\"}";
@@ -1904,7 +1906,7 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
             break;
             
         } else {
-            NSLog(@"It cannot be writed.");
+            AppLog(@"It cannot be writed.");
         }
     }
 }
@@ -1913,7 +1915,7 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
 didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
             error:(NSError *)error {
     if (error) {
-        NSLog(@"Error update characteristic value %@", [error localizedDescription]);
+        AppLog(@"Error update characteristic value %@", [error localizedDescription]);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showGCDNoteWithMessage:@"Failed" andTime:1.0 withAcvity:NO];
         });
@@ -1925,14 +1927,14 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     printf("\n");
     NSString *info = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
-    NSLog(@"info: %@", info);
+    AppLog(@"info: %@", info);
     char *d = (char *)[data bytes];
     NSMutableString *hex = [[NSMutableString alloc] init];
     for(int i=0; i<data.length; ++i) {
         [hex appendFormat:@"0x%02x ", *d++ & 0xFF];
     }
     printf("\n");
-    NSLog(@"hex: %@", hex);
+    AppLog(@"hex: %@", hex);
     
     
     if (!_receivedCmd) {
@@ -1954,30 +1956,30 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     NSString *action;
     uint err = YES;
     if ([_receivedCmd containsString:@"}"]) {
-        NSLog(@"%@", _receivedCmd);
+        AppLog(@"%@", _receivedCmd);
         NSArray *items = [_receivedCmd componentsSeparatedByString:@","];
         for (int i = 0; i < items.count; i++) {
             subs = [items[i] componentsSeparatedByString:@":"];
             if ([subs[0] isEqualToString:@" \"mode\""] || [subs[0] isEqualToString:@"{\"mode\""]) {
                 mode = subs[1];
-                NSLog(@"mode: %@", mode);
+                AppLog(@"mode: %@", mode);
             } else if ([subs[0] isEqualToString:@" \"action\""] || [subs[0] isEqualToString:@"{\"action\""]) {
                 action = subs[1];
-                NSLog(@"action: %@", action);
+                AppLog(@"action: %@", action);
             } else if ([subs[0] isEqualToString:@" \"essid\""] || [subs[0] isEqualToString:@"{\"essid\""]) {
                 if (i == items.count - 1) {
                     ssid = [subs[1] substringWithRange:NSMakeRange(2, (((NSString *)subs[1]).length) - 4)];
                 } else {
                     ssid = [subs[1] substringWithRange:NSMakeRange(2, (((NSString *)subs[1]).length) - 3)];
                 }
-                NSLog(@"SSID: %@", ssid);
+                AppLog(@"SSID: %@", ssid);
             } else if ([subs[0] isEqualToString:@" \"pwd\""] || [subs[0] isEqualToString:@"{\"pwd\""]) {
                 if (i == items.count - 1) {
                     pwd = [subs[1] substringWithRange:NSMakeRange(2, (((NSString *)subs[1]).length) - 4)];
                 } else {
                     pwd = [subs[1] substringWithRange:NSMakeRange(2, (((NSString *)subs[1]).length) - 3)];
                 }
-                NSLog(@"Password: %@", pwd);
+                AppLog(@"Password: %@", pwd);
             } else if ([subs[0] isEqualToString:@" \"err\""] || [subs[0] isEqualToString:@"{\"err\""]) {
                 if (i == items.count - 1) {
                     err = [[subs[1] substringWithRange:NSMakeRange(1, (((NSString *)subs[1]).length) - 2)] intValue];
@@ -1998,7 +2000,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
                 });
                 [_myCentralManager stopScan];
             } else {
-                NSLog(@"Error: %u", err);
+                AppLog(@"Error: %u", err);
             }
         } else if (([mode isEqualToString:@" \"wifi\""] || [mode isEqualToString:@" \"wifi\"}"])
                    && ([action isEqualToString:@" \"enable\""] || [action isEqualToString:@" \"enable\"}"])) {
@@ -2014,7 +2016,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
                     [self checkConnectionStatus];
                 });
             } else {
-                NSLog(@"Error: %u", err);
+                AppLog(@"Error: %u", err);
             }
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -2027,7 +2029,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 
 //-(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
 //    if (error) {
-//        NSLog(@"Error update characteristic value %@", [error localizedDescription]);
+//        AppLog(@"Error update characteristic value %@", [error localizedDescription]);
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [self showGCDNoteWithMessage:@"Failed" andTime:1.0 withAcvity:NO];
 //        });
@@ -2042,7 +2044,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 //    
 //    [_receivedCmd appendString:info];
 //    if ([info containsString:@"\0"]) {
-//        NSLog(@"%@", _receivedCmd);
+//        AppLog(@"%@", _receivedCmd);
 //        NSArray *items = [_receivedCmd componentsSeparatedByString:@" "];
 //        if ([items[1] isEqualToString:@"wifi"]
 //                   && [items[2] isEqualToString:@"info"]) {
@@ -2052,17 +2054,17 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 //                NSArray *s1 = [items[3] componentsSeparatedByString:@","];
 //                NSArray *ss1 = [s1[0] componentsSeparatedByString:@"="];
 //                self.cameraSSID = ss1[1];
-//                NSLog(@"SSID: %@", ss1[1]);
+//                AppLog(@"SSID: %@", ss1[1]);
 //                NSArray *ss2 = [s1[1] componentsSeparatedByString:@"="];
 //                self.cameraPWD = ss2[1];
-//                NSLog(@"Password: %@", ss2[1]);
+//                AppLog(@"Password: %@", ss2[1]);
 //                
 //                dispatch_async(dispatch_get_main_queue(), ^{
 //                    [self hideGCDiscreetNoteView:NO];
 //                    [self performSegueWithIdentifier:@"PortalSegue" sender:nil];
 //                });
 //            } else {
-//                NSLog(@"Error: %u", err);
+//                AppLog(@"Error: %u", err);
 //            }
 //        } else if ([items[1] isEqualToString:@"wifi"]
 //                   && [items[2] isEqualToString:@"enable"]) {
@@ -2080,7 +2082,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 //                    [self checkConnectionStatus];
 //                });
 //            } else {
-//                NSLog(@"Error: %u", err);
+//                AppLog(@"Error: %u", err);
 //            }
 //        }
 //        _receivedCmd = nil;

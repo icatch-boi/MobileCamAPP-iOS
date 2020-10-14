@@ -6,6 +6,7 @@
 //
 
 #import "Tool.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
 
 @implementation Tool
 
@@ -82,6 +83,39 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:fileName];
+}
+
++ (NSString *)sysSSID
+{
+    NSString *ssid = nil;
+    //NSString *bssid = @"";
+    CFArrayRef ifs = CNCopySupportedInterfaces();
+    AppLog(@"Supported interfaces: %@", ifs);
+    if (ifs) {
+        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(ifs, 0));
+        /*
+         Core Foundation functions have names that indicate when you own a returned object:
+         
+         Object-creation functions that have “Create” embedded in the name;
+         Object-duplication functions that have “Copy” embedded in the name.
+         If you own an object, it is your responsibility to relinquish ownership (using CFRelease) when you have finished with it.
+         
+         */
+        CFRelease(ifs);
+        if (myDict) {
+            NSDictionary *dict = (NSDictionary *)CFBridgingRelease(myDict);
+            AppLog(@"The first interface => %@", dict);
+            ssid = [dict valueForKey:@"SSID"];
+            //bssid = [dict valueForKey:@"BSSID"];
+        }
+    }
+    AppLog(@"ssid : %@", ssid);
+    //AppLog(@"bssid: %@", bssid);
+    
+    if(!ssid) {
+        ssid = @"camera";
+    }
+    return ssid;
 }
 
 @end

@@ -77,7 +77,7 @@ enum RenderType {
 
 #pragma mark - CONTROL
 - (void)addObserver:(ICatchGLEventID)eventTypeId listener:(shared_ptr<ICatchIPancamListener>)listener isCustomize:(BOOL)isCustomize;
-- (void)addObserver:(StreamObserver *)observer;;
+- (void)addObserver:(StreamObserver *)observer;
 - (void)removeObserver:(StreamObserver *)observer;
 - (void)removeObserver:(ICatchGLEventID)eventTypeId listener:(shared_ptr<ICatchIPancamListener>)listener isCustomize:(BOOL)isCustomize;
 

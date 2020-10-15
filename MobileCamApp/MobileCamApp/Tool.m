@@ -92,6 +92,14 @@
     CFArrayRef ifs = CNCopySupportedInterfaces();
     AppLog(@"Supported interfaces: %@", ifs);
     if (ifs) {
+        /*
+         CNCopyCurrentNetworkInfo
+         Returns the network information for the specified interface when the requesting application meets one of following 4 requirements -.
+            1. application is using CoreLocation API and has the user's authorization to access location.
+            2. application has used the NEHotspotConfiguration API to configure the current Wi-Fi network.
+            3. application has active VPN configurations installed.
+            4. application has active NEDNSSettingsManager configurations installed.
+         */
         CFDictionaryRef myDict = CNCopyCurrentNetworkInfo((CFStringRef)CFArrayGetValueAtIndex(ifs, 0));
         /*
          Core Foundation functions have names that indicate when you own a returned object:
@@ -107,6 +115,8 @@
             AppLog(@"The first interface => %@", dict);
             ssid = [dict valueForKey:@"SSID"];
             //bssid = [dict valueForKey:@"BSSID"];
+        } else {
+            AppLog(@"Supported interface is null");
         }
     }
     AppLog(@"ssid : %@", ssid);

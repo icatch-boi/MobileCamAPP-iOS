@@ -1080,33 +1080,25 @@
 }
 
 - (BOOL)checkSDExist {
-//    BOOL retVal = YES;
-//    
-//    if (_control && _control->isSDCardExist() == false) {
-//        retVal = NO;
-//        AppLog(@"Please insert an SD card");
-//    }
-//    
-//    return retVal;
-    
-    bool retVal;
-    
     if (!_control) {
         AppLog(@"SDK doesn't working.");
-        return NO;
+        return YES;
     }
     
-//    int ret = _control->isSDCardExist(retVal);
-//    if (ret == ICH_SUCCEED) {
-//        return retVal;
-//    } else {
-//        AppLog(@"CheckSDExist failed. %d", ret);
-//        return NO;
-//    }
+    bool retVal = true;
+    int ret = _control->isSDCardExist(retVal);
+    if (ret == ICH_SUCCEED) {
+        if(retVal == false) {
+            AppLog(@"SD card isn't exist.");
+            return NO;
+        }
+    } else {
+        AppLog(@"CheckSDExist failed. %d", ret);
+        return YES;
+    }
     
-    _control->isSDCardExist(retVal);
-    AppLog(@"isSDCardExist: %d", retVal);
-    return  retVal;
+    AppLog(@"SD card is exist by default.");
+    return YES;
 }
 
 - (BOOL)zoomIn {

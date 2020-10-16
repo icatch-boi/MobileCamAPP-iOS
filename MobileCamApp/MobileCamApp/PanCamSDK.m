@@ -417,12 +417,11 @@
 - (void)destroypanCamSDK
 {
     if (_isSDKInitialized) {
+        AppLog(@"%s start\n", __func__);
         @synchronized(self) {
             _isSDKInitialized = NO;
         }
-        
-        AppLog(@"dealloc start\n");
-        
+
         [self destroyStream];
         [self destroyImage];
         
@@ -435,10 +434,8 @@
         }
         
         if (_panCamSession) {
-            AppLog(@"start destroy session");
             _panCamSession->destroySession();
             _panCamSession = NULL;
-            AppLog(@"destroy session done");
         }
         
         if (_videoFrameBuffer) {
@@ -454,7 +451,7 @@
         self.panCamVPlayback = NULL;
         self.panCamSDKInfo = NULL;
         
-        AppLog(@"dealloc end\n");
+        AppLog(@"%s end\n", __func__);
     }
 }
 
@@ -489,11 +486,10 @@
 
 - (void)destroyStream {
     if (_isStreamInitialized) {
+        AppLog(@"destroyStream in\n");
         @synchronized (self) {
             _isStreamInitialized = NO;
         }
-        
-        AppLog(@"destroyStream in\n");
         
         if (_panCamGLStream) {
             _panCamGLStream->clearFormat();
@@ -967,7 +963,7 @@
 #pragma mark - CONTROL
 - (void)addObserver:(ICatchGLEventID)eventTypeId listener:(shared_ptr<ICatchIPancamListener>)listener isCustomize:(BOOL)isCustomize
 {
-    TRACE();
+//    TRACE();
     if (listener && _panCamControl) {
         
 //        if (isCustomize) {
@@ -1063,7 +1059,7 @@
 
 - (void)removeObserver:(ICatchGLEventID)eventTypeId listener:(shared_ptr<ICatchIPancamListener>)listener isCustomize:(BOOL)isCustomize
 {
-    TRACE();
+//    TRACE();
     if (listener && _panCamControl) {
         if (isCustomize) {
 //            _panCamControl->delCustomEventListener(eventTypeId, listener);

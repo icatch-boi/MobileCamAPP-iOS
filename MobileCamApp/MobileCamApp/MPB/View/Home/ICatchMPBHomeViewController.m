@@ -85,9 +85,25 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
-    
-    [self loadDataIsPullup:NO];
-    [self updateLayout];
+
+    if(self.currentFileTable.totalFileCount == 0) {
+        [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_ERROR_CAPTURING_CAPTURE", nil)
+                          detailsMessage:nil mode:MBProgressHUDModeIndeterminate];
+        
+        dispatch_async(self.thumbnailQueue, ^{
+            [self.listViewModel requestFileListOfType:[self fileTypeMap]
+                                               pullup:NO
+                                              takenBy:self.takenBy];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateLayout];
+                [self hideProgressHUD:YES];
+            });
+        });
+    } else {
+//        [self updateLayout];
+        [self.collectionView reloadData];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -216,10 +232,14 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 #pragma mark - Load data
 - (void)loadDataIsPullup:(BOOL)pullup {
-    [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_ERROR_CAPTURING_CAPTURE", nil) detailsMessage:nil mode:MBProgressHUDModeIndeterminate];
+    [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_ERROR_CAPTURING_CAPTURE", nil)
+                      detailsMessage:nil mode:MBProgressHUDModeIndeterminate];
     
     dispatch_async(self.thumbnailQueue, ^{
-        [self.listViewModel requestFileListOfType:[self fileTypeMap] pullup:pullup takenBy:self.takenBy];
+        [self.currentFileTable clearFileTableData];
+        [self.listViewModel requestFileListOfType:[self fileTypeMap]
+                                           pullup:pullup
+                                          takenBy:self.takenBy];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideProgressHUD:YES];
@@ -1816,7 +1836,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 - (void)showProgressHUDWithMessage:(NSString *)message
                     detailsMessage:(NSString *)dMessage
                               mode:(MBProgressHUDMode)mode {
-    AppLog(@"%s", __func__);
+//    AppLog(@"%s", __func__);
     self.progressHUD.labelText = message;
     self.progressHUD.detailsLabelText = dMessage;
     self.progressHUD.mode = mode;
@@ -1840,7 +1860,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 }
 
 - (void)hideProgressHUD:(BOOL)animated {
-    AppLog(@"%s", __func__);
+//    AppLog(@"%s", __func__);
     [self.progressHUD hide:animated];
     //self.navigationController.navigationBar.userInteractionEnabled = YES;
     self.navigationController.toolbar.userInteractionEnabled = YES;

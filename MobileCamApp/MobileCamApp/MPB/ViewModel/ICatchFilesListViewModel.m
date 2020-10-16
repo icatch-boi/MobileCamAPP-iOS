@@ -26,19 +26,21 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
 - (void)requestFileListOfType:(NSUInteger)fileType pullup:(BOOL)pullup takenBy:(NSUInteger)takenBy {
     if (/*[self capableOf:WifiCamAbilityDefaultToPlayback]*/
         [[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE] ) {
+        
         [[SDK instance] setFileListAttribute:fileType order:0x01 takenBy:takenBy];
     }
     
-    vector<shared_ptr<ICatchFile>> allList;
-    
-    vector<shared_ptr<ICatchFile>> photoList;
-    
-    vector<shared_ptr<ICatchFile>> videoList;
+//    vector<shared_ptr<ICatchFile>> allList;
+//    vector<shared_ptr<ICatchFile>> photoList;
+//    vector<shared_ptr<ICatchFile>> videoList;
     
     int startIndex = 1;
     int endIndex = kOnceRequestMaxNumber;
 
-    if (/*![self capableOf:WifiCamAbilityDefaultToPlayback] || */ ![self capableOf:WifiCamAbilityGetFileByPagination] || ![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+    if (/*![self capableOf:WifiCamAbilityDefaultToPlayback] || */
+        ![self capableOf:WifiCamAbilityGetFileByPagination]
+        || ![[SDK instance] checkCameraCapabilities:ICH_CAM_NEW_PAGINATION_GET_FILE]) {
+        
         pullup = NO;
     }
     

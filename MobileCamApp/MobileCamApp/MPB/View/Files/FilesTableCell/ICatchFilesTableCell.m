@@ -45,8 +45,10 @@
     self.createTimeLabel.text = [self translateDate:fileInfo.file->getFileDate()];//[NSString stringWithFormat:@"%s", file->getFileDate().c_str()];
     if (fileInfo.file->getFileType() == ICH_FILE_TYPE_VIDEO) {
         self.durationLabel.text = [self translateSecond:fileInfo.file->getFileDuration()];
+        AppLog(@"%@ %@ %@ %@", self.nameLabel.text, self.durationLabel.text, self.createTimeLabel.text, self.sizeLabel.text);
     } else {
         self.durationLabel.text = @"";
+        AppLog(@"%@ %@ %@", self.nameLabel.text, self.sizeLabel.text, self.createTimeLabel.text);
     }
     
     _selectedImgView.image = fileInfo.selected ? [UIImage imageNamed:@"ic_done_red_24dp"] : [UIImage imageNamed:@"ic_done_gray_24dp"];
@@ -103,7 +105,7 @@
 - (NSString *)translateSecond:(int)msecond {
     
     //NSString *dateString = [NSString stringWithFormat:@"%s", date.c_str()];
-    AppLogDebug(AppLogTagAPP, @"video duration: %d", msecond); // 123444
+//    AppLogDebug(AppLogTagAPP, @"video duration: %d", msecond); // 123444
     int second = (int) msecond/1000;
     // translate to 00:22:00
     int s = (int) second %60;

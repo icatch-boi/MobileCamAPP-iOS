@@ -352,7 +352,7 @@
 }
 
 -(void)initControlPanel {
-    TRACE();
+//    TRACE();
     _pbCtrlPanel.frame = CGRectMake(0, self.view.frame.size.height - 52, self.view.frame.size.width, 52);
     _bufferingBgView.frame = CGRectMake(_pbCtrlPanel.frame.origin.x, _pbCtrlPanel.frame.origin.y - 10, _pbCtrlPanel.frame.size.width, 11);
     _bufferingView.frame = _bufferingBgView.frame;
@@ -452,7 +452,7 @@
             }
             [_pbTimer invalidate];
             
-            [[PanCamSDK instance] panCamStopPreview];
+//            [[PanCamSDK instance] panCamStopPreview];
             [self.motionManager stopGyroUpdates];
             [EAGLContext setCurrentContext:self.context];
             
@@ -607,6 +607,7 @@
     
     auto streamPlayingLister = make_shared<StreamSDKEventListener>(self, @selector(streamPlayingStatusCallback:));
     self.streamPalyingStObserver = [[StreamObserver alloc] initWithListener:streamPlayingLister eventType:ICH_GL_EVENT_VIDEO_STREAM_PLAYING_STATUS isCustomized:NO isGlobal:NO];
+    AppLog(@"Add Observer: [id]0x%x, [listener]%p", ICH_GL_EVENT_VIDEO_STREAM_PLAYING_STATUS, self.streamPalyingStObserver.listener.get());
     [[PanCamSDK instance] addObserver:self.streamPalyingStObserver];
     
     videoPbInsufficientPerformanceListener = make_shared<VideoPbInsufficientPerformanceListener>(self);
@@ -665,6 +666,7 @@
     }
     
     if (self.streamPalyingStObserver) {
+        AppLog(@"Remove Observer: [id]0x%x, [listener]%p", self.streamPalyingStObserver.eventType, self.streamPalyingStObserver.listener.get());
         [[PanCamSDK instance] removeObserver:self.streamPalyingStObserver];
         self.streamPalyingStObserver.listener.reset();
         self.streamPalyingStObserver = nil;
@@ -675,6 +677,7 @@
         [[PanCamSDK instance] removeObserver:ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE
                                     listener:videoPbInsufficientPerformanceListener
                                  isCustomize:NO];
+        videoPbInsufficientPerformanceListener.reset();
     }
 }
 
@@ -746,6 +749,8 @@
                     [self showProgressHUDNotice:@"Timeout!" showTime:2.0];
                 });
             } else {
+                [self removePlaybackObserver];
+                
 //                [[PanCamSDK instance] panCamStopPreview];
                 
                 [self.motionManager stopGyroUpdates];
@@ -757,7 +762,7 @@
                 }
                 self.played = NO;
                 
-                [self removePlaybackObserver];
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     _deleteButton.enabled = YES;
                     _actionButton.enabled = YES;
@@ -2479,7 +2484,7 @@ static double __timestampA = 0;
             
             [[SDK instance] destroySDK];
             
-            [[PanCamSDK instance] panCamStopPreview];
+//            [[PanCamSDK instance] panCamStopPreview];
             [self.motionManager stopGyroUpdates];
             [EAGLContext setCurrentContext:self.context];
             

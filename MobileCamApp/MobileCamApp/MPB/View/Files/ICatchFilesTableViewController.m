@@ -135,11 +135,21 @@ static NSString * const kGroupHeaderReuseID = @"GroupHeader";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ICatchFilesTableCell *cell = [tableView dequeueReusableCellWithIdentifier:self.reuseIdentifier forIndexPath:indexPath];
     
+//    AppLog("section: %ld, row: %ld", (long)indexPath.section, (long)indexPath.row);
     // Configure the cell...
     cell.fileInfo = self.currentFileTable.groups[indexPath.section].fileInfos[indexPath.row];
     cell.editState = self.currentFileTable.editState;
     
-    [self setupThumbnailWithCell:cell cellForRowAtIndexPath:indexPath];
+//    [self setupThumbnailWithCell:cell cellForRowAtIndexPath:indexPath];
+    
+    NSString *cachedKey = [NSString stringWithFormat:@"%s", cell.fileInfo.file->getFileName().c_str()]; //@(fileInfo.file->getFileHandle()).stringValue;
+    UIImage *image = [[ZJImageCache sharedImageCache] imageFromCacheForKey:cachedKey];
+    if (image) {
+        cell.thumbnail = image;
+    } else {
+        cell.thumbnail = [UIImage imageNamed:@"empty_photo"];
+        [self requestThumbnailHandleWithFileInfo:cell.fileInfo cellForRowAtIndexPath:indexPath];
+    }
     
     return cell;
 }
@@ -212,19 +222,19 @@ static NSString * const kGroupHeaderReuseID = @"GroupHeader";
     }
 }
 
-- (void)setupThumbnailWithCell:(ICatchFilesTableCell *)cell cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ICatchFileInfo *fileInfo = self.currentFileTable.groups[indexPath.section].fileInfos[indexPath.row];
-    
-    NSString *cachedKey = [NSString stringWithFormat:@"%s", fileInfo.file->getFileName().c_str()]; //@(fileInfo.file->getFileHandle()).stringValue;
-    UIImage *image = [[ZJImageCache sharedImageCache] imageFromCacheForKey:cachedKey];
-    if (image) {
-        cell.thumbnail = image;
-    } else {
-        cell.thumbnail = [UIImage imageNamed:@"empty_photo"];
-        
-        [self requestThumbnailHandleWithFileInfo:fileInfo cellForRowAtIndexPath:indexPath];
-    }
-}
+//- (void)setupThumbnailWithCell:(ICatchFilesTableCell *)cell cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    ICatchFileInfo *fileInfo = self.currentFileTable.groups[indexPath.section].fileInfos[indexPath.row];
+//
+//    NSString *cachedKey = [NSString stringWithFormat:@"%s", fileInfo.file->getFileName().c_str()]; //@(fileInfo.file->getFileHandle()).stringValue;
+//    UIImage *image = [[ZJImageCache sharedImageCache] imageFromCacheForKey:cachedKey];
+//    if (image) {
+//        cell.thumbnail = image;
+//    } else {
+//        cell.thumbnail = [UIImage imageNamed:@"empty_photo"];
+//
+//        [self requestThumbnailHandleWithFileInfo:fileInfo cellForRowAtIndexPath:indexPath];
+//    }
+//}
 
 - (void)requestThumbnailHandleWithFileInfo:(ICatchFileInfo *)fileInfo cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cachedKey = [NSString stringWithFormat:@"%s", fileInfo.file->getFileName().c_str()]; //@(fileInfo.file->getFileHandle()).stringValue;

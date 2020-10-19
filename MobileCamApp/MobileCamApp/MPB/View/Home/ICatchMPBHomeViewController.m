@@ -1883,7 +1883,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     if (_displayWayItems == nil) {
         _displayWayItems = @[
                             @{@"title": @"", @"imageName": @"UIBarButtonItemTable", @"methodName": @"enterModifyWiFiViewWithCell:" },
-                            @{@"title": @"", @"imageName": @"UIBarButtonItemTable", @"methodName": @"longPressDeleteCamera:"},
+                            @{@"title": @"", @"imageName": @"UIBarButtonItemList", @"methodName": @"longPressDeleteCamera:"},
                             @{@"title": @"", @"imageName": @"UIBarButtonItemGrid", @"methodName": @"longPressDeleteCamera:"},
         ];
     }

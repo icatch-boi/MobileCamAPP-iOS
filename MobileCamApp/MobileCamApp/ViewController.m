@@ -2438,13 +2438,21 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (void)stillCapture {
-    [self showProgressHUDWithMessage:nil];
+//    [self showProgressHUDWithMessage:nil];
+    if (![self capableOf:WifiCamAbilityNewCaptureWay]) {
+        [self showProgressHUDWithMessage:nil];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOn];
+        });
+    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (![_ctrl.propCtrl checkSDExist]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil)
                                    showTime:1.0];
+                [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
             });
             return;
         }
@@ -2452,6 +2460,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil)
                                    showTime:1.0];
+                [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
             });
             return;
         }
@@ -2471,16 +2480,18 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 AudioServicesPlaySystemSound(_stillCaptureSound);
             }
             
-            AppLog(@"Stop PV");
-            self.PVRun = NO;
-            dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
-            if (dispatch_semaphore_wait(_previewSemaphore, time) != 0) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self hideProgressHUD:YES];
-                    [self showErrorAlertView];
-                    [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
-                });
-                return;
+            if (![self capableOf:WifiCamAbilityNewCaptureWay]) {
+                AppLog(@"Stop PV");
+                self.PVRun = NO;
+                dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
+                if (dispatch_semaphore_wait(_previewSemaphore, time) != 0) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self hideProgressHUD:YES];
+                        [self showErrorAlertView];
+                        [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
+                    });
+                    return;
+                }
             }
         } else {
             AppLog(@"Don't stop right now.");
@@ -2521,7 +2532,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 AppLog(@"Stop streaming ASAP before camera take a picture.");
                 AudioServicesPlaySystemSound(_stillCaptureSound);
                 
-                if ([self capableOf:WifiCamAbilityLatestDelayCapture]) {
+                if ([self capableOf:WifiCamAbilityLatestDelayCapture] && ![self capableOf:WifiCamAbilityNewCaptureWay]) {
                     AppLog(@"Stop PV");
                     self.PVRun = NO;
                     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC);
@@ -3766,7 +3777,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     }
 }
 
-// MARK: - sICatchWificamListener
+// MARK: - ICatchWificamListener
 
 - (void)updateMovieRecState:(MovieRecState)state
 {
@@ -3856,10 +3867,21 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             AppLog(@"wait 1 second");
             [NSThread sleepForTimeInterval:1]; // old method must slow start media stream
         }
-        self.PVRun = YES;
         _camera.previewMode = WifiCamPreviewModeCameraOff;
-        dispatch_semaphore_signal(_previewSemaphore);
-        [self runPreview:ICH_CAM_STILL_PREVIEW_MODE];
+        
+//        self.PVRun = YES;
+//        dispatch_semaphore_signal(_previewSemaphore);
+//        [self runPreview:ICH_CAM_STILL_PREVIEW_MODE];
+
+        if (![self capableOf:WifiCamAbilityNewCaptureWay]) {
+            dispatch_semaphore_signal(_previewSemaphore);
+            self.PVRun = YES;
+            [self runPreview:ICH_CAM_STILL_PREVIEW_MODE];
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self updatePreviewSceneByMode:_camera.previewMode];
+            });
+        }
     });
 }
 

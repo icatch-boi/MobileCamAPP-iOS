@@ -281,8 +281,8 @@
         @(PTPDpcWhiteBalance_AUTO):NSLocalizedString(@"SETTING_AWB_AUTO", @""),
         @(PTPDpcWhiteBalance_CLOUDY):NSLocalizedString(@"SETTING_AWB_CLOUDY", @""),
         @(PTPDpcWhiteBalance_DAYLIGHT):NSLocalizedString(@"SETTING_AWB_DAYLIGHT", @""),
-        @(PTPDpcWhiteBalance_TUNGSTEN):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
         @(PTPDpcWhiteBalance_FLUORESCENT):NSLocalizedString(@"SETTING_AWB_FLUORESECENT", @""),
+        @(PTPDpcWhiteBalance_TUNGSTEN):NSLocalizedString(@"SETTING_AWB_INCANDESCENT", @""),
         @(PTPDpcWhiteBalance_UNDERWATER):NSLocalizedString(@"SETTING_AWB_UNDERWATER", @"")
     };
   

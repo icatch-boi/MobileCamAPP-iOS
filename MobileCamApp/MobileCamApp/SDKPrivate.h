@@ -68,8 +68,9 @@ typedef NS_ENUM(NSInteger, PTPDpcWhiteBalance) {
     PTPDpcWhiteBalance_FLUORESCENT,
     PTPDpcWhiteBalance_TUNGSTEN,
      */
-    PTPDpcWhiteBalance_TUNGSTEN,
     PTPDpcWhiteBalance_FLUORESCENT,
+    PTPDpcWhiteBalance_TUNGSTEN,
+    
 
     PTPDpcWhiteBalance_UNDERWATER,
 };

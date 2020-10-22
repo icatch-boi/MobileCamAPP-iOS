@@ -63,7 +63,7 @@
     if (fileSize > 0) {
       progress = (float)downloadedBytes / (float)fileSize;
     }
-    AppLog(@"downloadedBytes: %llu", downloadedBytes);
+//    AppLog(@"downloadedBytes: %llu", downloadedBytes);
   }
   
   return MAX(0, MIN(100, progress*100));

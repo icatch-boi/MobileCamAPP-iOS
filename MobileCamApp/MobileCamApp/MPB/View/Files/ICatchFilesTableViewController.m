@@ -318,7 +318,7 @@ static NSString * const kGroupHeaderReuseID = @"GroupHeader";
 }
 
 #pragma mark -
--(void)selectAll {
+-(void)selectAll:(BOOL)isSelect {
     
     if (self.currentFileTable.editState) {
         
@@ -334,7 +334,7 @@ static NSString * const kGroupHeaderReuseID = @"GroupHeader";
                 ICatchFileGroup *group = self.currentFileTable.groups[indexPath.section];
                 ICatchFileInfo *fileInfo = group.fileInfos[indexPath.row];
                 
-                fileInfo.selected = !fileInfo.isSelected;
+                fileInfo.selected = isSelect;
                 
                 //            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self selectFileHandleWithFileInfo:fileInfo];

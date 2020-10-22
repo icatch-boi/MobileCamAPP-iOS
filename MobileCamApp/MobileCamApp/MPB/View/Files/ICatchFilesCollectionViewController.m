@@ -282,7 +282,7 @@ static NSString * const kHeaderReuseIdentifier = @"FilesHeaderView";
 }
 
 #pragma mark -
--(void)selectAll {
+-(void)selectAll:(BOOL)isSelect {
     if (self.currentFileTable.editState) {
         
         for (int i = 0; i<_currentFileTable.totalFileCount; ++i) {
@@ -291,7 +291,7 @@ static NSString * const kHeaderReuseIdentifier = @"FilesHeaderView";
             ICatchFileGroup *group = self.currentFileTable.groups[indexPath.section];
             ICatchFileInfo *fileInfo = group.fileInfos[indexPath.row];
             
-            fileInfo.selected = !fileInfo.isSelected;
+            fileInfo.selected = isSelect;
             
             //        [collectionView reloadItemsAtIndexPaths:@[indexPath]];
             [self selectFileHandleWithFileInfo:fileInfo];

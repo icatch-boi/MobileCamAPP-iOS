@@ -510,7 +510,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     
     NSIndexPath *ip = [NSIndexPath indexPathForItem:0 inSection:0];
     ICatchHomeCollectionCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"MPBHomeCell" forIndexPath:ip];
-    [cell selectAll];
+    [cell selectAll: sel.tag==1?YES:NO];
 }
 
 #pragma mark - UICollectonViewDataSource
@@ -1346,7 +1346,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
             }
         };
     } else {
-        [self showAlertViewWithTitle:NSLocalizedString(@"SaveError", nil) message:nil cancelButtonTitle:NSLocalizedString(@"Sure", @"")];
+//        [self showAlertViewWithTitle:NSLocalizedString(@"SaveError", nil) message:nil cancelButtonTitle:NSLocalizedString(@"Sure", @"")];
         
         [self.actionFiles removeAllObjects];
         [self.actionFileType removeAllObjects];
@@ -1384,13 +1384,15 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     
     // Show processing notice
     if (!handledNum) {
-        [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_WAIT_FOR_VIDEO", nil)
-                          detailsMessage:nil
-                                    mode:MBProgressHUDModeDeterminate];
+//        [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_WAIT_FOR_VIDEO", nil)
+//                          detailsMessage:nil
+//                                    mode:MBProgressHUDModeDeterminate];
+        [self showDownloadHUDWithMessage:NSLocalizedString(@"STREAM_WAIT_FOR_VIDEO", nil)];
     } else {
-        [self showProgressHUDWithMessage:msg
-                          detailsMessage:nil
-                                    mode:MBProgressHUDModeDeterminate];
+//        [self showProgressHUDWithMessage:msg
+//                          detailsMessage:nil
+//                                    mode:MBProgressHUDModeDeterminate];
+        [self showDownloadHUDWithMessage:msg];
     }
     // Just in case, _selItemsTable.selectedCellsn wouldn't be destoried after app enter background
     [_ctrl.fileCtrl tempStoreDataForBackgroundDownload:self.currentFileTable.selectedFiles];
@@ -1485,6 +1487,9 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                 
             } else {
                 [self hideProgressHUD:YES];
+                [self showAlertViewWithTitle:NSLocalizedString(@"CanceledDownload", nil)
+                                     message:nil
+                           cancelButtonTitle:NSLocalizedString(@"Sure", @"")];
             }
         });
         
@@ -1496,8 +1501,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 - (NSArray *)downloadSelectedFiles
 {
     AppLog(@"%s", __func__);
-    NSInteger downloadedPhotoNum = 0, downloadedVideoNum = 0;
-    NSInteger downloadFailedCount = 0;
+    NSInteger downloadedPhotoNum = 0, downloadedVideoNum = 0, downloadFailedCount = 0;
     
     shared_ptr<ICatchFile> f = nullptr;
     NSString *fileName = nil;
@@ -1536,15 +1540,21 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                         [self.actionFiles addObject:[NSURL fileURLWithPath:filePath]];
                         [self.actionFileType addObject:[NSNumber numberWithInt:f->getFileType()]];
                     } else {
-                        [self downloadSelectedFile:f andFailedCount:(&downloadFailedCount) andPhotoCount:(&downloadedPhotoNum) andVideoCount:(&downloadedVideoNum)];
+                        [self downloadSelectedFile:f andFailedCount:(&downloadFailedCount)
+                                     andPhotoCount:(&downloadedPhotoNum)
+                                     andVideoCount:(&downloadedVideoNum)];
                     }
                     break;
                 } else if ([name isEqualToString:[mediaDirectoryContents lastObject]]) {
-                    [self downloadSelectedFile:f andFailedCount:(&downloadFailedCount) andPhotoCount:(&downloadedPhotoNum) andVideoCount:(&downloadedVideoNum)];
+                    [self downloadSelectedFile:f andFailedCount:(&downloadFailedCount)
+                                 andPhotoCount:(&downloadedPhotoNum)
+                                 andVideoCount:(&downloadedVideoNum)];
                 }
             }
         } else {
-            [self downloadSelectedFile:f andFailedCount:(&downloadFailedCount) andPhotoCount:(&downloadedPhotoNum) andVideoCount:(&downloadedVideoNum)];
+            [self downloadSelectedFile:f andFailedCount:(&downloadFailedCount)
+                         andPhotoCount:(&downloadedPhotoNum)
+                         andVideoCount:(&downloadedVideoNum)];
         }
     }
     
@@ -1556,7 +1566,10 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     return [NSArray arrayWithObjects:@(downloadedPhotoNum), @(downloadedVideoNum), @(downloadFailedCount), nil];
 }
 
-- (void)downloadSelectedFile:(shared_ptr<ICatchFile>)f andFailedCount:(NSInteger *)downloadFailedCount andPhotoCount:(NSInteger *)downloadedPhotoNum andVideoCount:(NSInteger *)downloadedVideoNum
+- (void)downloadSelectedFile:(shared_ptr<ICatchFile>)f
+              andFailedCount:(NSInteger *)downloadFailedCount
+               andPhotoCount:(NSInteger *)downloadedPhotoNum
+               andVideoCount:(NSInteger *)downloadedVideoNum
 {
     do {
         self.downloadedFileNumber ++;
@@ -1569,7 +1582,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
         if (![[SDK instance] p_downloadFile2:f]) {
             ++downloadFailedCount;
             self.downloadFileProcessing = NO;
-            continue;
+            break;
         }
         
         self.downloadFileProcessing = NO;
@@ -1636,7 +1649,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                 //self.downloadedPercent = [_ctrl.fileCtrl requestDownloadedPercent:f];
                 self.downloadedPercent = [_ctrl.fileCtrl requestDownloadedPercent2:locatePath
                                                                           fileSize:fileSize];
-                AppLog(@"percent: %lu", (unsigned long)self.downloadedPercent);
+//                AppLog(@"percent: %lu", (unsigned long)self.downloadedPercent);
                 
                 [NSThread sleepForTimeInterval:0.2];
             }
@@ -1782,7 +1795,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 - (MBProgressHUD *)progressHUD {
     if (!_progressHUD) {
         _progressHUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        _progressHUD.minSize = CGSizeMake(120, 120);
+        _progressHUD.minSize = CGSizeMake(140, 140);
         _progressHUD.minShowTime = 1;
         // The sample image is based on the
         // work by: http://www.pixelpressicons.com
@@ -1805,6 +1818,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     AppLog(@"%s", __func__);
     self.navigationController.toolbar.userInteractionEnabled = NO;
     if (message) {
+        self.progressHUD.showActionButton = NO;
         [self.view bringSubviewToFront:self.progressHUD];
         [self.progressHUD show:YES];
         self.progressHUD.labelText = message;
@@ -1821,6 +1835,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 - (void)showProgressHUDCompleteMessage:(NSString *)message {
     AppLog(@"%s", __func__);
     if (message) {
+        self.progressHUD.showActionButton = NO;
         if (self.progressHUD.isHidden) [self.progressHUD show:YES];
         self.progressHUD.labelText = message;
         self.progressHUD.detailsLabelText = nil;
@@ -1837,6 +1852,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                     detailsMessage:(NSString *)dMessage
                               mode:(MBProgressHUDMode)mode {
 //    AppLog(@"%s", __func__);
+    self.progressHUD.showActionButton = NO;
     self.progressHUD.labelText = message;
     self.progressHUD.detailsLabelText = dMessage;
     self.progressHUD.mode = mode;
@@ -1844,6 +1860,19 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     [self.view bringSubviewToFront:self.progressHUD];
     [self.progressHUD show:YES];
     //self.navigationController.navigationBar.userInteractionEnabled = NO;
+    self.navigationController.toolbar.userInteractionEnabled = NO;
+}
+
+- (void)showDownloadHUDWithMessage:(NSString *)message {
+//    AppLog(@"%s", __func__);
+    self.progressHUD.labelText = message;
+    self.progressHUD.mode = MBProgressHUDModeAction;
+    self.progressHUD.dimBackground = YES;
+    [self.view bringSubviewToFront:self.progressHUD];
+    self.progressHUD.showActionButton = YES;
+    [self.progressHUD setActionButtonPressedCallback:@selector(progressHUDactionButtonPressed)
+                                            onTarget:self withObject:nil];
+    [self.progressHUD show:YES];
     self.navigationController.toolbar.userInteractionEnabled = NO;
 }
 
@@ -1864,6 +1893,17 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     [self.progressHUD hide:animated];
     //self.navigationController.navigationBar.userInteractionEnabled = YES;
     self.navigationController.toolbar.userInteractionEnabled = YES;
+}
+
+- (void)progressHUDactionButtonPressed {
+    AppLog(@"%s", __func__);
+    //TODO: cancel download
+    
+    self.cancelDownload = YES;
+    if ([_ctrl.fileCtrl isBusy]) {
+        // Cancel download
+        [_ctrl.fileCtrl cancelDownload];
+    }
 }
 
 #pragma mark - Lazy load

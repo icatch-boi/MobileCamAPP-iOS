@@ -61,6 +61,9 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	id objectForExecution;
 	UILabel *label;
 	UILabel *detailsLabel;
+    UIButton *actionButton;
+    SEL methodForActionButtonPressed;
+    id targetForActionButtonPressed;
 	BOOL isFinished;
 	CGAffineTransform rotationTransform;
 }
@@ -187,6 +190,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;
+        self.showActionButton = NO;
 		self.contentMode = UIViewContentModeCenter;
 		self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
 								| UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -369,6 +373,9 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	isFinished = YES;
 	self.alpha = 0.0f;
+    if ([actionButton superview]) {
+        [actionButton removeFromSuperview];
+    }
 	if (removeFromSuperViewOnHide) {
 		[self removeFromSuperview];
 	}
@@ -521,7 +528,37 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	} else if (mode == MBProgressHUDModeText) {
 		[indicator removeFromSuperview];
 		self.indicator = nil;
-	}
+    } else if (mode == MBProgressHUDModeAction) {
+        if (!isRoundIndicator) {
+            // Update to determinante indicator
+            [indicator removeFromSuperview];
+            self.indicator = MB_AUTORELEASE([[MBRoundProgressView alloc] init]);
+            [self addSubview:indicator];
+        }
+        actionButton = [[UIButton alloc] initWithFrame:self.bounds];
+        [actionButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+        [actionButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+        [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        actionButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        [actionButton addTarget:self action:@selector(actionButtonPressed)
+               forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
+- (void)actionButtonPressed {
+//    if (methodForActionButtonPressed) {
+//        [targetForActionButtonPressed performSelector:methodForActionButtonPressed];
+//    }
+    
+    SEL selector = methodForActionButtonPressed;
+    IMP imp = [targetForActionButtonPressed methodForSelector:selector];
+    void (*func)(id, SEL) = (void *)imp;
+    func(targetForActionButtonPressed, selector);
+}
+
+-(void)setActionButtonPressedCallback:(SEL)method onTarget:(id)target withObject:(id)object {
+    methodForActionButtonPressed = method;
+    targetForActionButtonPressed = target;
 }
 
 #pragma mark - Layout
@@ -591,7 +628,21 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	detailsLabelF.origin.x = round((bounds.size.width - detailsLabelSize.width) / 2) + xPos;
 	detailsLabelF.size = detailsLabelSize;
 	detailsLabel.frame = detailsLabelF;
-	
+    
+    if (_showActionButton) {
+        if (![actionButton superview]) {
+            yPos += detailsLabelF.size.height;
+            yPos += kPadding*2;
+            actionButton.frame = CGRectMake(round((bounds.size.width - 80) / 2) + xPos,
+                                            yPos, 80, 25);
+            [self addSubview:actionButton];
+        }
+    } else {
+        if ([actionButton superview]) {
+            [actionButton removeFromSuperview];
+        }
+    }
+    
 	// Enforce minsize and quare rules
 	if (square) {
 		CGFloat max = MAX(totalSize.width, totalSize.height);

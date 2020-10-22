@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)filesTableViewControllerWithReuseIdentifier:(NSString *)identifier;
 
--(void)selectAll;
+-(void)selectAll:(BOOL)isSelect;
 @end
 
 NS_ASSUME_NONNULL_END

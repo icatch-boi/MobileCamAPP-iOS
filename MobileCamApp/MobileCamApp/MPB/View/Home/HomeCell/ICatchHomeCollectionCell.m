@@ -170,12 +170,12 @@
 }
 
 #pragma mark -
--(void)selectAll{
+-(void)selectAll:(BOOL)isSelect {
     if (self.currentViewController == self.filesTableView
         || self.currentViewController == self.filesNoIconTableView) {
-        [self.filesTableView selectAll];
+        [self.filesTableView selectAll:isSelect];
     } else if(self.currentViewController == self.filesCollectionView) {
-        [self.filesCollectionView selectAll];
+        [self.filesCollectionView selectAll:isSelect];
     }
 }
 

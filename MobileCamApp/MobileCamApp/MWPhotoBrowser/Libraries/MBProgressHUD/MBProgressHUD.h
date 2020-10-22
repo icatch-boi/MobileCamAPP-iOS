@@ -45,7 +45,9 @@ typedef enum {
 	/** Shows a custom view */
 	MBProgressHUDModeCustomView,
 	/** Shows only labels */
-	MBProgressHUDModeText
+	MBProgressHUDModeText,
+    /** Show with a action button */
+    MBProgressHUDModeAction,
 } MBProgressHUDMode;
 
 typedef enum {
@@ -270,6 +272,11 @@ typedef void (^MBProgressHUDCompletionBlock)();
 		  completionBlock:(MBProgressHUDCompletionBlock)completion;
 
 /**
+ 
+ */
+- (void)setActionButtonPressedCallback:(SEL)method onTarget:(id)target withObject:(id)object;
+
+/**
  * A block that gets called after the HUD was completely hidden.
  */
 @property (copy) MBProgressHUDCompletionBlock completionBlock;
@@ -438,6 +445,11 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * Force the HUD dimensions to be equal if possible. 
  */
 @property (assign, getter = isSquare) BOOL square;
+
+/**
+ * Show a customized action button
+ */
+@property (assign) BOOL showActionButton;
 
 @end
 

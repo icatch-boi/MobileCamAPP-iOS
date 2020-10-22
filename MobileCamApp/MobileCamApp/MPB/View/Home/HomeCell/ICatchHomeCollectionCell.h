@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<ICatchHomeCollectionCellDelegate> delegate;
 
--(void)selectAll;
+-(void)selectAll:(BOOL)isSelect;
 @end
 
 NS_ASSUME_NONNULL_END

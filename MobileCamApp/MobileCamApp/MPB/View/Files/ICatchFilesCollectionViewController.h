@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)filesCollectionViewController;
 
--(void)selectAll;
+-(void)selectAll:(BOOL)isSelect;
 
 @end
 

@@ -258,14 +258,14 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     }
 //    [self showLiveGUIIfNeeded:_camera.previewMode];
     
-#if 0
+/*
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning", nil)
                                          message           :NSLocalizedString(@"Support iCatch 360Cam & SBC", nil)//NSLocalizedString(@"Only for iCatch 360Cam.", nil)
                                          delegate          :self
                                          cancelButtonTitle :NSLocalizedString(@"OK", nil)
                                          otherButtonTitles :nil, nil];
     [alert show];
-#endif
+*/
     
     if ([self capableOf:WifiCamAbilityBatteryLevel]) {
         [self updateBatteryLevelIcon];
@@ -381,13 +381,6 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     self.zoomSlider.value = curZoomRatio/10.0;
     _zoomValueLabel.text = [NSString stringWithFormat:@"x%0.1f",curZoomRatio/10.0];
     
-    // Check SD card
-    if (![_ctrl.propCtrl checkSDExist]) {
-        [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil) showTime:2.0];
-    } else if ((_camera.previewMode == WifiCamPreviewModeCameraOff && _camera.storageSpaceForImage <= 0)
-               || (_camera.previewMode == WifiCamPreviewModeCameraOff && _camera.storageSpaceForVideo==0)) {
-        [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil) showTime:2.0];
-    }
     
     if (_PVRun) {
         return;
@@ -486,7 +479,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 }
 
 - (void)dealloc {
-    NSLog(@"**DEALLOC**");
+    AppLog(@"%s", __func__);
     [self p_deconstructPreviewData];
     [self destroyGLData];
     
@@ -745,35 +738,56 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     return _progressHUD;
 }
 
-- (void)showProgressHUDNotice:(NSString *)message
-                     showTime:(NSTimeInterval)time {
-    if (message) {
-        [self.progressHUD show:YES];
-        self.progressHUD.labelText = message;
-        self.progressHUD.mode = MBProgressHUDModeText;
-        [self.progressHUD hide:YES afterDelay:time];
-    } else {
-        [self.progressHUD hide:YES];
-    }
-}
-
 - (void)showProgressHUDWithMessage:(NSString *)message {
     self.progressHUD.labelText = message;
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     [self.progressHUD show:YES];
 }
-- (void)showProgressHUDNotice:(NSString *)title
+
+- (void)showProgressHUDNotice:(NSString *)message
+                     showTime:(NSTimeInterval)time {
+//    if (message) {
+//        [self.progressHUD show:YES];
+//        self.progressHUD.labelText = message;
+//        self.progressHUD.mode = MBProgressHUDModeText;
+//        [self.progressHUD hide:YES afterDelay:time];
+//    } else {
+//        [self.progressHUD hide:YES];
+//    }
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view.window];
+    hud.minSize = CGSizeMake(60, 60);
+    hud.minShowTime = 1;
+    hud.dimBackground = YES;
+    [self.view.window addSubview:hud];
+    [hud show:YES];
+    hud.labelText = message;
+    hud.mode = MBProgressHUDModeText;
+    [hud hide:YES afterDelay:time];
+}
+
+- (void)showProgressHUDNotice:(NSString *)message
                        detail:(NSString *)detailmsg
                      showTime:(NSTimeInterval)time {
-    if (title) {
-        [self.progressHUD show:YES];
-        self.progressHUD.labelText = title;
-        self.progressHUD.detailsLabelText = detailmsg;
-        self.progressHUD.mode = MBProgressHUDModeText;
-        [self.progressHUD hide:YES afterDelay:time];
-    } else {
-        [self.progressHUD hide:YES];
-    }
+//    if (title) {
+//        [self.progressHUD show:YES];
+//        self.progressHUD.labelText = title;
+//        self.progressHUD.detailsLabelText = detailmsg;
+//        self.progressHUD.mode = MBProgressHUDModeText;
+//        [self.progressHUD hide:YES afterDelay:time];
+//    } else {
+//        [self.progressHUD hide:YES];
+//    }
+    
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view.window];
+    hud.minSize = CGSizeMake(60, 60);
+    hud.minShowTime = 1;
+    hud.dimBackground = YES;
+    [self.view.window addSubview:hud];
+    [hud show:YES];
+    hud.labelText = message;
+    hud.detailsLabelText = detailmsg;
+    hud.mode = MBProgressHUDModeText;
+    [hud hide:YES afterDelay:time];
 }
 - (void)showProgressHUDCompleteMessage:(NSString *)message {
     if (message) {
@@ -1361,14 +1375,6 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
                 _h264View.userInteractionEnabled = YES;
 #endif
                 
-                if (![_ctrl.propCtrl checkSDExist]) {
-                    [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil) showTime:2.0];
-                } else if (_camera.storageSpaceForVideo==0 && [_ctrl.propCtrl connected]) {
-                    [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil) showTime:2.0];
-                } else {
-                    
-                }
-                
                 [self showLiveGUIIfNeeded:_camera.previewMode];
 //                if (![[SDK instance] isStreamSupportPublish]) {
 //                    _liveSwitch.hidden = NO;
@@ -1434,6 +1440,26 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
                 
                 dispatch_semaphore_signal(_previewSemaphore);
             });
+        }
+    });
+    
+    dispatch_async(previewQ, ^{
+        // Check SD card
+        if (![_ctrl.propCtrl checkSDExist]) {
+            AppLog("SD card not inserted");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil) showTime:2.0];
+            });
+        } else {
+            if ((_camera.previewMode == WifiCamPreviewModeCameraOff && _camera.storageSpaceForImage <= 0)
+                || (_camera.previewMode == WifiCamPreviewModeCameraOff && _camera.storageSpaceForVideo==0)) {
+                
+                AppLog("SD card is full");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil) showTime:2.0];
+                });
+                
+            }
         }
     });
 }

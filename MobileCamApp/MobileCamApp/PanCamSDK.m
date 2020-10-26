@@ -751,7 +751,9 @@
     uint cacheTime = [[SDK instance] previewCacheTime];
     AppLog(@"cacheTime: %d", cacheTime);
     
-    ICatchPancamConfig::getInstance()->setPreviewCacheParam(200);
+//    ICatchPancamConfig::getInstance()->setPreviewCacheParam(200);
+    //MOBILEAPP-114
+    ICatchPancamConfig::getInstance()->setPreviewCacheParam(0);
 
 //    if (codec == ICH_CODEC_H264) {
 //        AppLog(@"%s - start h264", __func__);
@@ -791,8 +793,13 @@
         AppLog(@"live - w: %d, h: %d", w, h);
     }
 
-//    auto param = make_shared<ICatchH264StreamParam>(w, h, br, fr);
+    /**
+     * ICatchH264StreamParam is 16-byte aligned, 720x540 is aligned to 720x544,
+     * use customized class WiFiCamH264StreamParameter  instead.
+     */
+    //auto param = make_shared<ICatchH264StreamParam>(w, h, br, fr);
     auto param = make_shared<WiFiCamH264StreamParameter>(codec, w, h, br, fr);
+    
 //    startRetVal = _panCamPreview->start([self getCameraIpAddr].UTF8String, param, disableAudio, true, true);
 //    _panCamPreview->setPreviewParam(0, false);
     startRetVal = _panCamPreview->start(param, enableAudio);

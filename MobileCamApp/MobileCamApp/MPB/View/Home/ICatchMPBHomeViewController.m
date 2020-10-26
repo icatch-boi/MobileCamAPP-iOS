@@ -1640,7 +1640,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     }
     locatePath = [fileDirectory stringByAppendingPathComponent:fileName];
     
-    AppLog(@"locatePath: %@, %llu", locatePath, fileSize);
+    AppLog(@"locatePath: %@, filesize: %llu", locatePath, fileSize);
     
     dispatch_async(self.downloadPercentQueue, ^{
         do {

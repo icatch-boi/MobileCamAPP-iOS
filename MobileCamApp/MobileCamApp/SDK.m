@@ -1076,6 +1076,7 @@
     }
     int retVal = ICH_SUCCEED;
     retVal = _control->formatStorage();
+    AppLog(@"formatStorage : %d", retVal);
     return retVal == ICH_SUCCEED ? YES : NO;
 }
 
@@ -1553,10 +1554,10 @@
 - (void)cancelDownload
 {
     if (_playback) {
-        _playback->cancelFileDownload();
-        AppLog(@"Downloading Canceled");
+        int ret = _playback->cancelFileDownload();
+        AppLog(@"Downloading Canceled: %d", ret);
     } else {
-        AppLog(@"Downloading failed to cancel.");
+        AppLog(@"_playback is null");
     }
     
 }
@@ -1728,15 +1729,19 @@
     
     AppLog(@"Download File, ret : %d", ret);
     if (ret != ICH_SUCCEED) {
+        AppLog(@"Download failed, delete this incomplete file.");
+        if ([[NSFileManager defaultManager] fileExistsAtPath:locatePath]) {
+            NSError *err;
+            [[NSFileManager defaultManager] removeItemAtPath:locatePath error:&err];
+            if(err) {
+                AppLog(@"NSFileManager error: %@", [err userInfo]);
+            }
+        }
         locatePath = nil;
     } else {
-        
-        AppLog(@"locatePath: %@", locatePath);
-        
+        AppLog(@"Download succeed: %@", locatePath);
         NSString *filePath = [NSString stringWithFormat:@"%s", f->getFilePath().c_str()];
-        AppLog(@"set file path %@ to 0xD83B", filePath);
         [self setCustomizeStringProperty:0xD83B value:filePath];
-        
     }
     
     return locatePath;
@@ -1836,7 +1841,7 @@
 
 -(BOOL)setCustomizeStringProperty:(int)propid value:(NSString *)value {
     string stringValue = [value cStringUsingEncoding:NSUTF8StringEncoding];
-    printf("set customized string property to : %s\n", stringValue.c_str());
+    printf("set customized string property %d to : %s\n", propid, stringValue.c_str());
     int ret = 1;
     if (_prop) {
         ret = _prop->setPropertyValue(propid, stringValue);

@@ -291,7 +291,7 @@
 //+ (NSUInteger)catCustomAbility: (NSUInteger)mainAbility prop:(ICatchCamProperty)prop {
 + (void)catCustomAbility:(NSMutableArray *)abilities prop:(ICatchCamProperty)prop {
     SDK *sdk = [SDK instance];
-    
+    AppLog(@"prop: 0x%x", prop);
     
     // Customize property
     // Date-Time Synchronization

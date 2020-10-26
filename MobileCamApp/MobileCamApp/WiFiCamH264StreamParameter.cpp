@@ -9,19 +9,22 @@
 #include "WiFiCamH264StreamParameter.h"
 #include <stdio.h>
 
-WiFiCamH264StreamParameter::WiFiCamH264StreamParameter(int width, int height, int bitrate, int framerate) {
-    this->width = width;
-    this->height = height;
+WiFiCamH264StreamParameter::WiFiCamH264StreamParameter(int codec, int width, int height, int bitrate, int framerate) {
+    this->codec = codec;
+    this->videoW = width;
+    this->videoH = height;
     this->bitrate = bitrate;
     this->framerate = framerate;
 }
 
+WiFiCamH264StreamParameter::~WiFiCamH264StreamParameter() {}
+
 string WiFiCamH264StreamParameter::getCmdLineParam() {
     char temp[32];
-    sprintf(temp, "%d", width);
+    sprintf(temp, "%d", videoW);
     string w(temp);
     
-    sprintf(temp, "%d", height);
+    sprintf(temp, "%d", videoH);
     string h(temp);
     
     sprintf(temp, "%d", bitrate);
@@ -35,13 +38,29 @@ string WiFiCamH264StreamParameter::getCmdLineParam() {
     return url;
 }
 
-int WiFiCamH264StreamParameter::getVideoWidth() {
-    return width;
+int WiFiCamH264StreamParameter::getCodec() {
+    return codec;
+}
+int WiFiCamH264StreamParameter::getWidth() {
+    return videoW;
+}
+int WiFiCamH264StreamParameter::getHeight() {
+    return videoH;
+}
+int WiFiCamH264StreamParameter::getBitRate() {
+    return bitrate;
+}
+int WiFiCamH264StreamParameter::getFrameRate() {
+    return framerate;
 }
 
-int WiFiCamH264StreamParameter::getVideoHeight() {
-    return height;
-}
+//int WiFiCamH264StreamParameter::getVideoWidth() {
+//    return width;
+//}
+//
+//int WiFiCamH264StreamParameter::getVideoHeight() {
+//    return height;
+//}
 
 //void WiFiCamH264StreamParameter::setVideoWidth(int width) {
 //    this->width = width;

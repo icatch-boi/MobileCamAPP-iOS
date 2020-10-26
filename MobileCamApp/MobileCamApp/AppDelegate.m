@@ -107,8 +107,6 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     // Enalbe log
     NSUserDefaults *defaultSettings = [NSUserDefaults standardUserDefaults];
     self.enableLog = [defaultSettings boolForKey:@"PreferenceSpecifier:Log"];
-    
-//    self.enableLog = YES; // Test on iOS9
     if (_enableLog) {
         [self startLogToFile];
     } else {

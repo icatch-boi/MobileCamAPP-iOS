@@ -6,23 +6,29 @@
 //  Copyright (c) 2015 iCatchTech. All rights reserved.
 //
 
-#ifndef __WifiCamMobileApp__WiFiCamH264StreamParameter__
-#define __WifiCamMobileApp__WiFiCamH264StreamParameter__
+#ifndef WiFiCamH264StreamParameter_H_
+#define WiFiCamH264StreamParameter_H_
 
-class WiFiCamH264StreamParameter:public ICatchStreamParam {
+#include "ICatchStreamParam.h"
+class WiFiCamH264StreamParameter : public ICatchStreamParam
+{
 public:
-    WiFiCamH264StreamParameter(int width, int height, int bitrate, int framerate);
-    string getCmdLineParam();
+    WiFiCamH264StreamParameter(int codec, int width = 640, int height = 360, int bitrate = 5000000, int framerate = 30);
+    ~WiFiCamH264StreamParameter();
 
-    int getVideoWidth();
-    int getVideoHeight();
-    
-//    void setVideoWidth(int width);
-//    void setVideoHeight(int height);
-//    void setVideoBitrate(int bitrate);
-//    void setVideoFrameRate(int framerate);
+    string getCmdLineParam();
+    int getCodec();
+    int getWidth();
+    int getHeight();
+    int getBitRate();
+    int getFrameRate();
+
 private:
-    int width, height, bitrate, framerate;
+    int codec;
+    int videoW;
+    int videoH;
+    int bitrate;
+    int framerate;
 };
 
-#endif /* defined(__WifiCamMobileApp__WiFiCamH264StreamParameter__) */
+#endif

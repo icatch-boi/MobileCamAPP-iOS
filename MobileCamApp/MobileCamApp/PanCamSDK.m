@@ -7,7 +7,7 @@
 //
 
 #import "PanCamSDK.h"
-#include "WiFiCamH264StreamParameter.h"
+#import "WiFiCamH264StreamParameter.h"
 #import "ICatchCameraConfig.h"
 
 @interface PanCamSDK()
@@ -791,8 +791,8 @@
         AppLog(@"live - w: %d, h: %d", w, h);
     }
 
-//    WiFiCamH264StreamParameter param(w, h, br, fr);
-    auto param = make_shared<ICatchH264StreamParam>(w, h, br, fr);
+//    auto param = make_shared<ICatchH264StreamParam>(w, h, br, fr);
+    auto param = make_shared<WiFiCamH264StreamParameter>(codec, w, h, br, fr);
 //    startRetVal = _panCamPreview->start([self getCameraIpAddr].UTF8String, param, disableAudio, true, true);
 //    _panCamPreview->setPreviewParam(0, false);
     startRetVal = _panCamPreview->start(param, enableAudio);

@@ -1,6 +1,5 @@
 //
 //  SDK.m
-//  WifiCamMobileApp
 //
 //  Created by Sunmedia Apple on 13-12-6.
 //  Copyright (c) 2013年 iCatchTech. All rights reserved.
@@ -13,7 +12,7 @@
 #include "ICatchCameraConfig.h"
 //#include "WiFiCamH264StreamParameter.h"
 
-#include "CustomerStreamParam.hpp"
+//#include "CustomerStreamParam.hpp"
 
 @interface SDK ()
 @property (nonatomic) shared_ptr<ICatchCameraSession> session1;

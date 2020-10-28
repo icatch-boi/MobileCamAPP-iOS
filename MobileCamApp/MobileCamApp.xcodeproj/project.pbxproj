@@ -13,7 +13,6 @@
 		381C5FEB240CFE3A0038D60A /* ICatchFileFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 381C5FEA240CFE3A0038D60A /* ICatchFileFilter.m */; };
 		381C972B1DBC5932005EC9F4 /* PanCamGLKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 381C972A1DBC5932005EC9F4 /* PanCamGLKViewController.m */; };
 		381C97861DBC6673005EC9F4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A727841907939A00F52F73 /* CoreVideo.framework */; };
-		381C97C21DBC831E005EC9F4 /* CustomerStreamParam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 381C97C01DBC831E005EC9F4 /* CustomerStreamParam.cpp */; };
 		382462C61E13AD2000C14B54 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 382462C51E13AD2000C14B54 /* libc++.tbd */; };
 		3828F8FC1E02951300A36804 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BA7EC2185027C400FA101F /* AppDelegate.m */; };
 		382F23611DACD9D900033FE0 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 382F23601DACD9D900033FE0 /* GLKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -102,7 +101,7 @@
 		BC975B171C86C62C0084415B /* WiFiAPSetupNoticeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = BC975B131C86C62C0084415B /* WiFiAPSetupNoticeVC.m */; };
 		BC975B181C86C62C0084415B /* WiFiAPSetupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = BC975B151C86C62C0084415B /* WiFiAPSetupVC.m */; };
 		BC975B1B1C86CB190084415B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC975B1A1C86CB190084415B /* CoreBluetooth.framework */; };
-		BC9FDF1D1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC9FDF1B1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.cpp */; };
+		BC9FDF1D1B2FBACC00C2D16D /* H264StreamParameter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC9FDF1B1B2FBACC00C2D16D /* H264StreamParameter.cpp */; };
 		BCB5E6AE1BA90389005D9ADE /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB5E6AD1BA90389005D9ADE /* libxml2.tbd */; };
 		BCB5E6B11BA9039D005D9ADE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB5E6B01BA9039D005D9ADE /* libz.tbd */; };
 		BCB5E6B31BA903A4005D9ADE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB5E6B21BA903A4005D9ADE /* libiconv.tbd */; };
@@ -226,9 +225,6 @@
 		381C5FEA240CFE3A0038D60A /* ICatchFileFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ICatchFileFilter.m; sourceTree = "<group>"; };
 		381C97291DBC5932005EC9F4 /* PanCamGLKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanCamGLKViewController.h; sourceTree = "<group>"; };
 		381C972A1DBC5932005EC9F4 /* PanCamGLKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanCamGLKViewController.m; sourceTree = "<group>"; };
-		381C97C01DBC831E005EC9F4 /* CustomerStreamParam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomerStreamParam.cpp; sourceTree = "<group>"; };
-		381C97C11DBC831E005EC9F4 /* CustomerStreamParam.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CustomerStreamParam.hpp; sourceTree = "<group>"; };
-		382462C31E13AC2A00C14B54 /* BuglyHotfix.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuglyHotfix.framework; sourceTree = "<group>"; };
 		382462C51E13AD2000C14B54 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		382F23601DACD9D900033FE0 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		382FF511239763EB00C41FF6 /* MobileCamApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MobileCamApp.entitlements; sourceTree = "<group>"; };
@@ -588,8 +584,8 @@
 		BC975B141C86C62C0084415B /* WiFiAPSetupVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiFiAPSetupVC.h; sourceTree = "<group>"; };
 		BC975B151C86C62C0084415B /* WiFiAPSetupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiFiAPSetupVC.m; sourceTree = "<group>"; };
 		BC975B1A1C86CB190084415B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		BC9FDF1B1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WiFiCamH264StreamParameter.cpp; sourceTree = "<group>"; };
-		BC9FDF1C1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiFiCamH264StreamParameter.h; sourceTree = "<group>"; };
+		BC9FDF1B1B2FBACC00C2D16D /* H264StreamParameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = H264StreamParameter.cpp; sourceTree = "<group>"; };
+		BC9FDF1C1B2FBACC00C2D16D /* H264StreamParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = H264StreamParameter.h; sourceTree = "<group>"; };
 		BCB5E6AD1BA90389005D9ADE /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		BCB5E6B01BA9039D005D9ADE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BCB5E6B21BA903A4005D9ADE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -1821,8 +1817,6 @@
 				E65BF34B18BF081300C44371 /* UtilsMacro.h */,
 				E6B01B8C1952D7B000B78409 /* Tool.h */,
 				E6B01B8D1952D7B000B78409 /* Tool.m */,
-				BC9FDF1B1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.cpp */,
-				BC9FDF1C1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.h */,
 				BCF002821B5504AC00EDD785 /* Reachability+Ext.h */,
 				BCF002831B5504AC00EDD785 /* Reachability+Ext.m */,
 			);
@@ -1864,7 +1858,6 @@
 			isa = PBXGroup;
 			children = (
 				38E617242546C75E007863F2 /* IOS_V3.6.0.32_1 */,
-				382462C31E13AC2A00C14B54 /* BuglyHotfix.framework */,
 				BCB5E6B61BA903B1005D9ADE /* libsqlite3.tbd */,
 				BCB5E6B41BA903AB005D9ADE /* libbz2.tbd */,
 				BCB5E6B21BA903A4005D9ADE /* libiconv.tbd */,
@@ -1973,12 +1966,12 @@
 				38E508161EFCF6CA007BFC57 /* SDKPrivate.h */,
 				38E508151EFCF574007BFC57 /* PanCamSDK.h */,
 				38E508131EFCF54A007BFC57 /* PanCamSDK.m */,
+				BC9FDF1B1B2FBACC00C2D16D /* H264StreamParameter.cpp */,
+				BC9FDF1C1B2FBACC00C2D16D /* H264StreamParameter.h */,
 				3806DFF01DAE0CDE00CDD639 /* CRawImageUtil.h */,
 				3806DFF11DAE0CDE00CDD639 /* CRawImageUtil.m */,
 				E6FCC2FA1959732F006159D0 /* WifiCamStaticData.h */,
 				E6FCC2FB1959732F006159D0 /* WifiCamStaticData.m */,
-				381C97C11DBC831E005EC9F4 /* CustomerStreamParam.hpp */,
-				381C97C01DBC831E005EC9F4 /* CustomerStreamParam.cpp */,
 				38FC07FA1F219B6300598638 /* ICatchtekReliant.h */,
 				38FC07FB1F219BDB00598638 /* ICatchtekControl.h */,
 				38FC08001F21ACCF00598638 /* WiFiCamStreamPublish.cpp */,
@@ -2239,7 +2232,7 @@
 				E6DC7A501A10B200008C400B /* ChangeSSIDViewController.m in Sources */,
 				E6A97D5419EF682200039028 /* ActivityWrapper.m in Sources */,
 				38AF590423CDC3AC004F8DBC /* ICatchMPBHomeViewController.m in Sources */,
-				BC9FDF1D1B2FBACC00C2D16D /* WiFiCamH264StreamParameter.cpp in Sources */,
+				BC9FDF1D1B2FBACC00C2D16D /* H264StreamParameter.cpp in Sources */,
 				386073D81F57DBA400E26EC1 /* WifiCamEvent.m in Sources */,
 				BC899CD91B0CB83A00DEA35F /* Camera.m in Sources */,
 				BC20428A1B0F084A0064B093 /* PortraitNavVC.m in Sources */,
@@ -2265,7 +2258,6 @@
 				E6A4F8361869B7CC0095EBBC /* MpbPopoverViewController.m in Sources */,
 				E6701DBE18FB7285004FFE0C /* VideoPlaybackBufferingView.m in Sources */,
 				E6466FE2185807E200E5324E /* MpbViewController.m in Sources */,
-				381C97C21DBC831E005EC9F4 /* CustomerStreamParam.cpp in Sources */,
 				E6E59BB61957FF7700C7D877 /* WifiCamCommonControl.m in Sources */,
 				E6466FF01858371100E5324E /* SettingViewController.m in Sources */,
 				38AF590323CDC3AC004F8DBC /* ICatchHomeCollectionCell.m in Sources */,

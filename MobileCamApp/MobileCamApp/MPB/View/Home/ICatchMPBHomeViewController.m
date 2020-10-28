@@ -1486,7 +1486,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                 }
                 
             } else {
-                [self hideProgressHUD:YES];
+                [self hideProgressHUD:NO];
                 [self showAlertViewWithTitle:NSLocalizedString(@"CanceledDownload", nil)
                                      message:nil
                            cancelButtonTitle:NSLocalizedString(@"Sure", @"")];

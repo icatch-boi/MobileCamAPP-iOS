@@ -754,6 +754,9 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 //    } else {
 //        [self.progressHUD hide:YES];
 //    }
+    
+    [self hideProgressHUD:NO];
+    
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view.window];
     hud.minSize = CGSizeMake(60, 60);
     hud.minShowTime = 1;
@@ -777,6 +780,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 //    } else {
 //        [self.progressHUD hide:YES];
 //    }
+    
+    [self hideProgressHUD:NO];
     
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view.window];
     hud.minSize = CGSizeMake(60, 60);

@@ -374,6 +374,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	isFinished = YES;
 	self.alpha = 0.0f;
     if ([actionButton superview]) {
+        NSLog(@"[%d]MBProgressHUD remove actionButton", __LINE__);
         [actionButton removeFromSuperview];
     }
 	if (removeFromSuperViewOnHide) {
@@ -635,10 +636,12 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
             yPos += kPadding*2;
             actionButton.frame = CGRectMake(round((bounds.size.width - 80) / 2) + xPos,
                                             yPos, 80, 25);
+            NSLog(@"[%d]MBProgressHUD add actionButton", __LINE__);
             [self addSubview:actionButton];
         }
     } else {
         if ([actionButton superview]) {
+            NSLog(@"[%d]MBProgressHUD remove actionButton", __LINE__);
             [actionButton removeFromSuperview];
         }
     }

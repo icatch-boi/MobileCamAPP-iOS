@@ -7,7 +7,7 @@
 //
 
 #import "PanCamSDK.h"
-#import "WiFiCamH264StreamParameter.h"
+#import "H264StreamParameter.h"
 #import "ICatchCameraConfig.h"
 
 @interface PanCamSDK()
@@ -753,7 +753,8 @@
     
 //    ICatchPancamConfig::getInstance()->setPreviewCacheParam(200);
     //MOBILEAPP-114
-    ICatchPancamConfig::getInstance()->setPreviewCacheParam(0);
+    //ICatchPancamConfig::getInstance()->setPreviewCacheParam(0);
+    ICatchPancamConfig::getInstance()->setPreviewCacheParam(400);
 
 //    if (codec == ICH_CODEC_H264) {
 //        AppLog(@"%s - start h264", __func__);
@@ -798,7 +799,13 @@
      * use customized class WiFiCamH264StreamParameter  instead.
      */
     //auto param = make_shared<ICatchH264StreamParam>(w, h, br, fr);
-    auto param = make_shared<WiFiCamH264StreamParameter>(codec, w, h, br, fr);
+    
+    shared_ptr<ICatchStreamParam> param;
+    if (codec == ICH_CODEC_H264) {
+        param = make_shared<H264StreamParameter>(codec, w, h, br, fr);
+    } else {
+        param = make_shared<ICatchJPEGStreamParam>(w, h, br, fr);
+    }
     
 //    startRetVal = _panCamPreview->start([self getCameraIpAddr].UTF8String, param, disableAudio, true, true);
 //    _panCamPreview->setPreviewParam(0, false);

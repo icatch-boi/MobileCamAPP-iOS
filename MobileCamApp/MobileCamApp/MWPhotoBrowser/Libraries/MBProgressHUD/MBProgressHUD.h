@@ -449,7 +449,7 @@ typedef void (^MBProgressHUDCompletionBlock)();
 /**
  * Show a customized action button
  */
-@property (assign) BOOL showActionButton;
+//@property (assign) BOOL showActionButton;
 
 @end
 

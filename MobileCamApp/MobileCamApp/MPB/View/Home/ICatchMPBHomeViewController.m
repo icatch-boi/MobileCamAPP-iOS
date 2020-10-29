@@ -1818,7 +1818,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     AppLog(@"%s", __func__);
     self.navigationController.toolbar.userInteractionEnabled = NO;
     if (message) {
-        self.progressHUD.showActionButton = NO;
+//        self.progressHUD.showActionButton = NO;
         [self.view bringSubviewToFront:self.progressHUD];
         [self.progressHUD show:YES];
         self.progressHUD.labelText = message;
@@ -1835,7 +1835,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 - (void)showProgressHUDCompleteMessage:(NSString *)message {
     AppLog(@"%s", __func__);
     if (message) {
-        self.progressHUD.showActionButton = NO;
+//        self.progressHUD.showActionButton = NO;
         if (self.progressHUD.isHidden) [self.progressHUD show:YES];
         self.progressHUD.labelText = message;
         self.progressHUD.detailsLabelText = nil;
@@ -1852,7 +1852,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                     detailsMessage:(NSString *)dMessage
                               mode:(MBProgressHUDMode)mode {
 //    AppLog(@"%s", __func__);
-    self.progressHUD.showActionButton = NO;
+//    self.progressHUD.showActionButton = NO;
     self.progressHUD.labelText = message;
     self.progressHUD.detailsLabelText = dMessage;
     self.progressHUD.mode = mode;
@@ -1869,7 +1869,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     self.progressHUD.mode = MBProgressHUDModeAction;
     self.progressHUD.dimBackground = YES;
     [self.view bringSubviewToFront:self.progressHUD];
-    self.progressHUD.showActionButton = YES;
+//    self.progressHUD.showActionButton = YES;
     [self.progressHUD setActionButtonPressedCallback:@selector(progressHUDactionButtonPressed)
                                             onTarget:self withObject:nil];
     [self.progressHUD show:YES];
@@ -1896,7 +1896,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 }
 
 - (void)progressHUDactionButtonPressed {
-    AppLog(@"%s", __func__);
+//    AppLog(@"%s", __func__);
     //TODO: cancel download
     
     self.cancelDownload = YES;

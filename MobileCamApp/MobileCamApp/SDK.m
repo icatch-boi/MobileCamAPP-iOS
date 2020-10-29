@@ -1954,14 +1954,14 @@
     });*/
     [self createNewAssetCollection];
 
-    NSUInteger cameraTotalNum = 0;
-    while (assetNum + shareNum != cameraTotalNum) {
-        @autoreleasepool {
-            [NSThread sleepForTimeInterval:0.5];
-            cameraTotalNum = [self retrieveCameraRollAssetsResult].count;
-            AppLog(@"cameraTotalNum: %ld", (unsigned long)cameraTotalNum);
-        }
-    }
+//    NSUInteger cameraTotalNum = 0;
+//    while (assetNum + shareNum != cameraTotalNum) {
+//        @autoreleasepool {
+//            [NSThread sleepForTimeInterval:0.5];
+//            cameraTotalNum = [self retrieveCameraRollAssetsResult].count;
+//            AppLog(@"cameraTotalNum: %ld", (unsigned long)cameraTotalNum);
+//        }
+//    }
     
     return [self addNewAssettoAlbum:albumName andNumber:shareNum];
 }

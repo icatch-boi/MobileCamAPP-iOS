@@ -190,7 +190,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;
-        self.showActionButton = NO;
+//        self.showActionButton = NO;
 		self.contentMode = UIViewContentModeCenter;
 		self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
 								| UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -250,6 +250,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)show:(BOOL)animated {
 	useAnimation = animated;
+    isFinished = NO; // add by guo.jiang
 	// If the grace time is set postpone the HUD display
 	if (self.graceTime > 0.0) {
 		self.graceTimer = [NSTimer scheduledTimerWithTimeInterval:self.graceTime target:self 
@@ -266,6 +267,11 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)hide:(BOOL)animated {
 	useAnimation = animated;
+    if ([actionButton superview]) {
+        NSLog(@"[%d]MBProgressHUD remove actionButton", __LINE__);
+        [actionButton removeFromSuperview];
+    }
+    
 	// If the minShow time is set, calculate how long the hud was shown,
 	// and pospone the hiding operation if necessary
 	if (self.minShowTime > 0.0 && showStarted) {
@@ -630,7 +636,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	detailsLabelF.size = detailsLabelSize;
 	detailsLabel.frame = detailsLabelF;
     
-    if (_showActionButton) {
+    if (mode == MBProgressHUDModeAction && isFinished == NO) {
         if (![actionButton superview]) {
             yPos += detailsLabelF.size.height;
             yPos += kPadding*2;

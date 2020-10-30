@@ -382,12 +382,11 @@ alpha:1.0]
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    TRACE();
-    
-    AppLog(@"1: %f", _addCamBtn1.frame.origin.y);
-    AppLog(@"2: %f", _addCamBtn2.frame.origin.y);
-    AppLog(@"3: %f", _addCamBtn3.frame.origin.y);
-    AppLog(@"mediaOnMyIphone: %f", _mediaOnMyIphone.frame.origin.y);
+//    TRACE();
+//    AppLog(@"1: %f", _addCamBtn1.frame.origin.y);
+//    AppLog(@"2: %f", _addCamBtn2.frame.origin.y);
+//    AppLog(@"3: %f", _addCamBtn3.frame.origin.y);
+//    AppLog(@"mediaOnMyIphone: %f", _mediaOnMyIphone.frame.origin.y);
     
 
     float gap = (_mediaOnMyIphone.frame.origin.y - _addCamBtn1.frame.size.height * 3) / 4;

@@ -424,9 +424,9 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 
 - (void)viewWillDisappear:(BOOL)animated {
     TRACE();
-    if (self.currentVideoData.length == 0) {
+//    if (self.currentVideoData.length == 0) {
 //        self.savedCamera.thumbnail = (id)_preview.image;
-    }
+//    }
     
     [super viewWillDisappear:animated];
     [self hideZoomController:YES];
@@ -843,6 +843,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
                           forState:UIControlStateNormal];
     self.selftimerLabel.hidden = NO;
     self.selftimerButton.hidden = NO;
+    self.selftimerButton.enabled = YES;
 }
 
 - (void)updateBurstCaptureIcon:(unsigned int)curBurstNumber {
@@ -994,9 +995,14 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     self.mpbToggle.enabled = NO;
     self.settingButton.enabled = NO;
     self.videoToggle.enabled = NO;
-
     if ([self capableOf:WifiCamAbilityTimeLapse]) {
         self.timelapseToggle.enabled = NO;
+    }
+    if ([self capableOf:WifiCamAbilityDelayCapture]) {
+        self.selftimerButton.enabled = NO;
+    }
+    if ([self capableOf:WifiCamAbilityImageSize]) {
+        self.sizeButton.enabled = NO;
     }
     
     // AIBSP-603
@@ -2593,9 +2599,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (void)startMovieRec {
-    AudioServicesPlaySystemSound(_videoCaptureSound);
     [self showProgressHUDWithMessage:nil];
-    AppLog(@"startMovieRec");
+    AudioServicesPlaySystemSound(_videoCaptureSound);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (![_ctrl.propCtrl checkSDExist]) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -2636,7 +2641,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         } else {
             AppLog(@"Don't support to get recorded time.");
         }
-
+        
+        [NSThread sleepForTimeInterval:0.7]; /// wait for the sound effect to finish playing
         TRACE();
         BOOL ret = [_ctrl.actCtrl startMovieRecord];
         TRACE();
@@ -2673,9 +2679,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 
 - (void)stopMovieRec
 {
-    AudioServicesPlaySystemSound(_videoCaptureSound);
     [self showProgressHUDWithMessage:nil];
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([self capableOf:WifiCamAbilityGetMovieRecordedTime]) {
             [_ctrl.comCtrl removeObserver:(ICatchCamEventID)0x5001
@@ -2689,6 +2693,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         BOOL ret = [_ctrl.actCtrl stopMovieRecord];
         TRACE();
         dispatch_async(dispatch_get_main_queue(), ^{
+            AudioServicesPlaySystemSound(_videoCaptureSound);
             if (ret) {
 //                if (!_Living) {
 //                    [self updatePreviewSceneByMode:WifiCamPreviewModeVideoOff];
@@ -2724,9 +2729,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (void)startTimelapseRec {
-    AudioServicesPlaySystemSound(_videoCaptureSound);
     [self showProgressHUDWithMessage:nil];
-    
+    AudioServicesPlaySystemSound(_videoCaptureSound);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (![_ctrl.propCtrl checkSDExist]) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -2754,6 +2758,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             }
         }
         
+        [NSThread sleepForTimeInterval:0.7]; /// wait for the sound effect to finish playing
         BOOL ret = [_ctrl.actCtrl startTimelapseRecord];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (ret) {
@@ -2776,12 +2781,12 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 - (void)stopTimelapseRec {
-    AudioServicesPlaySystemSound(_videoCaptureSound);
     [self showProgressHUDWithMessage:nil];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL ret = [_ctrl.actCtrl stopTimelapseRecord];
         dispatch_async(dispatch_get_main_queue(), ^{
+            AudioServicesPlaySystemSound(_videoCaptureSound);
             if (ret) {
                 [self remTimelapseRecListener];
                 [self hideProgressHUD:YES];
@@ -2877,16 +2882,19 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         uint curZoomRatio = [_ctrl.propCtrl retrieveCurrentZoomRatio];
-        uint tryCount = 0;
-        
         AppLog(@"curZoomRatio: %d", curZoomRatio);
-        AppLog(@"self.zoomSlider.value: %f", self.zoomSlider.value);
-        if (self.zoomSlider.value*10.0 > curZoomRatio) {
-            while (self.zoomSlider.value*10.0 > curZoomRatio) {
+        uint tryCount = 0;
+        __block float sliderValue = 0;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            sliderValue = self.zoomSlider.value;
+        });
+        AppLog(@"self.zoomSlider.value: %f", sliderValue);
+        if (sliderValue*10.0 > curZoomRatio) {
+            while (sliderValue*10.0 > curZoomRatio) {
                 AppLog(@"zoomIn:%d", curZoomRatio);
                 [_ctrl.actCtrl zoomIn];
                 uint r = [_ctrl.propCtrl retrieveCurrentZoomRatio];
-                if (r <= curZoomRatio) {
+                if (r < curZoomRatio) {
                     AppLog(@"r, curZoomRatio: %d, %d", r, curZoomRatio);
                     if (tryCount++ > 20) {
                         err = YES;
@@ -2895,16 +2903,18 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                         [NSThread sleepForTimeInterval:0.1];
                     }
                 } else {
-                    
                     curZoomRatio = r;
                 }
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    sliderValue = self.zoomSlider.value;
+                });
             }
-        } else if (self.zoomSlider.value*10.0  < curZoomRatio){
-            while (self.zoomSlider.value*10.0 < curZoomRatio) {
+        } else if (sliderValue*10.0  < curZoomRatio){
+            while (sliderValue*10.0 < curZoomRatio) {
                 AppLog(@"zoomOut:%d", curZoomRatio);
                 [_ctrl.actCtrl zoomOut];
                 uint r = [_ctrl.propCtrl retrieveCurrentZoomRatio];
-                if (r >= curZoomRatio) {
+                if (r > curZoomRatio) {
                     AppLog(@"r, curZoomRatio: %d, %d", r, curZoomRatio);
                     if (tryCount++ > 20) {
                         err = YES;
@@ -2915,6 +2925,9 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 } else {
                     curZoomRatio = r;
                 }
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    sliderValue = self.zoomSlider.value;
+                });
             }
             
         } else {
@@ -3016,6 +3029,12 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     //    dispatch_suspend(_audioQueue);
     //    dispatch_suspend(_videoQueue);
 //    if( _camera.previewMode != WifiCamPreviewModeCameraOff &&  _camera.previewMode != WifiCamPreviewModeCameraOn)
+    
+    BOOL isUseSDKDecode = [[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
+    if (isUseSDKDecode) {
+        self.savedCamera.thumbnail = [[PanCamSDK instance] getPreviewThumbnail];
+    }
+    
         self.PVRun = NO;
 
     //[[PanCamSDK instance] destroyStream];
@@ -3033,6 +3052,11 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 
 - (IBAction)mpbAction:(id)sender
 {
+    BOOL isUseSDKDecode = [[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
+    if (isUseSDKDecode) {
+        self.savedCamera.thumbnail = [[PanCamSDK instance] getPreviewThumbnail];
+    }
+    
     [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_ERROR_CAPTURING_CAPTURE", nil)];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (![_ctrl.propCtrl checkSDExist]) {

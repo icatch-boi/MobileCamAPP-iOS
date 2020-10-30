@@ -807,6 +807,7 @@
         param = make_shared<ICatchJPEGStreamParam>(w, h, br, fr);
     }
     
+    AppLog(@"%s - start", __func__);
 //    startRetVal = _panCamPreview->start([self getCameraIpAddr].UTF8String, param, disableAudio, true, true);
 //    _panCamPreview->setPreviewParam(0, false);
     startRetVal = _panCamPreview->start(param, enableAudio);

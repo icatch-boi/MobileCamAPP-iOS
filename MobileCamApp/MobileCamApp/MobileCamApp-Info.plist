@@ -106,7 +106,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5826</string>
+	<string>5858</string>
 	<key>FacebookAppID</key>
 	<string>295583287549917</string>
 	<key>FacebookDisplayName</key>
@@ -279,10 +279,6 @@
 	<true/>
 	<key>UIStatusBarHidden</key>
 	<true/>
-	<key>UISupportedExternalAccessoryProtocols</key>
-	<array>
-		<string>PAN</string>
-	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>

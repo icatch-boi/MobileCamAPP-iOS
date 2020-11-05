@@ -3084,9 +3084,10 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 #if !USE_NEW_MPB
                 [self performSegueWithIdentifier:@"goMpbSegue" sender:sender];
 #else
-                UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MPBHome" bundle:nil];
-                UINavigationController *nav = sb.instantiateInitialViewController;
-                [self presentViewController:nav animated:YES completion:nil];
+//                UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MPBHome" bundle:nil];
+//                UINavigationController *nav = sb.instantiateInitialViewController;
+//                [self presentViewController:nav animated:YES completion:nil];
+                [self performSegueWithIdentifier:@"goMpbHomeSegue" sender:sender];
 #endif
             });
         }

@@ -171,7 +171,7 @@ NSFetchedResultsControllerDelegate
         int totalCheckCount = 4;
         while (totalCheckCount-- > 0) {
             @autoreleasepool {
-                if ([Reachability didConnectedToCameraHotspot]) {
+                //if ([Reachability didConnectedToCameraHotspot]) {
                     if ([[SDK instance] initializeSDK]) {
                         
                         // modify by allen.chuang - 20140703
@@ -210,7 +210,7 @@ NSFetchedResultsControllerDelegate
                         
                         return;
                     }
-                }
+                //}
                 
                 AppLog(@"[%d]NotReachable -- Sleep 500ms", totalCheckCount);
                 [NSThread sleepForTimeInterval:0.5];

@@ -4,6 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -450,6 +452,7 @@
                         <outlet property="zoomValueLabel" destination="25v-1j-sB4" id="Ucs-NM-cKu"/>
                         <segue destination="uzm-vK-Nwr" kind="modal" identifier="goMpbSegue" modalPresentationStyle="fullScreen" id="1bI-Ht-ET7"/>
                         <segue destination="Uz4-MQ-MYc" kind="modal" identifier="goSettingSegue" modalPresentationStyle="fullScreen" id="4Ti-UL-Q3z"/>
+                        <segue destination="R5F-94-lHg" kind="modal" identifier="goMpbHomeSegue" id="Igj-eG-C1K"/>
                     </connections>
                 </viewController>
                 <tapGestureRecognizer id="FF4-vp-3o9">
@@ -459,7 +462,7 @@
                 </tapGestureRecognizer>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Lj-NT-Plv" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="986.71875" y="67.96875"/>
+            <point key="canvasLocation" x="713" y="-49"/>
         </scene>
         <!--Setting-->
         <scene sceneID="FBg-Se-tAw">
@@ -572,7 +575,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2489.0625" y="-424.21875"/>
+            <point key="canvasLocation" x="2590" y="-739"/>
         </scene>
         <!--ChangeSSID View Controller-->
         <scene sceneID="njc-Ts-vJi">
@@ -607,7 +610,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tnp-ei-eTg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3220.3125" y="-1106.25"/>
+            <point key="canvasLocation" x="3321" y="-1421"/>
         </scene>
         <!--Setting Detail View Controller-->
         <scene sceneID="2Kh-Fc-jw9">
@@ -643,7 +646,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3220.3125" y="-424.21875"/>
+            <point key="canvasLocation" x="3321" y="-739"/>
         </scene>
         <!--Portrait NavVC-->
         <scene sceneID="nbz-YA-cv4">
@@ -664,7 +667,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQW-4z-gNL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1759.375" y="-424.21875"/>
+            <point key="canvasLocation" x="1860" y="-739"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZYk-12-Kh4">
@@ -688,7 +691,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ccR-G7-dzP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1786.71875" y="265.4296875"/>
+            <point key="canvasLocation" x="1888" y="-49"/>
         </scene>
         <!--Mpb View Controller-->
         <scene sceneID="rDA-Aj-7Wv">
@@ -820,7 +823,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rYd-Df-Okg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2489.84375" y="265.4296875"/>
+            <point key="canvasLocation" x="2591" y="-49"/>
         </scene>
         <!--Video Playback View Controller-->
         <scene sceneID="qjL-E6-1yu">
@@ -847,7 +850,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBG-SZ-shS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4032.8125" y="265.4296875"/>
+            <point key="canvasLocation" x="4134" y="-49"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="I3k-2p-hSt">
@@ -865,7 +868,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQl-6y-EwJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3228.125" y="265.4296875"/>
+            <point key="canvasLocation" x="3329" y="-49"/>
         </scene>
         <!--Portrait NavVC-->
         <scene sceneID="bWf-fE-34a">
@@ -882,7 +885,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N3p-Xs-gLS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1417.1875" y="-44.53125"/>
+            <point key="canvasLocation" x="-2547" y="-49"/>
         </scene>
         <!--Mobile Cam-->
         <scene sceneID="eTL-7E-jT5">
@@ -1177,7 +1180,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-707.03125" y="-49.21875"/>
+            <point key="canvasLocation" x="-1544" y="-49"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5f5-dU-vaX">
@@ -1194,7 +1197,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aEY-h2-lLa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="250" y="67.96875"/>
+            <point key="canvasLocation" x="-271" y="-49"/>
         </scene>
         <!--Add new camera-->
         <scene sceneID="tcf-a1-JGj">
@@ -1281,7 +1284,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yog-zn-Jpq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-693.75" y="825.5859375"/>
+            <point key="canvasLocation" x="-1262" y="1045"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="DH7-sd-QJN">
@@ -1298,7 +1301,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tXP-Y0-Dtn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1422.65625" y="825.5859375"/>
+            <point key="canvasLocation" x="-2548" y="1045"/>
         </scene>
         <!--What's next?-->
         <scene sceneID="Iem-pU-4gY">
@@ -1366,7 +1369,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R5c-n2-Mbt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3917.1875" y="1444.3359375"/>
+            <point key="canvasLocation" x="3056" y="1706"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Adk-8a-maH">
@@ -1380,7 +1383,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zgn-Bq-RRr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3237.5" y="1444.3359375"/>
+            <point key="canvasLocation" x="1977" y="1706"/>
         </scene>
         <!--Wi-Fi Setup-->
         <scene sceneID="aZI-nI-niF">
@@ -1454,7 +1457,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ryA-hz-u1k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2545.3125" y="1444.3359375"/>
+            <point key="canvasLocation" x="821" y="1706"/>
         </scene>
         <!--Pairing-->
         <scene sceneID="tmf-Qz-4Hu">
@@ -1525,11 +1528,144 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NeW-B6-P9y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="953.125" y="1444.3359375"/>
+            <point key="canvasLocation" x="-271" y="1706"/>
+        </scene>
+        <!--相薄-->
+        <scene sceneID="QVs-dM-a6W">
+            <objects>
+                <viewController id="LwM-1D-YUC" customClass="ICatchMPBHomeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OMf-aV-Nze">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xgl-5x-e2R">
+                                <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="0Kp-Yn-Z7t"/>
+                                </constraints>
+                            </scrollView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Jj0-W1-5VL">
+                                <rect key="frame" x="0.0" y="94" width="768" height="930"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SfP-Qm-ZGv">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MPBHomeCell" id="TJm-Yw-F92" customClass="ICatchHomeCollectionCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="q7k-r5-ici">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="LwM-1D-YUC" id="O4W-ES-3Zl"/>
+                                    <outlet property="delegate" destination="LwM-1D-YUC" id="z4l-q9-kxw"/>
+                                </connections>
+                            </collectionView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xsS-Iq-1nj">
+                                <rect key="frame" x="0.0" y="980" width="768" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="rzc-va-cbK"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem systemItem="trash" id="Dmx-BT-dis">
+                                        <connections>
+                                            <action selector="deleteClick:" destination="LwM-1D-YUC" id="vJy-fo-SXv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="fUe-up-7iM"/>
+                                    <barButtonItem title="Select All" id="8Se-MR-3Vk">
+                                        <connections>
+                                            <action selector="selectAll:" destination="LwM-1D-YUC" id="DR3-G9-w7Y"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="yvL-EI-Dpa"/>
+                                    <barButtonItem systemItem="action" id="c6C-wn-Wc9">
+                                        <connections>
+                                            <action selector="actionClick:" destination="LwM-1D-YUC" id="jcw-Ec-Nni"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="upY-Fe-ai4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Jj0-W1-5VL" firstAttribute="leading" secondItem="upY-Fe-ai4" secondAttribute="leading" id="CID-wu-5iN"/>
+                            <constraint firstItem="Jj0-W1-5VL" firstAttribute="top" secondItem="upY-Fe-ai4" secondAttribute="top" constant="44" id="IaR-kr-BJn"/>
+                            <constraint firstItem="xsS-Iq-1nj" firstAttribute="trailing" secondItem="upY-Fe-ai4" secondAttribute="trailing" id="KGE-4r-B3o"/>
+                            <constraint firstItem="upY-Fe-ai4" firstAttribute="bottom" secondItem="Jj0-W1-5VL" secondAttribute="bottom" id="L5T-jV-LuI"/>
+                            <constraint firstItem="Jj0-W1-5VL" firstAttribute="trailing" secondItem="upY-Fe-ai4" secondAttribute="trailing" id="Xqn-x8-TzU"/>
+                            <constraint firstItem="xsS-Iq-1nj" firstAttribute="leading" secondItem="upY-Fe-ai4" secondAttribute="leading" id="gPF-2d-bRu"/>
+                            <constraint firstItem="xsS-Iq-1nj" firstAttribute="bottom" secondItem="upY-Fe-ai4" secondAttribute="bottom" id="kcq-bb-Xmb"/>
+                            <constraint firstItem="xgl-5x-e2R" firstAttribute="trailing" secondItem="upY-Fe-ai4" secondAttribute="trailing" id="nTq-J7-NlC"/>
+                            <constraint firstItem="xgl-5x-e2R" firstAttribute="leading" secondItem="upY-Fe-ai4" secondAttribute="leading" id="sef-iq-fIp"/>
+                            <constraint firstItem="xgl-5x-e2R" firstAttribute="top" secondItem="upY-Fe-ai4" secondAttribute="top" id="yPE-cD-Jvu"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="相薄" id="pQQ-d0-5E1">
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="done" id="1rr-QS-HzG">
+                                <connections>
+                                    <action selector="backClick:" destination="LwM-1D-YUC" id="hhr-bc-1k0"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" id="Gq7-ps-R0k">
+                                <connections>
+                                    <action selector="editClick:" destination="LwM-1D-YUC" id="xuJ-kV-etu"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="ic_filter_list_white_24dp" id="8hR-iD-yGo">
+                            <connections>
+                                <action selector="filterClick:" destination="LwM-1D-YUC" id="Xxr-cy-wOE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="actionButtonItem" destination="c6C-wn-Wc9" id="ct3-qJ-aJQ"/>
+                        <outlet property="collectionView" destination="Jj0-W1-5VL" id="TNv-zZ-y3m"/>
+                        <outlet property="deleteButtonItem" destination="Dmx-BT-dis" id="CFx-3g-qxi"/>
+                        <outlet property="doneButtonItem" destination="1rr-QS-HzG" id="21n-Lr-6pp"/>
+                        <outlet property="editButtonItem" destination="Gq7-ps-R0k" id="oDz-I4-gld"/>
+                        <outlet property="filterButtonItem" destination="8hR-iD-yGo" id="MIo-gh-363"/>
+                        <outlet property="flowLayout" destination="SfP-Qm-ZGv" id="bTC-nM-nXI"/>
+                        <outlet property="scrollView" destination="xgl-5x-e2R" id="SVJ-49-00m"/>
+                        <outlet property="selectAllButtonItem" destination="8Se-MR-3Vk" id="iip-9J-Yym"/>
+                        <outlet property="toolbar" destination="xsS-Iq-1nj" id="iXu-ra-LWi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V3q-jc-ItE" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2884" y="663"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="cLk-he-oxG">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="R5F-94-lHg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="F1x-Rb-Tub">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="LwM-1D-YUC" kind="relationship" relationship="rootViewController" id="WWn-iD-EEY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y3I-gm-kXN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1888" y="663"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="EON-D2-79e"/>
+        <segue reference="tGf-hT-sgv"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="ImageSelectedOn" width="44" height="44"/>
@@ -1543,6 +1679,7 @@
         <image name="empty_thumb" width="151" height="113"/>
         <image name="facebookLive" width="500" height="509"/>
         <image name="ic_camera1" width="70" height="74"/>
+        <image name="ic_filter_list_white_24dp" width="32" height="32"/>
         <image name="ic_image" width="52" height="44"/>
         <image name="local_thumb_bg" width="230" height="231"/>
         <image name="remove_btn" width="156" height="160"/>
@@ -1552,5 +1689,8 @@
         <image name="timelapse_off" width="82" height="56"/>
         <image name="timelapse_video" width="72" height="72"/>
         <image name="video_off" width="82" height="49"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

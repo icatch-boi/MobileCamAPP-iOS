@@ -73,6 +73,7 @@
 @property(nonatomic, getter =  isControlHidden) BOOL controlHidden;
 @property(nonatomic) dispatch_semaphore_t semaphore;
 @property(nonatomic) NSTimer *pbTimer;
+@property(nonatomic) NSTimer *insufficientPerformanceTimer;
 @property(nonatomic) double totalSecs;
 @property(nonatomic) double playedSecs;
 @property(nonatomic) double curVideoPTS;
@@ -450,7 +451,8 @@
                 }
                 [self removePlaybackObserver];
             }
-            [_pbTimer invalidate];
+            [self.pbTimer invalidate];
+            [self.insufficientPerformanceTimer invalidate];
             
 //            [[PanCamSDK instance] panCamStopPreview];
             [self.motionManager stopGyroUpdates];
@@ -770,7 +772,8 @@
                     dispatch_semaphore_signal(self.semaphore);
                     [_playbackButton setImage:[UIImage imageNamed:@"videoplayer_control_play"]
                                      forState:UIControlStateNormal];
-                    [_pbTimer invalidate];
+                    [self.pbTimer invalidate];
+                    [self.insufficientPerformanceTimer invalidate];
                     _videoPbElapsedTime.text = @"00:00:00";
                     _bufferingView.value = 0; [_bufferingView setNeedsDisplay];
                     self.curVideoPTS = 0;
@@ -808,7 +811,27 @@
             NSString *notice = [NSString stringWithFormat:@"Warning, Insufficient performance.\nVideo width: %lld, height: %lld.\n Frame interval:%f, decode time: %f.\nThe playback will stutter.", width, height, frameInterval, decodeTime];
             self.InsufficientPerformanceLabel.hidden = NO;
             self.InsufficientPerformanceLabel.text = notice;
+            
+            self.insufficientPerformanceTimer = [NSTimer scheduledTimerWithTimeInterval:_totalSecs/2
+                                                                                 target:self
+                                                                               selector:@selector(hideInsufficientPerformanceInfo)
+                                                                               userInfo:nil
+                                                                                repeats:NO];
         }
+    });
+}
+
+- (void)hideInsufficientPerformanceInfo {
+    if(videoPbInsufficientPerformanceListener) {
+        AppLog(@"Remove Observer: [id]0x%x, [listener]%p", ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE, videoPbInsufficientPerformanceListener.get());
+        [[PanCamSDK instance] removeObserver:ICH_GL_EVENT_VIDEO_CODEC_INSUFFICIENT_PERFORMANCE
+                                    listener:videoPbInsufficientPerformanceListener
+                                 isCustomize:NO];
+        videoPbInsufficientPerformanceListener.reset();
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.InsufficientPerformanceLabel.hidden = YES;
+        [self.insufficientPerformanceTimer invalidate];
     });
 }
 
@@ -975,7 +998,8 @@
                     [self showProgressHUDNotice:@"Seek failed" showTime:2.0];
                 }
                 
-                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"]) {
+                if (![[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"]
+                    && ![_pbTimer isValid]) {
                     self.pbTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                                   target  :self
                                                                   selector:@selector(updateTimeInfo:)
@@ -1099,7 +1123,7 @@
                                 [self landscapeControlPanel];
                             }
                             
-                            if (!isUseSDKDecode) {
+                            if (!isUseSDKDecode && ![_pbTimer isValid]) {
                                 self.pbTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                                               target  :self
                                                                               selector:@selector(updateTimeInfo:)
@@ -1151,14 +1175,13 @@
                             _deleteButton.enabled = NO;
                             _actionButton.enabled = NO;
                             
-                            if (!isUseSDKDecode) {
-                                if (![_pbTimer isValid]) {
-                                    self.pbTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                                                  target  :self
-                                                                                  selector:@selector(updateTimeInfo:)
-                                                                                  userInfo:nil
-                                                                                  repeats :YES];
-                                }
+                            if (!isUseSDKDecode && ![_pbTimer isValid]) {
+                                self.pbTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                                              target  :self
+                                                                              selector:@selector(updateTimeInfo:)
+                                                                              userInfo:nil
+                                                                              repeats :YES];
+                                
                             }
 
                             [pbButton setImage:[UIImage imageNamed:@"videoplayer_control_pause"]
@@ -2473,7 +2496,8 @@ static double __timestampA = 0;
         AppLog(@"Timeout!");
     } else {
         dispatch_semaphore_signal(self.semaphore);
-        [_pbTimer invalidate];
+        [self.pbTimer invalidate];
+        [self.insufficientPerformanceTimer invalidate];
         
         if(_played) {
             [self removePlaybackObserver];

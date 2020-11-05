@@ -220,7 +220,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
             });
         }
         
-        [self.window.rootViewController dismissViewControllerAnimated:YES completion: nil];
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion: nil];
     } else {
         NSTimeInterval ti = 0;
         ti = [[UIApplication sharedApplication] backgroundTimeRemaining];

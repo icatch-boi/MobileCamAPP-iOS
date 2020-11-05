@@ -329,7 +329,9 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 #pragma mark - Action
 - (IBAction)backClick:(id)sender {
-    if ([self capableOf:WifiCamAbilityDefaultToPlayback] && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PLAYBACK]) {
+    if ([self capableOf:WifiCamAbilityDefaultToPlayback]
+        && [[SDK instance] checkCameraCapabilities:ICH_CAM_APP_DEFAULT_TO_PLAYBACK]) {
+        
            [self.view.window.rootViewController dismissViewControllerAnimated:YES completion: ^{
                [[SDK instance] destroySDK];
                [[PanCamSDK instance] destroypanCamSDK];
@@ -1271,31 +1273,26 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     uint assetNum = (uint)[[SDK instance] retrieveCameraRollAssetsResult].count;
     
     if (shareNum) {
-        UIActivityViewController *activityVc = [[UIActivityViewController alloc]initWithActivityItems:self.actionFiles applicationActivities:nil];
-        
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self presentViewController:activityVc animated:YES completion:nil];
-        } else {
-            // Create pop up
-            UIPopoverController *activityPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityVc];
-            // Show UIActivityViewController in popup
-            [activityPopoverController presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-        
-        activityVc.completionWithItemsHandler = ^(NSString *activityType,
+        UIActivityViewController *activityVc = [[UIActivityViewController alloc] initWithActivityItems:self.actionFiles
+                                                                                 applicationActivities:nil];
+        activityVc.completionWithItemsHandler = ^(UIActivityType activityType,
                                                   BOOL completed,
                                                   NSArray *returnedItems,
                                                   NSError *error) {
+
             if (completed) {
                 AppLog(@"We used activity type: %@", activityType);
                 
-                if ([activityType isEqualToString:@"com.apple.UIKit.activity.SaveToCameraRoll"]) {
+                //if ([activityType isEqualToString:@"com.apple.UIKit.activity.SaveToCameraRoll"]) {
+                if([activityType isEqualToString:UIActivityTypeSaveToCameraRoll]) {
                     dispatch_async(dispatch_queue_create("WifiCam.GCD.Queue.Share", DISPATCH_QUEUE_SERIAL), ^{
                         [self showProgressHUDWithMessage:NSLocalizedString(@"PhotoSavingWait", nil)];
                         
                         BOOL ret;
                         AppLog(@"shareNum: %d", shareNum);
-                        ret = [[SDK instance] savetoAlbum:@"MobileCamApp" andAlbumAssetNum:assetNum andShareNum:[self videoAtPathIsCompatibleWithSavedPhotosAlbum:shareNum]];
+                        ret = [[SDK instance] savetoAlbum:@"MobileCamApp"
+                                         andAlbumAssetNum:assetNum
+                                              andShareNum:[self videoAtPathIsCompatibleWithSavedPhotosAlbum:shareNum]];
                         /*
                         if (shareNum <= 5) {
                             ret = [[SDK instance] savetoAlbum:@"iSmart DV" andAlbumAssetNum:assetNum andShareNum:[self videoAtPathIsCompatibleWithSavedPhotosAlbum:shareNum]];
@@ -1335,16 +1332,37 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                             [self.actionFiles removeAllObjects];
                             [self.actionFileType removeAllObjects];
                         });
+                        
                     });
                 }
             } else {
                 AppLog(@"We didn't want to share anything after all.");
             }
-            
+
             if (error) {
                 AppLog(@"An Error occured: %@, %@", error.localizedDescription, error.localizedFailureReason);
             }
+            
+            activityVc.completionWithItemsHandler = nil;
         };
+
+//        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//            [self presentViewController:activityVc animated:YES completion:nil];
+//        } else {
+//            // Create pop up
+//            UIPopoverController *activityPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityVc];
+//            // Show UIActivityViewController in popup
+//            [activityPopoverController presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+//                                              permittedArrowDirections:UIPopoverArrowDirectionAny
+//                                                              animated:YES];
+//        }
+        
+        // iOS 8 - Set the Anchor Point for the popover
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8")) {
+             activityVc.popoverPresentationController.barButtonItem = sender;
+        }
+        [self presentViewController:activityVc animated:YES completion:nil];
+        
     } else {
 //        [self showAlertViewWithTitle:NSLocalizedString(@"SaveError", nil) message:nil cancelButtonTitle:NSLocalizedString(@"Sure", @"")];
         
@@ -1354,9 +1372,13 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 }
 
 - (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle {
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title
+                                                                     message:message
+                                                              preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertVC addAction:[UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:nil]];
+    [alertVC addAction:[UIAlertAction actionWithTitle:cancelButtonTitle
+                                                style:UIAlertActionStyleCancel
+                                              handler:nil]];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }

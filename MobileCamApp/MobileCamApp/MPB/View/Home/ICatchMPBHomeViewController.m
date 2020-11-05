@@ -1343,7 +1343,6 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
                 AppLog(@"An Error occured: %@, %@", error.localizedDescription, error.localizedFailureReason);
             }
             
-            activityVc.completionWithItemsHandler = nil;
         };
 
 //        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {

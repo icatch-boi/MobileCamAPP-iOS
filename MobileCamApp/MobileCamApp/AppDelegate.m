@@ -208,15 +208,21 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     if (![[SDK instance] isBusy]) {
         if ([self.delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
             AppLog(@"Execute delegate method.");
-            [self.delegate applicationDidEnterBackground:nil];
+            
+            dispatch_async([[SDK instance] sdkQueue], ^{
+                [self.delegate applicationDidEnterBackground:nil];
+
+            });
         } else {
             AppLog(@"Execute default method.");
-            dispatch_sync([[SDK instance] sdkQueue], ^{
+
+            dispatch_async([[SDK instance] sdkQueue], ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraDestroySDKNotification"
                                                                     object:nil];
                 [[SDK instance] destroySDK];
 //                [[SDK instance] enablePTPIP];
                 [[PanCamSDK instance] destroypanCamSDK];
+
             });
         }
         
@@ -567,7 +573,6 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     self.sdcardRemoveObserver = [[WifiCamObserver alloc] initWithListener:sdcardRemovelistener eventType:ICH_CAM_EVENT_SDCARD_REMOVED isCustomized:NO isGlobal:YES];
     [[SDK instance] addObserver:self.sdcardRemoveObserver];
     
-    // sdcard in
     auto sdkcardInlister = make_shared<WifiCamSDKEventListener>(self, @selector(notifySDCardInEvent));
     self.sdcardInObserver = [[WifiCamObserver alloc] initWithListener:sdkcardInlister eventType:ICH_CAM_EVENT_SDCARD_IN isCustomized:NO isGlobal:YES];
     [[SDK instance] addObserver:self.sdcardInObserver];

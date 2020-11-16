@@ -828,7 +828,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
 {
-    AppLog(@"%s(%lu)", __func__, (unsigned long)index);
+    AppLog(@"photoAtIndex %lu", (unsigned long)index);
     
     MWPhoto *photo = nil;
     unsigned long listSize = 0;
@@ -1342,7 +1342,6 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
             if (error) {
                 AppLog(@"An Error occured: %@, %@", error.localizedDescription, error.localizedFailureReason);
             }
-            
         };
 
 //        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {

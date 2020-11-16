@@ -1856,7 +1856,7 @@ static double __timestampA = 0;
 
 - (void)setCurrentPhotoIndex:(NSUInteger)index {
     // Validate
-    NSLog(@"set current index to %lu", (unsigned long)index);
+    NSLog(@"MWPhotoBrowser set current index to %lu", (unsigned long)index);
     NSUInteger photoCount = [self numberOfPhotos];
     if (photoCount == 0) {
         index = 0;
@@ -2367,7 +2367,7 @@ static double __timestampA = 0;
     [self.motionManager stopGyroUpdates];
     [EAGLContext setCurrentContext:self.context];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([self.delegate respondsToSelector:@selector(destroyDataForEnterBackground)]) {
             [self.delegate destroyDataForEnterBackground];
         }
@@ -2375,7 +2375,7 @@ static double __timestampA = 0;
         if ([EAGLContext currentContext] == self.context) {
             [EAGLContext setCurrentContext:nil];
         }
-    });
+//    });
 }
 
 #pragma mark PanoramaType

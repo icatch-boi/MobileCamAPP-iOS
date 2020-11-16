@@ -243,7 +243,6 @@
 //    self.vplayback = NULL;
     self.sdkState = NULL;
     self.sdkInfo = NULL;
-    AppLog(@"Over");
 }
 
 -(void)cleanUpDownloadDirectory
@@ -515,9 +514,15 @@
     }
     
     int ret = _control->getFreeSpaceInImages(num);
-    if (ret == ICH_SUCCEED && num == 0) {
-        return NO;
+    if (ret == ICH_SUCCEED) {
+        AppLog(@"getFreeSpaceInImages succeed: %d", num);
+        if(num == 0) {
+            return NO;
+        } else {
+            return YES;
+        }
     } else {
+        AppLog(@"getFreeSpaceInImages failed");
         return  YES;
     }
 }
@@ -1079,26 +1084,26 @@
     return retVal == ICH_SUCCEED ? YES : NO;
 }
 
-- (BOOL)checkSDExist {
+- (WCRetrunType)checkSDExist {
     if (!_control) {
         AppLog(@"SDK doesn't working.");
-        return YES;
+        return WCRetFail;
     }
-    
+
     bool retVal = true;
     int ret = _control->isSDCardExist(retVal);
     if (ret == ICH_SUCCEED) {
         if(retVal == false) {
             AppLog(@"SD card isn't exist.");
-            return NO;
+            return WCRetNoSD;
         }
     } else {
         AppLog(@"CheckSDExist failed. %d", ret);
-        return YES;
+        return WCRetFail;
     }
     
     AppLog(@"SD card is exist by default.");
-    return YES;
+    return WCRetSuccess;
 }
 
 - (BOOL)zoomIn {
@@ -1166,7 +1171,7 @@
         int ret = _playback->getFileCount(fileCount);
         
         if (ret != ICH_SUCCEED) {
-            AppLog("Get file count failed, ret: %d", ret);
+            AppLog(@"Get file count failed, ret: %d", ret);
         }
     }
 
@@ -1321,7 +1326,7 @@
             endIndex = endIndex + maxNum;
         }
         
-        AppLog("end getFileList startIndex=%d endInex=%d", startIndex , endIndex);
+        AppLog(@"end getFileList startIndex=%d endInex=%d", startIndex , endIndex);
     }
     
     AppLog(@"listSize: %lu", list.size());
@@ -1527,7 +1532,7 @@
                  contextInfo: (void *) contextInfo;
 {
     if (error) {
-        AppLog("Error: %@", [error userInfo]);
+        AppLog(@"Error: %@", [error userInfo]);
     } else {
         AppLog(@"image Saved");
         
@@ -1541,7 +1546,7 @@
 {
     
     if (error) {
-        AppLog("Error: %@", [error userInfo]);
+        AppLog(@"Error: %@", [error userInfo]);
     } else {
         AppLog(@"video Saved");
         

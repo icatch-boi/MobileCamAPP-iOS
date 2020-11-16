@@ -17,7 +17,7 @@
 //-(BOOL)isVideoTimelapseOn;
 //-(BOOL)isStillTimelapseOn;
 - (BOOL)connected;
-- (BOOL)checkSDExist;
+- (WCRetrunType)checkSDExist;
 - (BOOL)videoStreamEnabled;
 - (BOOL)audioStreamEnabled;
 

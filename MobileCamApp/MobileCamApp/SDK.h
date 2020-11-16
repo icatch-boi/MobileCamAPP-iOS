@@ -75,7 +75,7 @@ enum WCRetrunType {
 -(BOOL)startTimelapseRecord;
 -(BOOL)stopTimelapseRecord;
 -(BOOL)formatSD;
--(BOOL)checkSDExist;
+-(WCRetrunType)checkSDExist;
 -(void)addObserver:(ICatchCamEventID)eventTypeId
           listener:(shared_ptr<ICatchICameraListener>)listener
        isCustomize:(BOOL)isCustomize;

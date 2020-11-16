@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @protocol AppDelegateProtocol <NSObject>
-@optional
 -(void)applicationDidEnterBackground:(UIApplication *)application NS_AVAILABLE_IOS(4_0);
+@optional
 -(void)applicationDidBecomeActive:(UIApplication *)application NS_AVAILABLE_IOS(4_0);
 -(void)notifyPropertiesReady;
 -(NSString *)notifyConnectionBroken;

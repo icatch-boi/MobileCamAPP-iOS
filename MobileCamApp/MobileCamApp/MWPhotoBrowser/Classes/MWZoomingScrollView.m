@@ -95,16 +95,8 @@
 - (BOOL)displayingVideo {
 //    return [_photo respondsToSelector:@selector(isVideo)] && _photo.isVideo;
     BOOL retVal = YES;
-    if ([_photo respondsToSelector:@selector(isVideo)]) {
-        NSLog(@"1");
-    } else {
-        NSLog(@"2");
-        retVal = NO;
-    }
-    if (_photo.isVideo) {
-        NSLog(@"3");
-    } else {
-        NSLog(@"4");
+    if (![_photo respondsToSelector:@selector(isVideo)]
+        || !_photo.isVideo) {
         retVal = NO;
     }
     return retVal;

@@ -1107,7 +1107,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
             [_updateFWAlertView show];
         } */else if (indexPath.row == 1/*2*/) {
 //            [_ctrl.actCtrl cleanUpDownloadDirectory];
-            if (![_ctrl.propCtrl checkSDExist]) {
+            if ([_ctrl.propCtrl checkSDExist] == WCRetNoSD) {
                 UIAlertController *alertC = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"NoCard", nil) preferredStyle:UIAlertControllerStyleAlert];
                 [alertC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Sure", nil) style:UIAlertActionStyleCancel handler:nil]];
                 [self presentViewController:alertC animated:YES completion:nil];
@@ -1169,7 +1169,7 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
 {
     __block BOOL formatOK = NO;
     if ((buttonIndex == 1) && (alertView.tag == 0)) {
-        if (![_ctrl.propCtrl checkSDExist]) {
+        if ([_ctrl.propCtrl checkSDExist] == WCRetNoSD) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                  message           :NSLocalizedString(@"CARD_ERROR", nil)
                                                  delegate          :self

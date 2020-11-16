@@ -692,6 +692,12 @@
     }
 
     if (!_seeking) {
+        
+        if (self.panCampaused) {
+            AppLog(@"Playback is manully paused, skip play status update");
+            return;
+        }
+
         self.playedSecs = event.doubleValue1;
         
         float sliderPercent = _playedSecs/_totalSecs; // slider value
@@ -704,7 +710,11 @@
                 _bufferingView.value = sliderPercent;
                 [_bufferingView setNeedsDisplay];
             }
+            //                AppLog(@"hideGCDiscreetNoteView");
+            [self hideGCDiscreetNoteView:YES];
         });
+
+        
     } else {
         AppLog(@"seeking");
     }
@@ -723,6 +733,10 @@
     if (!_played || _panCampaused) {
         return;
     }
+    
+    /// workaround: dispatch this task after all 'hideGCDiscreetNoteView' task run complete
+    [NSThread sleepForTimeInterval:1.0];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (caching) {
             //[_al pause];
@@ -807,12 +821,16 @@
     AppLog(@"Insufficient performance: %lld, %lld", width, height);
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(self.InsufficientPerformanceLabel.hidden) {
+        if(self.InsufficientPerformanceLabel.hidden
+           && width > 0
+           && height > 0
+           && frameInterval > 0
+           && decodeTime > 0) {
             NSString *notice = [NSString stringWithFormat:@"Warning, Insufficient performance.\nVideo width: %lld, height: %lld.\n Frame interval:%f, decode time: %f.\nThe playback will stutter.", width, height, frameInterval, decodeTime];
             self.InsufficientPerformanceLabel.hidden = NO;
             self.InsufficientPerformanceLabel.text = notice;
             
-            self.insufficientPerformanceTimer = [NSTimer scheduledTimerWithTimeInterval:_totalSecs/2
+            self.insufficientPerformanceTimer = [NSTimer scheduledTimerWithTimeInterval:MIN(_totalSecs/2, 5)
                                                                                  target:self
                                                                                selector:@selector(hideInsufficientPerformanceInfo)
                                                                                userInfo:nil
@@ -926,7 +944,7 @@
 
 #pragma mark - VideoPB
 - (IBAction)sliderValueChanged:(VideoPlaybackSlideController *)slider {
-    TRACE();
+
     /*
     if (_played) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -1026,6 +1044,8 @@
                 _bufferingView.value = sliderPercent;
                 [_bufferingView setNeedsDisplay];
             }
+            
+            [self hideGCDiscreetNoteView:YES];
         });
     } else {
         AppLog(@"seeking");
@@ -1064,6 +1084,7 @@
 
             if (_played && !_panCampaused) {
                 // Pause
+                self.panCampaused = YES;
                 AppLog(@"call pause");
                 if (_videoURL) {
                     self.panCampaused = [[PanCamSDK instance] pause];
@@ -2491,35 +2512,35 @@ static double __timestampA = 0;
 
     self.PlaybackRun = NO;
     [self stopGLKAnimation];
-    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
-    if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
-        AppLog(@"Timeout!");
-    } else {
-        dispatch_semaphore_signal(self.semaphore);
-        [self.pbTimer invalidate];
-        [self.insufficientPerformanceTimer invalidate];
-        
-        if(_played) {
-            [self removePlaybackObserver];
-            if (_videoURL) {
-                self.played = ![[PanCamSDK instance] stop];
-            } else {
-                self.played = ![_ctrl.pbCtrl stop];
+//    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
+//    if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
+//        AppLog(@"Timeout!");
+//    } else {
+//            dispatch_semaphore_signal(self.semaphore);
+            [self.pbTimer invalidate];
+            [self.insufficientPerformanceTimer invalidate];
+            
+            if(_played) {
+                [self removePlaybackObserver];
+                if (_videoURL) {
+                    self.played = ![[PanCamSDK instance] stop];
+                } else {
+                    self.played = ![_ctrl.pbCtrl stop];
+                }
             }
-        }
-        
-        [[SDK instance] destroySDK];
-        
-        //            [[PanCamSDK instance] panCamStopPreview];
-        [self.motionManager stopGyroUpdates];
-        [EAGLContext setCurrentContext:self.context];
-        
-        [[PanCamSDK instance] destroypanCamSDK];
-        
-        if ([EAGLContext currentContext] == self.context) {
-            [EAGLContext setCurrentContext:nil];
-        }
-    }
+            
+            [[SDK instance] destroySDK];
+            
+            //            [[PanCamSDK instance] panCamStopPreview];
+            [self.motionManager stopGyroUpdates];
+            [EAGLContext setCurrentContext:self.context];
+            
+            [[PanCamSDK instance] destroypanCamSDK];
+            
+            if ([EAGLContext currentContext] == self.context) {
+                [EAGLContext setCurrentContext:nil];
+            }
+//    }
 }
 
 - (void)sdcardRemoveCallback

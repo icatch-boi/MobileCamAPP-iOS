@@ -30,8 +30,8 @@
     return retVal;
 }
 
-- (BOOL)checkSDExist {
-    __block BOOL retVal = NO;
+- (WCRetrunType)checkSDExist {
+    __block WCRetrunType retVal;
     dispatch_sync([[SDK instance] sdkQueue], ^{
         retVal = [[SDK instance] checkSDExist];
     });
@@ -775,7 +775,7 @@
         ICatchCameraUtil::convertBurstNumbers(vBNs, supportedEnumedBurstNumbers);
         
         TAA.array = [[NSMutableArray alloc] initWithCapacity:supportedEnumedBurstNumbers.size()];
-        AppLog("supportedEnumedBurstNumbers.size(): %lu", supportedEnumedBurstNumbers.size());
+        AppLog(@"supportedEnumedBurstNumbers.size(): %lu", supportedEnumedBurstNumbers.size());
         int i = 0;
         NSDictionary *dict = [[WifiCamStaticData instance] burstNumberStringDict];
         
@@ -1136,7 +1136,6 @@
         AppLogInfo(AppLogTagAPP, @"curVideoFileLength: %d", curVideoFileLength);
         for (vector<uint>::iterator it = vDVFLs.begin(); it != vDVFLs.end(); ++it, ++i) {
             s = [self calcVideoFileLength:*it];
-            
             if (s) {
                 [TAA.array addObject:s];
             }
@@ -1161,8 +1160,66 @@
     if (curVideoFileLength == 0) {
         return NSLocalizedString(@"unlimited", @"");
     } else {
-        return [NSString stringWithFormat:@"%ds", curVideoFileLength];
+//        return [NSString stringWithFormat:@"%ds", curVideoFileLength];
+        
+        /**
+         2020.11.09 Add new format
+         http://jira.icatchtek.com:8080/browse/AIBSP-1934
+         这个 只有 CVR 的code 有变
+         #if SP5K_CVRCAM_MULTI_MODE
+         [UI_VIDEO_SEAMLESS_OFF] = 0*MINUTE,
+         [UI_VIDEO_SEAMLESS_1MIN] = 1*MINUTE,
+         [UI_VIDEO_SEAMLESS_256MB] = 256*1000 + 0*MINUTE,
+         [UI_VIDEO_SEAMLESS_1MIN256MB] = 256*1000 + 1*MINUTE,
+         [UI_VIDEO_SEAMLESS_3MIN256MB] = 256*1000 + 3*MINUTE,
+         #else
+         [UI_VIDEO_SEAMLESS_OFF] = 0*MINUTE,
+         [UI_VIDEO_SEAMLESS_1MIN] = 1*MINUTE,
+         [UI_VIDEO_SEAMLESS_5MIN] = 5*MINUTE,
+         #endif
+         因为 CVR 的案子，有 规定file 的大小需求，所以就有了 256MB 这个信息
+         所以 目前 CVR 的case 在 app 上显示 256180s ，前面 256 是指 size 256MB，后面 180s 就是 时长。
+         [UI_VIDEO_SEAMLESS_3MIN256MB] = 256*1000 + 分钟数*MINUTE, 那后面的 分钟数*MINUTE （即 小于 16 min） 必须要小于1000才不会出错，目前需求中 最高 为 5 min.
+         目前 camera 上的menu 如下（FYI~）：
+         256000 --> 256MB + 256MB
+         256060 --> 1 MIN + 256MB
+         256180 --> 3 MIN + 256MB
+         PS：sportcam 是没有该需求，需要兼容。
+         */
+        
+        NSString *str;
+        if (curVideoFileLength < 256000) {
+            str = [self second2String:curVideoFileLength];
+        } else {
+            uint size = curVideoFileLength/1000;
+            uint duration = curVideoFileLength - size*1000;
+            if (duration > 0) {
+                str = [self second2String:duration];
+                str = [str stringByAppendingFormat:@" + %dMB", size];
+            } else {
+                str = [NSString stringWithFormat:@"%dMB + %dMB", size, size];
+            }
+        }
+        return str;
     }
+}
+
+-(NSString *)second2String:(uint)second {
+    NSString *str;
+    uint m = second/60;
+    uint s = second - m*60;
+    if (m>0) {
+        str = [NSString stringWithFormat:@"%dMIN", m];
+    }
+    if (s>0) {
+        if (str) {
+            NSString *secondStr = [NSString stringWithFormat:@"%ds", s];
+            str = [str stringByAppendingString:secondStr];
+        } else {
+            str = [NSString stringWithFormat:@"%ds", s];
+        }
+    }
+    return str;
 }
 
 - (WifiCamAlertTable *)prepareDataForFastMotionMovie:(uint)curFastMotionMovie

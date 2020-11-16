@@ -127,6 +127,12 @@ alpha:1.0]
 */
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
 
     [self setButtonRadius:self.addCamBtn1 withRadius:5.0];
     [self setButtonRadius:self.addCamBtn2 withRadius:5.0];
@@ -366,21 +372,30 @@ alpha:1.0]
 //    }
 //    return info;
 //}
-
+/*
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
+    
     [self loadAssets];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.isReconnecting = YES;
-    /*
-    if (_myCentralManager.state == CBCentralManagerStatePoweredOn) {
-        [_myCentralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
-        AppLog(@"Scanning started");
-    }*/
-}
+}*/
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
+    
+    [self loadAssets];
     
 //    TRACE();
 //    AppLog(@"1: %f", _addCamBtn1.frame.origin.y);
@@ -448,11 +463,18 @@ alpha:1.0]
                                                     userInfo:nil repeats:YES];
     });*/
     [self.wifiReachability startNotifier];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkConnectionStatus) name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkConnectionStatus)
+                                                 name:kReachabilityChangedNotification object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
+    
     if (_myCentralManager.state == CBManagerStatePoweredOn) {
         [_myCentralManager stopScan];
     }
@@ -823,7 +845,7 @@ struct ifaddrs *interfaces;
                     }
                 //}
                 
-                AppLog(@"[%d]NotReachable -- Sleep 500ms", totalCheckCount);
+//                AppLog(@"[%d]NotReachable -- Sleep 500ms", totalCheckCount);
                 [NSThread sleepForTimeInterval:0.5];
             }
         }
@@ -1353,8 +1375,8 @@ struct ifaddrs *interfaces;
             [_photosAssets addObject:[NSURL fileURLWithPath:[photosPath stringByAppendingPathComponent:photoPath]]];
         }
         
-        if (_photosAssets.count > 0) {
-            AppLog(@"_photosAssets.count: %lu", (unsigned long)_photosAssets.count);
+        if (self.photosAssets.count > 0) {
+            AppLog(@"self.photosAssets.count: %lu", (unsigned long)self.photosAssets.count);
             
 //            if (_photoThumb.tag == 0) {
 //                _photoThumb.tag = 11;
@@ -1375,19 +1397,29 @@ struct ifaddrs *interfaces;
             [_videosAssets addObject:[NSURL fileURLWithPath:[videosPath stringByAppendingPathComponent:videoPath]]];
         }
         
-        if (_videosAssets.count > 0) {
-            AppLog(@"_videosAssets.count: %lu", (unsigned long)_videosAssets.count);
+        if (self.videosAssets.count > 0) {
+            AppLog(@"self.videosAssets.count: %lu", (unsigned long)self.videosAssets.count);
             
 //            if (_videoThumb.tag == 0) {
 //                _videoThumb.tag = 12;
+            
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    [_videoThumb setBackgroundImage:[self getImage:_videosAssets[0]] forState:UIControlStateNormal];
+                    NSURL *url = [self.videosAssets firstObject];
+                    if(url) {
+                        [_videoThumb setBackgroundImage:[self getImage:url]
+                                               forState:UIControlStateNormal];
+                    } else {
+                        UIImage *emptyThumbImage = [UIImage imageNamed:@"empty_thumb"];
+                        [_videoThumb setBackgroundImage:emptyThumbImage
+                                               forState:UIControlStateNormal];
+                    }
                 });
 //            }
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIImage *noImage = [UIImage imageNamed:@"empty_thumb"];
-                [_videoThumb setBackgroundImage:noImage forState:UIControlStateNormal];
+                UIImage *emptyThumbImage = [UIImage imageNamed:@"empty_thumb"];
+                [_videoThumb setBackgroundImage:emptyThumbImage
+                                       forState:UIControlStateNormal];
             });
         }
     });
@@ -1694,7 +1726,7 @@ struct ifaddrs *interfaces;
     }
     documentsDirectoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:filePath error:nil];
     
-    AppLog("Delete %@", [NSString stringWithFormat:@"%@/%@", filePath, documentsDirectoryContents[index]]);
+    AppLog(@"Delete %@", [NSString stringWithFormat:@"%@/%@", filePath, documentsDirectoryContents[index]]);
     BOOL ret = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", filePath, documentsDirectoryContents[index]] error:nil];
     
     

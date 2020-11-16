@@ -135,7 +135,7 @@ static NSString * const kGroupHeaderReuseID = @"GroupHeader";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ICatchFilesTableCell *cell = [tableView dequeueReusableCellWithIdentifier:self.reuseIdentifier forIndexPath:indexPath];
     
-//    AppLog("section: %ld, row: %ld", (long)indexPath.section, (long)indexPath.row);
+//    AppLog(@"section: %ld, row: %ld", (long)indexPath.section, (long)indexPath.row);
     // Configure the cell...
     cell.fileInfo = self.currentFileTable.groups[indexPath.section].fileInfos[indexPath.row];
     cell.editState = self.currentFileTable.editState;

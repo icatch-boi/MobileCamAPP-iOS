@@ -54,8 +54,14 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 #pragma mark - Lifecycle
 - (void)viewDidLoad
 {
-    TRACE();
     [super viewDidLoad];
+    TRACE();
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
+    
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     //_Living = NO;
     
@@ -163,10 +169,11 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     TRACE();
     NSInteger currentState = [UIApplication sharedApplication].applicationState;
-    if (currentState != UIApplicationStateActive) {
-        AppLog("Application is not active, current statue: %ld", (long)currentState);
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
         return;
     }
     [EAGLContext setCurrentContext:self.context];
@@ -177,7 +184,6 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
         [[PanCamSDK instance] initStreamWithRenderType:RenderType_Disable isPreview:YES file:nil];
     }
 
-    [super viewWillAppear:animated];
     self.AudioRun = _wifiCam.camera.enableAudio;
     if (!_AudioRun) {
         self.enableAudioButton.tag = 1;
@@ -251,9 +257,26 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    TRACE();
     NSInteger currentState = [UIApplication sharedApplication].applicationState;
-    if (currentState != UIApplicationStateActive) {
-        AppLog("Application is not active, current statue: %ld", (long)currentState);
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
+    
+    if (![[SDK instance] isSDKInitialized]) {
+        AppLog(@"SDK doesn't work!!!");
+        [self.view.window.rootViewController dismissViewControllerAnimated:YES completion: ^{
+
+            
+            [EAGLContext setCurrentContext:self.context];
+            
+            [[PanCamSDK instance] destroypanCamSDK];
+            
+            if ([EAGLContext currentContext] == self.context) {
+                [EAGLContext setCurrentContext:nil];
+            }
+        }];
         return;
     }
 //    [self showLiveGUIIfNeeded:_camera.previewMode];
@@ -423,17 +446,23 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    TRACE();
 //    if (self.currentVideoData.length == 0) {
 //        self.savedCamera.thumbnail = (id)_preview.image;
 //    }
     
     [super viewWillDisappear:animated];
+    TRACE();
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
+    
     [self hideZoomController:YES];
     
-    //    AppLog(@"self.PVRun = NO");
     // Stop preview
-    //    self.PVRun = NO;
+    self.PVRun = NO;
+    AppLog(@"self.PVRun = NO");
     
     [self removeObservers];
     
@@ -465,6 +494,12 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 
 -(void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    TRACE();
+    NSInteger currentState = [UIApplication sharedApplication].applicationState;
+    if (currentState == UIApplicationStateBackground) {
+        AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
+        return;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"kCameraNetworkConnectedNotification" object:nil];
 }
 
@@ -483,8 +518,11 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     [self p_deconstructPreviewData];
     [self destroyGLData];
     
-    [[SDK instance] destroySDK];
-    [[PanCamSDK instance] destroypanCamSDK];
+    dispatch_async([[SDK instance] sdkQueue], ^{
+        [[SDK instance] destroySDK];
+        [[PanCamSDK instance] destroypanCamSDK];
+    });
+    
 }
 
 - (BOOL)capableOf:(WifiCamAbility)ability {
@@ -902,7 +940,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     self.mpbToggle.enabled = YES;
     self.settingButton.enabled = YES;
     // AIBSP-603
-    [_ctrl.fileCtrl resetBusyToggle:NO];
+//    [_ctrl.fileCtrl resetBusyToggle:NO];
     
     // DelayCapture Item
     if ([self capableOf:WifiCamAbilityDelayCapture]) {
@@ -1007,7 +1045,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     
     // AIBSP-603
     if ([self capableOf:WifiCamAbilityZoom]) {
-        [_ctrl.fileCtrl resetBusyToggle:YES];
+//        [_ctrl.fileCtrl resetBusyToggle:YES];
         [self hideZoomController:YES];
     }
 }
@@ -1325,7 +1363,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 {
     AppLog(@"%s start(%d)", __func__, mode);
     self.videoPlayFlag = NO;
-    self.paused = NO;
+    
     
     self.previewMode = mode;
     dispatch_queue_t previewQ = dispatch_queue_create("WifiCam.GCD.Queue.Preview", DISPATCH_QUEUE_SERIAL);
@@ -1377,6 +1415,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
             return;
             
         } else {
+            self.paused = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self updatePreviewSceneByMode:_camera.previewMode];
                 [self hideProgressHUD:YES];
@@ -1456,22 +1495,30 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     
     dispatch_async(previewQ, ^{
         // Check SD card
-        if (![_ctrl.propCtrl checkSDExist]) {
-            AppLog("SD card not inserted");
+        WCRetrunType checkSDRet = [_ctrl.propCtrl checkSDExist];
+        if (checkSDRet == WCRetNoSD) {
+            AppLog(@"SD card not inserted");
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil) showTime:2.0];
             });
-        } else {
+        } else if (checkSDRet == WCRetSuccess) {
             if ((_camera.previewMode == WifiCamPreviewModeCameraOff && _camera.storageSpaceForImage <= 0)
                 || (_camera.previewMode == WifiCamPreviewModeCameraOff && _camera.storageSpaceForVideo==0)) {
                 
-                AppLog("SD card is full");
+                AppLog(@"SD card is full");
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil) showTime:2.0];
                 });
                 
             }
+        } else if (checkSDRet == WCRetFail) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showProgressHUDNotice:NSLocalizedString(@"Failed to check SD card status", nil) showTime:2.0];
+            });
+        } else {
+            
         }
+        
     });
 }
 
@@ -1528,6 +1575,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     dispatch_semaphore_signal(_previewSemaphore);
 }
 
+#pragma mark - GLKViewDelegate
+/// Draws the view’s contents.
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
     if (!self.paused) {
@@ -1541,30 +1590,30 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 //        [[PanCamSDK instance] panCamSetViewPort:0 andY:0 andWidth:(int)view.drawableWidth andHeight:(int)view.drawableHeight];
 //        [[PanCamSDK instance] panCamRender];
         
+
         int windowW = (int)view.drawableWidth;
         int windowH = (int)view.drawableHeight;
         BOOL isNeed = YES;
         
-        if (!self.paused) {
-            //        FIXME: modify viewPort
-            if (drawableWidth == 0 || drawableHeight == 0) {
-                drawableWidth = windowW;
-                drawableHeight = windowH;
-            }
-            
-            if (windowH != drawableHeight || windowW != drawableWidth) {
-                drawableWidth = windowW;
-                drawableHeight = windowH;
-                isNeed = NO;
-            }
-            
-            [[PanCamSDK instance] panCamSetViewPort:0 andY:0 andWidth:windowW andHeight:windowH needJudge:isNeed];
-            [[PanCamSDK instance] panCamRenderWithNeedJudge:isNeed];
+        ///FIXME: modify viewPort
+        if (drawableWidth == 0 || drawableHeight == 0) {
+            drawableWidth = windowW;
+            drawableHeight = windowH;
         }
+        
+        if (windowH != drawableHeight || windowW != drawableWidth) {
+            drawableWidth = windowW;
+            drawableHeight = windowH;
+            isNeed = NO;
+        }
+        
+        [[PanCamSDK instance] panCamSetViewPort:0 andY:0 andWidth:windowW andHeight:windowH needJudge:isNeed];
+        [[PanCamSDK instance] panCamRenderWithNeedJudge:isNeed];
+
     }
 }
 
-#pragma mark ------------ Gyro Events ------------
+#pragma mark - Gyro Events
 static double __timestampA = 0;
 
 - (void)configureGyro
@@ -1612,7 +1661,7 @@ static double __timestampA = 0;
     }
 }
 
-#pragma mark ------------- UI Events --------------
+#pragma mark - UI Events
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -1996,7 +2045,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     CVPixelBufferRef pixelBuffer = [self decodeToPixelBufferRef:data];
     CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
     UIImage *image = [UIImage imageWithCIImage:ciImage];
-//    AppLog("last image: %@", image);
+//    AppLog(@"last image: %@", image);
     return image;
 }
 
@@ -2484,22 +2533,34 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         });
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (![_ctrl.propCtrl checkSDExist]) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{        
+        WCRetrunType checkSDRet = [_ctrl.propCtrl checkSDExist];
+        if (checkSDRet == WCRetNoSD) {
+            AppLog(@"SD card not inserted");
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil)
                                    showTime:1.0];
                 [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
             });
             return;
-        }
-        if (/*_camera.storageSpaceForImage==0*/![[SDK instance] checkstillCapture] && [_ctrl.propCtrl connected]) {
+        } else if (checkSDRet == WCRetSuccess) {
+            if (![[SDK instance] checkstillCapture] && [_ctrl.propCtrl connected]) {
+                
+                AppLog(@"SD card is full");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil)
+                                       showTime:1.0];
+                    [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
+                });
+                return;
+            }
+        } else if (checkSDRet == WCRetFail) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showProgressHUDNotice:NSLocalizedString(@"CARD_FULL", nil)
-                                   showTime:1.0];
-                [self updatePreviewSceneByMode:WifiCamPreviewModeCameraOff];
+                [self showProgressHUDNotice:NSLocalizedString(@"Failed to check SD card status", nil) showTime:2.0];
             });
             return;
+        } else {
+            
         }
         
         self.burstCaptureCount = [[_staticData.burstNumberDict objectForKey:@(_camera.curBurstNumber)] integerValue];
@@ -2583,11 +2644,12 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 }
             } else if ([self capableOf:WifiCamAbilityBurstNumber] && _burstCaptureCount > 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.burstCaptureTimer = [NSTimer scheduledTimerWithTimeInterval:/*0.15*/0.75
+                    self.burstCaptureTimer = [NSTimer scheduledTimerWithTimeInterval:0.38
                                                                             target  :self
                                                                             selector:@selector(burstCaptureTimerCallback:)
                                                                             userInfo:nil
                                                                             repeats :YES];
+                    
                 });
             }
         } else {
@@ -2602,13 +2664,22 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     [self showProgressHUDWithMessage:nil];
     AudioServicesPlaySystemSound(_videoCaptureSound);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (![_ctrl.propCtrl checkSDExist]) {
+        WCRetrunType checkSDRet = [_ctrl.propCtrl checkSDExist];
+        if (checkSDRet == WCRetNoSD) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil)
                                    showTime:1.0];
             });
             return;
+        } else if (checkSDRet == WCRetFail) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showProgressHUDNotice:NSLocalizedString(@"Failed to check SD card status", nil) showTime:2.0];
+            });
+            return;
+        } else {
+            
         }
+        
         if( [self capableOf:WifiCamAbilityGetVideoFileLength] )
         {
             if( [[SDK instance] retrieveCurrentVideoFileLength] == 0){
@@ -2732,14 +2803,22 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     [self showProgressHUDWithMessage:nil];
     AudioServicesPlaySystemSound(_videoCaptureSound);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (![_ctrl.propCtrl checkSDExist]) {
+        WCRetrunType checkSDRet = [_ctrl.propCtrl checkSDExist];
+        if (checkSDRet == WCRetNoSD) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil)
                                    showTime:1.5];
             });
-            
             return;
+        } else if (checkSDRet == WCRetFail) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showProgressHUDNotice:NSLocalizedString(@"Failed to check SD card status", nil) showTime:2.0];
+            });
+            return;
+        } else {
+            
         }
+        
         if ([_ctrl.propCtrl connected]) {
             if (_camera.timelapseType == WifiCamTimelapseTypeStill && _camera.storageSpaceForImage==0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -2830,7 +2909,6 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     if (self.burstCaptureCount-- <= 0) {
         [sender invalidate];
     } else {
-        AppLog(@"burst capture... %lu", (unsigned long)_burstCaptureCount);
         AudioServicesPlaySystemSound(_burstCaptureSound);
     }
 }
@@ -2991,7 +3069,9 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 
 - (void)updateZoomCtrl: (uint)curZoomRatio {
     self.zoomSlider.value = curZoomRatio/10.0;
-    _zoomValueLabel.text = [NSString stringWithFormat:@"x%0.1f", curZoomRatio/10.0];
+    _zoomInButton.enabled = self.zoomSlider.value != self.zoomSlider.maximumValue;
+    _zoomOutButton.enabled = self.zoomSlider.value != self.zoomSlider.minimumValue;
+    _zoomValueLabel.text = [NSString stringWithFormat:@"x%0.1f", self.zoomSlider.value];
     
     if (![_hideZoomControllerTimer isValid]) {
         _hideZoomControllerTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
@@ -3052,6 +3132,7 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 
 - (IBAction)mpbAction:(id)sender
 {
+    TRACE();
     BOOL isUseSDKDecode = [[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
     if (isUseSDKDecode) {
         self.savedCamera.thumbnail = [[PanCamSDK instance] getPreviewThumbnail];
@@ -3059,11 +3140,19 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     
     [self showProgressHUDWithMessage:NSLocalizedString(@"STREAM_ERROR_CAPTURING_CAPTURE", nil)];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (![_ctrl.propCtrl checkSDExist]) {
+        WCRetrunType checkSDRet = [_ctrl.propCtrl checkSDExist];
+        if (checkSDRet == WCRetNoSD) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showProgressHUDNotice:NSLocalizedString(@"NoCard", nil) showTime:2.0];
             });
             return;
+        } else if (checkSDRet == WCRetFail) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showProgressHUDNotice:NSLocalizedString(@"Failed to check SD card status", nil) showTime:2.0];
+            });
+            return;
+        } else {
+            
         }
         
         self.PVRun = NO;
@@ -3920,8 +4009,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
             stillCaptureDoneListener = NULL;
         }
         if( ! [self capableOf:WifiCamAbilityLatestDelayCapture] ){
-            AppLog(@"wait 1 second");
-            [NSThread sleepForTimeInterval:1]; // old method must slow start media stream
+            AppLog(@"(%s) wait 1 second before start preview", __func__);
+            [NSThread sleepForTimeInterval:1]; // old method must start media stream slowly
         }
         _camera.previewMode = WifiCamPreviewModeCameraOff;
         
@@ -4170,29 +4259,36 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     self.PVRun = NO;
     [self stopGLKAnimation];
     
-    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        if ((dispatch_semaphore_wait(_previewSemaphore, time) != 0)) {
-            AppLog(@"Timeout!");
-        } else {
-            dispatch_async([[SDK instance] sdkQueue], ^{
-                dispatch_semaphore_signal(_previewSemaphore);
-                [[SDK instance] destroySDK];
-                
-                [EAGLContext setCurrentContext:self.context];
-                
-                [[PanCamSDK instance] destroypanCamSDK];
-                
-                if ([EAGLContext currentContext] == self.context) {
-                    [EAGLContext setCurrentContext:nil];
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.navigationController.interactivePopGestureRecognizer.enabled = NO ;
-                });
-            });
-        }
+//    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        if ((dispatch_semaphore_wait(_previewSemaphore, time) != 0)) {
+//            AppLog(@"Timeout!");
+//        } else {
+//            dispatch_async([[SDK instance] sdkQueue], ^{
+//                dispatch_semaphore_signal(_previewSemaphore);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.burstCaptureTimer isValid]) {
+            [self.burstCaptureTimer invalidate];
+        };
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO ;
     });
+    
+    [[SDK instance] destroySDK];
+    
+    [EAGLContext setCurrentContext:self.context];
+    
+    self.paused = YES;
+    [[PanCamSDK instance] destroypanCamSDK];
+    
+    if ([EAGLContext currentContext] == self.context) {
+        [EAGLContext setCurrentContext:nil];
+    }
+                
+                
+//            });
+//        }
+//    });
 }
 //-(void)applicationDidEnterBackground:(UIApplication *)application {
 //    [self removeObservers];

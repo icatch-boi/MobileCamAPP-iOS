@@ -214,7 +214,7 @@ static NSString * const kCurrentDateFormat = @"yyyy-MM-dd";
        // 20160219T000000
        // @"yyyyMMdd'T'HHmmss"
        NSString *dateString = [self dateTransformFromString:[NSString stringWithUTF8String:f->getFileDate().c_str()]];
-//       AppLog("dateString: %@", dateString);
+//       AppLog(@"dateString: %@", dateString);
 //       printf("f->getFileDate().c_str(): %s\n", f->getFileDate().c_str());
        ICatchFileInfo *fileInfo = [ICatchFileInfo fileInfoWithFile:f];
        

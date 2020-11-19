@@ -126,7 +126,7 @@ alpha:1.0]
 }
 */
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad]; TRACE();
     
     NSInteger currentState = [UIApplication sharedApplication].applicationState;
     if (currentState == UIApplicationStateBackground) {
@@ -387,7 +387,7 @@ alpha:1.0]
 }*/
 
 -(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    [super viewDidAppear:animated]; TRACE();
     
     NSInteger currentState = [UIApplication sharedApplication].applicationState;
     if (currentState == UIApplicationStateBackground) {
@@ -468,7 +468,7 @@ alpha:1.0]
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+    [super viewWillDisappear:animated]; TRACE();
     NSInteger currentState = [UIApplication sharedApplication].applicationState;
     if (currentState == UIApplicationStateBackground) {
         AppLog(@"%s, Application is not active, current statue: %ld", __func__, (long)currentState);
@@ -1257,7 +1257,7 @@ struct ifaddrs *interfaces;
         NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
         
         aFetchedResultsController.delegate = self;
-        self.fetchedResultsController = aFetchedResultsController;
+        _fetchedResultsController = aFetchedResultsController;
     }
     return _fetchedResultsController;
 }
@@ -1318,9 +1318,9 @@ struct ifaddrs *interfaces;
     // get current SSID
 //    NSDictionary *ifs = [self fetchSSIDInfo];
 //    current_ssid= [ifs objectForKey:@"SSID"] ;
-    current_ssid = [Tool sysSSID];
+//    current_ssid = [Tool sysSSID];
     
-    if (NSClassFromString(@"PHAsset")) {
+//    if (NSClassFromString(@"PHAsset")) {
         // Check library permissions
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
         if (status == PHAuthorizationStatusNotDetermined) {
@@ -1334,11 +1334,11 @@ struct ifaddrs *interfaces;
 //            [self performLoadAssets];
             [self performLoadLocalAssets];
         }
-    } else {
+//    } else {
         // Assets library
 //        [self performLoadAssets];
 //        [self performLoadLocalAssets];
-    }
+//    }
 }
 
 - (void)performLoadLocalAssets {
@@ -1376,7 +1376,7 @@ struct ifaddrs *interfaces;
         }
         
         if (self.photosAssets.count > 0) {
-            AppLog(@"self.photosAssets.count: %lu", (unsigned long)self.photosAssets.count);
+            AppLog(@"There are %lu photo files locally", (unsigned long)self.photosAssets.count);
             
 //            if (_photoThumb.tag == 0) {
 //                _photoThumb.tag = 11;
@@ -1398,7 +1398,7 @@ struct ifaddrs *interfaces;
         }
         
         if (self.videosAssets.count > 0) {
-            AppLog(@"self.videosAssets.count: %lu", (unsigned long)self.videosAssets.count);
+            AppLog(@"There are %lu local video files", (unsigned long)self.videosAssets.count);
             
 //            if (_videoThumb.tag == 0) {
 //                _videoThumb.tag = 12;
@@ -1830,12 +1830,20 @@ struct ifaddrs *interfaces;
 
 #pragma mark - AppDelegateProtocol
 -(void)applicationDidBecomeActive:(UIApplication *)application {
+    TRACE();
     [self loadAssets];
-    [self checkConnectionStatus];
+    NSError *error = nil;
+    if ([[self fetchedResultsController] performFetch:&error]) {
+        [self checkConnectionStatus];
+    } else {
+        AppLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
     /*
 	if (_myCentralManager.state == CBCentralManagerStatePoweredOn
         && !_discoveredPeripheral) {
-        [_myCentralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
+        [_myCentralManager scan
+     3.ForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@NO}];
         AppLog(@"Scanning started");
     }
      */

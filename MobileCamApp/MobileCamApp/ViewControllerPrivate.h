@@ -88,6 +88,7 @@ SettingDelegate
 @property(nonatomic) dispatch_semaphore_t previewSemaphore;
 @property(strong, nonatomic) CustomIOS7AlertView* customIOS7AlertView;
 @property(nonatomic) UIAlertView *normalAlert;
+@property(nonatomic) UIAlertView *disconnectionAlert;
 @property(nonatomic) NSTimer *videoCaptureTimer;
 @property(nonatomic) int elapsedVideoRecordSecs;
 @property(nonatomic) NSTimer *burstCaptureTimer;

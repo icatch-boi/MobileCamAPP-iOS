@@ -1453,23 +1453,5 @@ typedef NS_OPTIONS(NSUInteger, SettingSectionType) {
     return name;
 }
 #endif
-/*
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    
-     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 30ull * NSEC_PER_SEC);
-     dispatch_async(dispatch_get_main_queue(), ^{
-     if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
-     AppLog(@"Timeout!");
-     } else {
-     dispatch_semaphore_signal(self.semaphore);
-     [[SDK instance] destroySDK];
-     }
-     });
-     
-}
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-//    [self fetchUserInfo];
-}
-     */
 @end

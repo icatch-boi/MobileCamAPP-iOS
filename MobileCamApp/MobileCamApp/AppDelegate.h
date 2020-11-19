@@ -14,6 +14,7 @@
 -(void)applicationDidBecomeActive:(UIApplication *)application NS_AVAILABLE_IOS(4_0);
 -(void)notifyPropertiesReady;
 -(NSString *)notifyConnectionBroken;
+-(NSString *)currentCameraSSID;
 - (void)sdcardRemoveCallback;
 - (void)setButtonEnable:(BOOL)value;
 - (void)sdcardInCallback;

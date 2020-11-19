@@ -49,7 +49,7 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, weak) UIAlertController *locationAuthorizationAlertView;
-
+@property(nonatomic, strong) Reachability *reachability;
 @end
 
 #define UmengAppkey @"55765a2467e58ed0a60031d8"
@@ -145,10 +145,10 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     _reconnectionAlertView.tag = APP_RECONNECT_ALERT_TAG;
     
     [self addGlobalObserver];
-    self.isReconnecting = YES;
-    if (![self.timer isValid]) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCurrentNetworkStatus) userInfo:nil repeats:YES];
-    }
+//    self.isReconnecting = YES;
+//    if (![self.timer isValid]) {
+//        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCurrentNetworkStatus) userInfo:nil repeats:YES];
+//    }
     
     return YES;
 }
@@ -175,14 +175,14 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     NSLog(@"=======================================================================");
 }
 
-- (void)checkCurrentNetworkStatus
-{
-    if (![Reachability didConnectedToCameraHotspot]) {
-        if (!_isReconnecting) {
-            [self notifyDisconnectionEvent];
-        }
-    }
-}
+//- (void)checkCurrentNetworkStatus
+//{
+//    if (![Reachability didConnectedToCameraHotspot]) {
+//        if (!_isReconnecting) {
+//            [self notifyDisconnectionEvent];
+//        }
+//    }
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -200,33 +200,40 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     TRACE();
     
     [self removeGlobalObserver];
-    [self.timer invalidate];
-    _isReconnecting = NO;
+//    [self.timer invalidate];
+//    _isReconnecting = NO;
     [self.timeOutTimer invalidate];
     _isTimeout = NO;
     
     if (![[SDK instance] isBusy]) {
+//        if ([self.delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
+//            AppLog(@"Run delegate applicationDidEnterBackground.");
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//                [self.delegate applicationDidEnterBackground:nil];
+//            });
+//        } else {
+//            AppLog(@"Run default applicationDidEnterBackground.");
+//            dispatch_async([[SDK instance] sdkQueue], ^{
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraDestroySDKNotification"
+//                                                                    object:nil];
+//                [[PanCamSDK instance] destroypanCamSDK];
+//                [[SDK instance] destroySDK];
+//            });
+//        }
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.window.rootViewController dismissViewControllerAnimated:NO completion: nil];
+//        });
+        
         if ([self.delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
-            AppLog(@"Execute delegate method.");
-            
-            dispatch_async([[SDK instance] sdkQueue], ^{
+            AppLog(@"Run delegate applicationDidEnterBackground.");
+            dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 [self.delegate applicationDidEnterBackground:nil];
-
-            });
-        } else {
-            AppLog(@"Execute default method.");
-
-            dispatch_async([[SDK instance] sdkQueue], ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraDestroySDKNotification"
-                                                                    object:nil];
-                [[SDK instance] destroySDK];
-//                [[SDK instance] enablePTPIP];
-                [[PanCamSDK instance] destroypanCamSDK];
-
             });
         }
+        AppLog(@"exit(0)");
+        exit(0);
         
-        [self.window.rootViewController dismissViewControllerAnimated:NO completion: nil];
     } else {
         NSTimeInterval ti = 0;
         ti = [[UIApplication sharedApplication] backgroundTimeRemaining];
@@ -255,12 +262,12 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     [self addGlobalObserver];
     //[[Reachability reachabilityForLocalWiFi] startNotifier];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyDisconnectionEvent) name:kReachabilityChangedNotification object:nil];
-    if (![self.timer isValid]) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                      target:self
-                                                    selector:@selector(checkCurrentNetworkStatus)
-                                                    userInfo:nil repeats:YES];
-    }
+//    if (![self.timer isValid]) {
+//        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                                      target:self
+//                                                    selector:@selector(checkCurrentNetworkStatus)
+//                                                    userInfo:nil repeats:YES];
+//    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -307,6 +314,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 //    [FBSDKAppEvents activateApp];
     
     if ([self.delegate respondsToSelector:@selector(applicationDidBecomeActive:)]) {
+        AppLog(@"Run delegate applicationDidBecomeActive.");
         [self.delegate applicationDidBecomeActive:nil];
     }
     
@@ -567,6 +575,18 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     self.globalObserver = [[WifiCamObserver alloc] initWithListener:listener eventType:ICATCH_EVENT_CONNECTION_DISCONNECTED isCustomized:NO isGlobal:YES];
     [[SDK instance] addObserver:_globalObserver];
 #else
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(notifyDisconnectionEvent:)
+                                                     name:kReachabilityChangedNotification object:nil];
+        self.reachability = [Reachability reachabilityForLocalWiFi];
+        [self.reachability startNotifier];
+    });
+
+    /*self.isReconnecting = YES;
+    if (![self.timer isValid]) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkCurrentNetworkStatus) userInfo:nil repeats:YES];
+    }*/
 #endif
     
     auto sdcardRemovelistener = make_shared<WifiCamSDKEventListener>(self, @selector(notifySdCardRemoveEvent));
@@ -585,6 +605,10 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     _globalObserver.listener = NULL;
     self.globalObserver = nil;
 #else
+    [self.reachability stopNotifier];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                        name:kReachabilityChangedNotification object:nil];
+    //    [self.timer invalidate];
 #endif
     
     [[SDK instance] removeObserver:self.sdcardRemoveObserver];
@@ -613,15 +637,47 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     }
 }
 
--(void)notifyDisconnectionEvent {
-#if USE_SDK_EVENT_DISCONNECTED
-#else
+-(void)notifyDisconnectionEvent:(NSNotification *)note {
+    AppLog(@"Disconnection event was received.");
+    
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    
+    BOOL retVal = NO;
+    NetworkStatus netStatus = [curReach currentReachabilityStatus];
+    
+    switch (netStatus) {
+        case NotReachable:
+            AppLog(@"NotReachable");
+            break;
+            
+        case ReachableViaWWAN:
+            AppLog(@"ReachableViaWWAN");
+            break;
+            
+        case ReachableViaWiFi:
+            AppLog(@"ReachableViaWiFi");
+            retVal = YES;
+            break;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(currentCameraSSID)]) {
+        _current_ssid = [self.delegate currentCameraSSID];
+    }
+    NSString *curSSID = [Tool sysSSID] ;
+    AppLog("_current_ssid: %@, checkSSID: %@", _current_ssid, curSSID);
+    if(retVal == YES && curSSID && [curSSID isEqualToString:_current_ssid]) {
+        AppLog(@"notifyDisconnectionEvent: ReachableViaWiFi, return!");
+        return;
+    }
+    
+    [self.reachability stopNotifier];
+    [self removeGlobalObserver];
+
     if (_current_ssid && [[Tool sysSSID] isEqualToString:_current_ssid] && [Reachability didConnectedToCameraHotspot]) {
         return;
     }
-#endif
     
-    AppLog(@"Disconnectino event was received.");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraNetworkDisconnectedNotification"
                                                         object:nil];
     
@@ -629,10 +685,15 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     if ([self.delegate respondsToSelector:@selector(notifyConnectionBroken)]) {
         _current_ssid = [self.delegate notifyConnectionBroken];
     } else {
-        [[SDK instance] destroySDK];
-        [[PanCamSDK instance] destroypanCamSDK];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_connectionErrorAlertView show];
+        });
+        dispatch_async([[SDK instance] sdkQueue], ^{
+            [[PanCamSDK instance] destroypanCamSDK];
+            [[SDK instance] destroySDK];
+        });
     }
-    
+    /*
     if (_current_ssid) {
         [NSThread sleepForTimeInterval:0.03];
         [self globalReconnect];
@@ -643,7 +704,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
                 _isReconnecting = YES;
             });
         }
-    }
+    }*/
 //    //[self removeGlobalObserver];
 //    if (!_reconnectionAlertView.visible) {
 //        dispatch_async(dispatch_get_main_queue(), ^{

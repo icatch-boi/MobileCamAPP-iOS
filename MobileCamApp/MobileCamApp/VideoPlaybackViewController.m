@@ -2507,41 +2507,41 @@ static double __timestampA = 0;
 }
 
 #pragma mark - AppDelegateProtocol
--(void)applicationDidEnterBackground:(UIApplication *)application {
-    AppLog(@"App enter background");
-
-    self.PlaybackRun = NO;
-    [self stopGLKAnimation];
-//    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
-//    if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
-//        AppLog(@"Timeout!");
-//    } else {
-//            dispatch_semaphore_signal(self.semaphore);
-            [self.pbTimer invalidate];
-            [self.insufficientPerformanceTimer invalidate];
-            
-            if(_played) {
-                [self removePlaybackObserver];
-                if (_videoURL) {
-                    self.played = ![[PanCamSDK instance] stop];
-                } else {
-                    self.played = ![_ctrl.pbCtrl stop];
-                }
-            }
-            
-            [[SDK instance] destroySDK];
-            
-            //            [[PanCamSDK instance] panCamStopPreview];
-            [self.motionManager stopGyroUpdates];
-            [EAGLContext setCurrentContext:self.context];
-            
-            [[PanCamSDK instance] destroypanCamSDK];
-            
-            if ([EAGLContext currentContext] == self.context) {
-                [EAGLContext setCurrentContext:nil];
-            }
-//    }
-}
+//-(void)applicationDidEnterBackground:(UIApplication *)application {
+//    AppLog(@"App enter background");
+//
+//    self.PlaybackRun = NO;
+//    [self stopGLKAnimation];
+////    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
+////    if ((dispatch_semaphore_wait(_semaphore, time) != 0)) {
+////        AppLog(@"Timeout!");
+////    } else {
+////            dispatch_semaphore_signal(self.semaphore);
+//            [self.pbTimer invalidate];
+//            [self.insufficientPerformanceTimer invalidate];
+//            
+//            if(_played) {
+//                [self removePlaybackObserver];
+//                if (_videoURL) {
+//                    self.played = ![[PanCamSDK instance] stop];
+//                } else {
+//                    self.played = ![_ctrl.pbCtrl stop];
+//                }
+//            }
+//            
+//            [[SDK instance] destroySDK];
+//            
+//            //            [[PanCamSDK instance] panCamStopPreview];
+//            [self.motionManager stopGyroUpdates];
+//            [EAGLContext setCurrentContext:self.context];
+//            
+//            [[PanCamSDK instance] destroypanCamSDK];
+//            
+//            if ([EAGLContext currentContext] == self.context) {
+//                [EAGLContext setCurrentContext:nil];
+//            }
+////    }
+//}
 
 - (void)sdcardRemoveCallback
 {

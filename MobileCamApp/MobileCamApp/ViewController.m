@@ -506,11 +506,12 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 - (void)destroyGLData {
     [self stopGLKAnimation];
     [self.motionManager stopGyroUpdates];
-    [EAGLContext setCurrentContext:self.context];
-    
-    if ([EAGLContext currentContext] == self.context) {
-        [EAGLContext setCurrentContext:nil];
-    }
+//    [EAGLContext setCurrentContext:self.context];
+//
+//    if ([EAGLContext currentContext] == self.context) {
+//        [EAGLContext setCurrentContext:nil];
+//    }
+    [EAGLContext setCurrentContext:nil];
 }
 
 - (void)dealloc {
@@ -518,10 +519,10 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     [self p_deconstructPreviewData];
     [self destroyGLData];
     
-    dispatch_async([[SDK instance] sdkQueue], ^{
-        [[SDK instance] destroySDK];
-        [[PanCamSDK instance] destroypanCamSDK];
-    });
+//    dispatch_async([[SDK instance] sdkQueue], ^{
+//        [[PanCamSDK instance] destroypanCamSDK];
+//        [[SDK instance] destroySDK];
+//    });
     
 }
 
@@ -1366,7 +1367,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     
     
     self.previewMode = mode;
-    dispatch_queue_t previewQ = dispatch_queue_create("WifiCam.GCD.Queue.Preview", DISPATCH_QUEUE_SERIAL);
+//    dispatch_queue_t previewQ = dispatch_queue_create("WifiCam.GCD.Queue.Preview", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t previewQ = [[SDK instance] sdkQueue];
     dispatch_time_t timeOutCount = dispatch_time(DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC);
     
     [self showProgressHUDWithMessage:nil];
@@ -1493,7 +1495,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
         }
     });
     
-    dispatch_async(previewQ, ^{
+    dispatch_async(/*previewQ*/dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Check SD card
         WCRetrunType checkSDRet = [_ctrl.propCtrl checkSDExist];
         if (checkSDRet == WCRetNoSD) {
@@ -3380,6 +3382,16 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
     [_normalAlert show];
 }
 
+- (void)showDisconnectionAlert
+{
+    self.disconnectionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ConnectError", nil)
+                                       message           :NSLocalizedString(@"NoWifiConnection", nil)
+                                       delegate          :self
+                                       cancelButtonTitle :NSLocalizedString(@"Exit", nil)
+                                       otherButtonTitles :nil, nil];
+    self.disconnectionAlert.tag = APP_CONNECT_ERROR_TAG;
+    [self.disconnectionAlert show];
+}
 
 - (void)addMovieRecListener
 {
@@ -3522,15 +3534,17 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
                 [self hideProgressHUD:YES];
                 //[self.navigationController popToRootViewControllerAnimated:YES];
                 [self.view.window.rootViewController dismissViewControllerAnimated:YES completion: ^{
-                    [[SDK instance] destroySDK];
                     
-                    [EAGLContext setCurrentContext:self.context];
+                    
+//                    [EAGLContext setCurrentContext:self.context];
+//                    if ([EAGLContext currentContext] == self.context) {
+//                        [EAGLContext setCurrentContext:nil];
+//                    }
+                    [EAGLContext setCurrentContext:nil];
                     
                     [[PanCamSDK instance] destroypanCamSDK];
+                    [[SDK instance] destroySDK];
                     
-                    if ([EAGLContext currentContext] == self.context) {
-                        [EAGLContext setCurrentContext:nil];
-                    }
                 }];
 //                [self dismissViewControllerAnimated:YES completion:^{
 //                    [[SDK instance] destroySDK];
@@ -4211,6 +4225,13 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
+        case APP_CONNECT_ERROR_TAG:
+        {
+            ViewController *rootController = (ViewController*)[[(AppDelegate*)[[UIApplication sharedApplication]delegate] window] rootViewController];
+            [rootController dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        }
         case APP_RECONNECT_ALERT_TAG:
             [self dismissViewControllerAnimated:YES completion:^{}];
             //exit(0);
@@ -4238,15 +4259,15 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         } else {
             dispatch_async([[SDK instance] sdkQueue], ^{
                 dispatch_semaphore_signal(_previewSemaphore);
-                [[SDK instance] destroySDK];
                 
-                [EAGLContext setCurrentContext:self.context];
+//                [EAGLContext setCurrentContext:self.context];
+//                if ([EAGLContext currentContext] == self.context) {
+//                    [EAGLContext setCurrentContext:nil];
+//                }
+                [EAGLContext setCurrentContext:nil];
                 
                 [[PanCamSDK instance] destroypanCamSDK];
-                
-                if ([EAGLContext currentContext] == self.context) {
-                    [EAGLContext setCurrentContext:nil];
-                }
+                [[SDK instance] destroySDK];
                 
                 self.navigationController.interactivePopGestureRecognizer.enabled = NO ;
             });
@@ -4255,6 +4276,8 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
 }
 
 -(void)applicationDidEnterBackground:(UIApplication *)application {
+    TRACE();
+    /*
     [self removeObservers];
     self.PVRun = NO;
     [self stopGLKAnimation];
@@ -4274,48 +4297,52 @@ static void didDecompress(void* decompressionOutputRefCon, void* sourceFrameRefC
         self.navigationController.interactivePopGestureRecognizer.enabled = NO ;
     });
     
-    [[SDK instance] destroySDK];
     
-    [EAGLContext setCurrentContext:self.context];
+    
+//    [EAGLContext setCurrentContext:self.context];
+//    if ([EAGLContext currentContext] == self.context) {
+//        [EAGLContext setCurrentContext:nil];
+//    }
+    [EAGLContext setCurrentContext:nil];
     
     self.paused = YES;
     [[PanCamSDK instance] destroypanCamSDK];
+    [[SDK instance] destroySDK];
     
-    if ([EAGLContext currentContext] == self.context) {
-        [EAGLContext setCurrentContext:nil];
-    }
                 
                 
 //            });
 //        }
 //    });
+     */
+    
+    BOOL isUseSDKDecode = [[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"];
+    if (isUseSDKDecode) {
+        self.savedCamera.thumbnail = [[PanCamSDK instance] getPreviewThumbnail];
+    }
+    // Save data to sqlite
+    NSError *error = nil;
+    if (![self.savedCamera.managedObjectContext save:&error]) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         */
+        AppLog(@"Unresolved error %@, %@", error, [error userInfo]);
+
+    } else {
+        AppLog(@"Save preview thumbnail to sqlite.");
+    }
 }
-//-(void)applicationDidEnterBackground:(UIApplication *)application {
-//    [self removeObservers];
-//    self.PVRun = NO;
-//    [self stopGLKAnimation];
-//    
-//    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        if ((dispatch_semaphore_wait(_previewSemaphore, time) != 0)) {
-//            AppLog(@"Timeout!");
-//            
-//        } else {
-//            dispatch_semaphore_signal(_previewSemaphore);
-//            [[SDK instance] destroySDK];
-//            
-//            [EAGLContext setCurrentContext:self.context];
-//            
-//            [[PanCamSDK instance] destroypanCamSDK];
-//            
-//            if ([EAGLContext currentContext] == self.context) {
-//                [EAGLContext setCurrentContext:nil];
-//            }
-//        }
-//    });
-//}
+
+-(NSString *)currentCameraSSID {
+    return self.savedCamera.wifi_ssid;
+}
 
 -(NSString *)notifyConnectionBroken {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showDisconnectionAlert];
+    });
     switch(_camera.previewMode) {
         case WifiCamPreviewModeVideoOn: {
             if ([self capableOf:WifiCamAbilityGetMovieRecordedTime]) {

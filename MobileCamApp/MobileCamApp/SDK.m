@@ -214,8 +214,14 @@
 - (void)destroySDK
 {
     @synchronized(self) {
-        isSDKInitialized = NO;
+        if(isSDKInitialized) {
+            isSDKInitialized = NO;
+        } else {
+            AppLog("The SDK instance has been destroyed!");
+            return;
+        }
     }
+    AppLog(@"%s", __func__);
     if (self.session1) {
         AppLog(@"start destory session");
         self.session1->destroySession();
@@ -243,6 +249,7 @@
 //    self.vplayback = NULL;
     self.sdkState = NULL;
     self.sdkInfo = NULL;
+    AppLog(@"Over");
 }
 
 -(void)cleanUpDownloadDirectory
@@ -1102,7 +1109,7 @@
         return WCRetFail;
     }
     
-    AppLog(@"SD card is exist by default.");
+    AppLog(@"SD card is exist.");
     return WCRetSuccess;
 }
 

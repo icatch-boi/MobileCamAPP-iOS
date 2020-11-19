@@ -1555,7 +1555,7 @@
 
 - (BOOL)panCamStopPreview {
     if (!_panCamPreview) {
-        AppLog(@"initStream doesn't work!!!");
+        AppLog(@"PanCamSDK doesn't work!!!");
         return NO;
     }
     int ret = _panCamPreview->stop();

@@ -119,7 +119,7 @@
             AppLog(@"Supported interface is null");
         }
     }
-    AppLog(@"ssid : %@", ssid);
+    AppLog(@"SSID: %@", ssid);
     //AppLog(@"bssid: %@", bssid);
     
     if(!ssid) {

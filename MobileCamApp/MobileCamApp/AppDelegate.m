@@ -20,9 +20,8 @@
 #import "GCDiscreetNotificationView.h"
 
 #import "PanCamSDK.h"
-#if 0
-#import <BuglyHotfix/Bugly.h>
-#endif
+
+//#import <BuglyHotfix/Bugly.h>
 //#import <GoogleSignIn/GoogleSignIn.h>
 //#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
@@ -57,47 +56,47 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 
 @implementation AppDelegate
 
-#if 0
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-#if 0
-    if ([[url scheme] isEqualToString:@"fb295583287549917"]){
-        return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                              openURL:url
-                                                    sourceApplication:sourceApplication
-                                                           annotation:annotation];
-    } else {
-        return [[GIDSignIn sharedInstance] handleURL:url
-                                   sourceApplication:sourceApplication
-                                          annotation:annotation];
-    }
-#else
-    return [[GIDSignIn sharedInstance] handleURL:url
-    sourceApplication:sourceApplication
-           annotation:annotation];
-#endif
-}
-#endif
+//#if 0
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication
+//         annotation:(id)annotation {
+//#if 0
+//    if ([[url scheme] isEqualToString:@"fb295583287549917"]){
+//        return [[FBSDKApplicationDelegate sharedInstance] application:application
+//                                                              openURL:url
+//                                                    sourceApplication:sourceApplication
+//                                                           annotation:annotation];
+//    } else {
+//        return [[GIDSignIn sharedInstance] handleURL:url
+//                                   sourceApplication:sourceApplication
+//                                          annotation:annotation];
+//    }
+//#else
+//    return [[GIDSignIn sharedInstance] handleURL:url
+//    sourceApplication:sourceApplication
+//           annotation:annotation];
+//#endif
+//}
+//#endif
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#if 0
-    [Bugly startWithAppId:nil]; //add bugly SDK 2016.12.28
-#endif
-    // Exception handler
-    [self registerDefaultsFromSettingsBundle];
-#if 0
-    // Set app's client ID for |GIDSignIn|.
-    [GIDSignIn sharedInstance].clientID = kClientID;
-#endif
-    
-#if 0
-    // Facebook delegate
-    [[FBSDKApplicationDelegate sharedInstance] application:application
-                             didFinishLaunchingWithOptions:launchOptions];
-#endif
+//#if 0
+//    [Bugly startWithAppId:nil]; //add bugly SDK 2016.12.28
+//#endif
+//    // Exception handler
+//    [self registerDefaultsFromSettingsBundle];
+//#if 0
+//    // Set app's client ID for |GIDSignIn|.
+//    [GIDSignIn sharedInstance].clientID = kClientID;
+//#endif
+//
+//#if 0
+//    // Facebook delegate
+//    [[FBSDKApplicationDelegate sharedInstance] application:application
+//                             didFinishLaunchingWithOptions:launchOptions];
+//#endif
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults stringForKey:@"RTMPURL"]) {
@@ -190,56 +189,6 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     // Use this method to pause ongoing tasks, disable timers, doneand throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
     TRACE();
-    
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    TRACE();
-    
-    [self removeGlobalObserver];
-//    [self.timer invalidate];
-//    _isReconnecting = NO;
-    [self.timeOutTimer invalidate];
-    _isTimeout = NO;
-    
-    if (![[SDK instance] isBusy]) {
-//        if ([self.delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
-//            AppLog(@"Run delegate applicationDidEnterBackground.");
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//                [self.delegate applicationDidEnterBackground:nil];
-//            });
-//        } else {
-//            AppLog(@"Run default applicationDidEnterBackground.");
-//            dispatch_async([[SDK instance] sdkQueue], ^{
-//                [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraDestroySDKNotification"
-//                                                                    object:nil];
-//                [[PanCamSDK instance] destroypanCamSDK];
-//                [[SDK instance] destroySDK];
-//            });
-//        }
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.window.rootViewController dismissViewControllerAnimated:NO completion: nil];
-//        });
-        
-        if ([self.delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
-            AppLog(@"Run delegate applicationDidEnterBackground.");
-            dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                [self.delegate applicationDidEnterBackground:nil];
-            });
-        }
-        AppLog(@"exit(0)");
-        exit(0);
-        
-    } else {
-        NSTimeInterval ti = 0;
-        ti = [[UIApplication sharedApplication] backgroundTimeRemaining];
-        NSLog(@"backgroundTimeRemaining: %f", ti);
-    }
-    
     if (!_connectingAlertView.hidden) {
         [_connectingAlertView dismissWithClickedButtonIndex:0 animated:NO];
     }
@@ -252,6 +201,49 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     if (!_reconnectionAlertView.hidden) {
         [_reconnectionAlertView dismissWithClickedButtonIndex:0 animated:NO];
     }
+        
+    if (![[SDK instance] isBusy]) {
+    //        if ([self.delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
+    //            AppLog(@"Run delegate applicationDidEnterBackground.");
+    //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    //                [self.delegate applicationDidEnterBackground:nil];
+    //            });
+    //        } else {
+    //            AppLog(@"Run default applicationDidEnterBackground.");
+    //            dispatch_async([[SDK instance] sdkQueue], ^{
+    //                [[NSNotificationCenter defaultCenter] postNotificationName:@"kCameraDestroySDKNotification"
+    //                                                                    object:nil];
+    //                [[PanCamSDK instance] destroypanCamSDK];
+    //                [[SDK instance] destroySDK];
+    //            });
+    //        }
+    //
+    //        dispatch_async(dispatch_get_main_queue(), ^{
+    //            [self.window.rootViewController dismissViewControllerAnimated:NO completion: nil];
+    //        });
+            
+        AppLog(@"exit(0)");
+        //        exit(0);
+        NSAssert(FALSE, @"Quitting the app programmatically.");
+        
+    } else {
+        [self removeGlobalObserver];
+        //            [self.timer invalidate];
+        //            _isReconnecting = NO;
+        [self.timeOutTimer invalidate];
+        _isTimeout = NO;
+        
+        NSTimeInterval ti = 0;
+        ti = [[UIApplication sharedApplication] backgroundTimeRemaining];
+        NSLog(@"backgroundTimeRemaining: %f", ti);
+    }
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    TRACE();
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -275,7 +267,7 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     TRACE();
-#ifdef DEBUG
+//#ifdef DEBUG
     //  NSUserDefaults *defaultSettings = [NSUserDefaults standardUserDefaults];
     //  if (![defaultSettings integerForKey:@"PreviewCacheTime"]) {
     //    AppLog(@"loading default value...");
@@ -290,17 +282,15 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
      delete config; config = NULL;
      */
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"PreferenceSpecifier:DumpMediaStream"]) {
-#if 0
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *streamType = [defaults stringForKey:@"PreferenceSpecifier:DumpMediaStreamType"];
-        bool videoStream = [streamType isEqualToString:@"Video"] ? true : false;
-        ICatchCameraConfig::getInstance()->enableDumpMediaStream(videoStream, documentsDirectory.UTF8String);
-#endif
-    }
-#endif
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    if ([defaults boolForKey:@"PreferenceSpecifier:DumpMediaStream"]) {
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString *documentsDirectory = [paths objectAtIndex:0];
+//        NSString *streamType = [defaults stringForKey:@"PreferenceSpecifier:DumpMediaStreamType"];
+//        bool videoStream = [streamType isEqualToString:@"Video"] ? true : false;
+//        ICatchCameraConfig::getInstance()->enableDumpMediaStream(videoStream, documentsDirectory.UTF8String);
+//    }
+//#endif
     /*
      if (![[SDK instance] isSDKInitialized]) {
      //

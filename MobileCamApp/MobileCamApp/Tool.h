@@ -16,4 +16,5 @@
 +(NSString *)bundlePath:(NSString *)fileName;
 +(NSString *)documentsPath:(NSString *)fileName;
 +(NSString *)sysSSID;
++(UIImage *)scaleImage:(UIImage *)original scale:(CGFloat)scale;
 @end

@@ -303,7 +303,7 @@ alpha:1.0]
                     switch (id0) {
                         case 0:
                             if (image) {
-                                [_camThumbBtn1 setBackgroundImage:image
+                                [_camThumbBtn1 setBackgroundImage:[Tool scaleImage:image scale:0.3]
                                                          forState:UIControlStateNormal];
                             }
                             [_addCamBtn1 setTitle:title forState:UIControlStateNormal];
@@ -320,7 +320,7 @@ alpha:1.0]
                             break;
                         case 1:
                             if (image) {
-                                [_camThumbBtn2 setBackgroundImage:image
+                                [_camThumbBtn2 setBackgroundImage:[Tool scaleImage:image scale:0.3]
                                                          forState:UIControlStateNormal];
                             }
                             [_addCamBtn2 setTitle:title forState:UIControlStateNormal];
@@ -337,7 +337,7 @@ alpha:1.0]
                             break;
                         case 2:
                             if (image) {
-                                [_camThumbBtn3 setBackgroundImage:image
+                                [_camThumbBtn3 setBackgroundImage:[Tool scaleImage:image scale:0.3]
                                                          forState:UIControlStateNormal];
                             }
                             [_addCamBtn3 setTitle:title forState:UIControlStateNormal];
@@ -1381,7 +1381,9 @@ struct ifaddrs *interfaces;
 //            if (_photoThumb.tag == 0) {
 //                _photoThumb.tag = 11;
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    [_photoThumb setBackgroundImage:[UIImage imageWithContentsOfFile:((NSURL*)_photosAssets[0]).path] forState:UIControlStateNormal];
+                    UIImage *orignalImage = [UIImage imageWithContentsOfFile:((NSURL*)_photosAssets[0]).path];
+                    UIImage *thumbnail = [Tool scaleImage:orignalImage scale:0.1];
+                    [_photoThumb setBackgroundImage:thumbnail forState:UIControlStateNormal];
                 });
 //            }
         } else {

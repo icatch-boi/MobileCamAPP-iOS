@@ -851,7 +851,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     
     NSString *fileName = [NSString stringWithUTF8String:f->getFileName().c_str()];
     NSString *tmpDirectoryContents = nil;
-    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"] || [fileName hasSuffix:@".AVI"]) {
         tmpDirectoryContents = [[SDK instance] createMediaDirectory][2];
     } else {
         tmpDirectoryContents = [[SDK instance] createMediaDirectory][1];
@@ -1539,7 +1539,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
         fileName = [NSString stringWithUTF8String:f->getFileName().c_str()];
         
         NSString *fileDirectory = nil;
-        if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+        if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"] || [fileName hasSuffix:@".AVI"]) {
             fileDirectory = [[SDK instance] createMediaDirectory][2];
         } else {
             fileDirectory = [[SDK instance] createMediaDirectory][1];
@@ -1653,7 +1653,7 @@ static const CGFloat kChangeDisplayWayButtonWidth = 26;
     //locatePath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fileName];
     
     NSString *fileDirectory = nil;
-    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"] || [fileName hasSuffix:@".AVI"]) {
         fileDirectory = [[SDK instance] createMediaDirectory][2];
     } else {
         fileDirectory = [[SDK instance] createMediaDirectory][1];

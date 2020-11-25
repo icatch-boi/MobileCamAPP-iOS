@@ -287,9 +287,20 @@
     // PanoramaType change switch button
     // Fixed: MOBILEAPP-19
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PreferenceSpecifier:UseSDKDecode"]) {
-        if (_videoURL != nil || (_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile])) {
+        if(_videoURL == nil && [[PanCamSDK instance] isPanoramaWithFile:/*(_gallery.videoTable.fileList.at(index))*/self.currentFile]) {
             [self setupPanoramaTypeChangeButton];
-        }
+            
+        } else if (_videoURL != nil) {
+            CGImageRef  imageRef = [previewImage CGImage];
+            float imageWidth = CGImageGetWidth(imageRef);
+            float imageHeight = CGImageGetHeight(imageRef);
+            float scale = imageWidth/imageHeight;
+            if (scale >= 2) {
+                // This is a panoramic file.
+                [self setupPanoramaTypeChangeButton];
+            }
+            
+        } else {}
     }
 
     if (!_videoURL) {
@@ -532,6 +543,7 @@
             break;
     }
     _notificationView.center = CGPointMake(self.view.center.x, _notificationView.center.y);
+    _InsufficientPerformanceLabel.center = self.view.center;
     [UIView commitAnimations];
     if (_panoramaTypeButton != nil) {
         [self updatePanoramaTypeChangeButtonLayout];
@@ -794,6 +806,8 @@
                     self.playedSecs = 0;
                     _slideController.value = 0;
                     _slideController.enabled = NO;
+                    _previewThumb.hidden = NO;
+                    _InsufficientPerformanceLabel.hidden = YES;
                     [self hideProgressHUD:YES];
                 });
             }
@@ -2082,7 +2096,7 @@ static double __timestampA = 0;
         unsigned long long fileSize = pFile->getFileSize();
         
         NSString *fileDirectory = nil;
-        if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+        if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"] || [fileName hasSuffix:@".AVI"]) {
             fileDirectory = [[SDK instance] createMediaDirectory][2];
         } else {
             fileDirectory = [[SDK instance] createMediaDirectory][1];
@@ -2161,7 +2175,7 @@ static double __timestampA = 0;
     long long fileSize = self.currentFile->getFileSize();
 
     NSString *fileDirectory = nil;
-    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"] || [fileName hasSuffix:@".AVI"]) {
         fileDirectory = [[SDK instance] createMediaDirectory][2];
     } else {
         fileDirectory = [[SDK instance] createMediaDirectory][1];
@@ -2507,9 +2521,9 @@ static double __timestampA = 0;
 }
 
 #pragma mark - AppDelegateProtocol
-//-(void)applicationDidEnterBackground:(UIApplication *)application {
-//    AppLog(@"App enter background");
-//
+-(void)applicationDidEnterBackground:(UIApplication *)application {
+    AppLog(@"App enter background");
+
 //    self.PlaybackRun = NO;
 //    [self stopGLKAnimation];
 ////    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 10ull * NSEC_PER_SEC);
@@ -2541,7 +2555,7 @@ static double __timestampA = 0;
 //                [EAGLContext setCurrentContext:nil];
 //            }
 ////    }
-//}
+}
 
 - (void)sdcardRemoveCallback
 {

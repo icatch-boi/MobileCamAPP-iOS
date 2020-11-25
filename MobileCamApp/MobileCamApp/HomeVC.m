@@ -1809,7 +1809,7 @@ struct ifaddrs *interfaces;
     });
 }
 
-- (void)popGLKViewByphotoBrowser:(MWPhotoBrowser *)photoBrowser andVideoURL:(NSURL *)videoURL {
+- (void)popGLKViewByphotoBrowser:(MWPhotoBrowser *)photoBrowser andVideoURL:(NSURL *)videoURL andThumb:(UIImage *)thumb {
     /*PanCamGLKView *glkView = [[PanCamGLKView alloc] init];
     //glkView.image = img;
     glkView.videoURL = videoURL;
@@ -1819,6 +1819,7 @@ struct ifaddrs *interfaces;
 
     VideoPlaybackViewController *playView = [[VideoPlaybackViewController alloc] init];
     playView.videoURL = videoURL;
+    playView.previewImage = thumb;
 
     // Modal
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:playView];

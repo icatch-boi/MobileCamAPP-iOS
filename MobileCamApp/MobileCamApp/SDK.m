@@ -1727,7 +1727,7 @@
     //NSString *locatePath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), fileName];
     
     NSString *fileDirectory = nil;
-    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"]) {
+    if ([fileName hasSuffix:@".MP4"] || [fileName hasSuffix:@".MOV"] || [fileName hasSuffix:@".AVI"]) {
         fileDirectory = [self createMediaDirectory][2];
     } else {
         fileDirectory = [self createMediaDirectory][1];

@@ -56,7 +56,7 @@
 - (void)destroyDataForEnterBackground;
 - (BOOL)changePanoramaType:(int)panoramaType;
 
-- (void)popGLKViewByphotoBrowser:(MWPhotoBrowser *)photoBrowser andVideoURL:(NSURL *)videoURL;
+- (void)popGLKViewByphotoBrowser:(MWPhotoBrowser *)photoBrowser andVideoURL:(NSURL *)videoURL andThumb:(UIImage *)thumb;
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser;
 @end

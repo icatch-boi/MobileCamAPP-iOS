@@ -2332,9 +2332,9 @@ static double __timestampA = 0;
     }
 }
 
-- (void)popGLKView:(MWPhotoBrowser *)browser andVideoURL:(NSURL *)videoURL {
-    if ([self.delegate respondsToSelector:@selector(popGLKViewByphotoBrowser:andVideoURL:)]) {
-        [self.delegate popGLKViewByphotoBrowser:browser andVideoURL:videoURL];
+- (void)popGLKView:(MWPhotoBrowser *)browser andVideoURL:(NSURL *)videoURL andThumb:(UIImage *)thumb  {
+    if ([self.delegate respondsToSelector:@selector(popGLKViewByphotoBrowser:andVideoURL:andThumb:)]) {
+        [self.delegate popGLKViewByphotoBrowser:browser andVideoURL:videoURL andThumb:thumb];
     }
 }
 

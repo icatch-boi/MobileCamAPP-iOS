@@ -110,7 +110,7 @@
 - (void)configureView:(int)width andHeight:(int)height;
 - (void)createICatchImage:(UIImage *)image;
 - (void)panCamSDKinit;
-- (void)popGLKView:(MWPhotoBrowser *)browser andVideoURL:(NSURL *)videoURL;
+- (void)popGLKView:(MWPhotoBrowser *)browser andVideoURL:(NSURL *)videoURL andThumb:(UIImage *)thumb;
 - (void)locate:(float)distance;
 - (void)configureGyro;
 - (void)ifAddPinchGestureRecognizer:(BOOL)state;

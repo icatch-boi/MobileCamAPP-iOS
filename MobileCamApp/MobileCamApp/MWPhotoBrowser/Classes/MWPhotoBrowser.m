@@ -1521,7 +1521,7 @@ static double __timestampA = 0;
 //                    } else {
 //                        [self _playVideo:url atPhotoIndex:index];
 //                    }
-                    [self popGLKView:self andVideoURL:url];
+                    [self popGLKView:self andVideoURL:url andThumb:img];
                 });
             } else {
                 [self setVideoLoadingIndicatorVisible:NO atPageIndex:index];

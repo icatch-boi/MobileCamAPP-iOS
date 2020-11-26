@@ -85,8 +85,8 @@ static NSString * const kClientID = @"759186550079-nj654ak1umgakji7qmhl290hfcp95
 //#if 0
 //    [Bugly startWithAppId:nil]; //add bugly SDK 2016.12.28
 //#endif
-//    // Exception handler
-//    [self registerDefaultsFromSettingsBundle];
+    // Exception handler
+    [self registerDefaultsFromSettingsBundle];
 //#if 0
 //    // Set app's client ID for |GIDSignIn|.
 //    [GIDSignIn sharedInstance].clientID = kClientID;

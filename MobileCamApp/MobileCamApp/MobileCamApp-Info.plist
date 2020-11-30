@@ -106,7 +106,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6030</string>
+	<string>6041</string>
 	<key>FacebookAppID</key>
 	<string>295583287549917</string>
 	<key>FacebookDisplayName</key>
@@ -254,15 +254,19 @@
 		</dict>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Change camera Wi-Fi SSID and password</string>
+	<string>This allow APP to setup your camera's Wi-Fi by Bluetooth </string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Change camera Wi-Fi SSID and password</string>
+	<string>This allow APP to setup your camera's Wi-Fi by Bluetooth </string>
 	<key>NSCameraUsageDescription</key>
-	<string>Save image/videos into camera roll</string>
+	<string>This allow APP to download camera's videos/photos and store to camera roll. </string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This allow APP to read camera's Wi-Fi name, and use for let you known what's camera you have established on next time open APP. </string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This allow APP to read camera's Wi-Fi name, and use for let you known what's camera you have established on next time open APP. </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>iOS13 and above required Location permission to read the camera name</string>
+	<string>This allow APP to read camera's Wi-Fi name, and use for let you known what's camera you have established on next time open APP. </string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Save image/videos into camera roll</string>
+	<string>This allow APP to download camera's videos/photos and store to camera roll.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>

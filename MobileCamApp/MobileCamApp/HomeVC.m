@@ -1239,7 +1239,6 @@ struct ifaddrs *interfaces;
 - (NSFetchedResultsController *)fetchedResultsController {
     // Set up the fetched results controller if needed.
     if (_fetchedResultsController == nil) {
-        TRACE();
         // Create the fetch request for the entity.
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         // Edit the entity name as appropriate.
@@ -1376,7 +1375,7 @@ struct ifaddrs *interfaces;
         }
         
         if (self.photosAssets.count > 0) {
-            AppLog(@"There are %lu photo files locally", (unsigned long)self.photosAssets.count);
+            
             
 //            if (_photoThumb.tag == 0) {
 //                _photoThumb.tag = 11;
@@ -1400,7 +1399,7 @@ struct ifaddrs *interfaces;
         }
         
         if (self.videosAssets.count > 0) {
-            AppLog(@"There are %lu local video files", (unsigned long)self.videosAssets.count);
+            
             
 //            if (_videoThumb.tag == 0) {
 //                _videoThumb.tag = 12;
@@ -1424,6 +1423,9 @@ struct ifaddrs *interfaces;
                                        forState:UIControlStateNormal];
             });
         }
+        
+        AppLog(@"Photo: %lu", (unsigned long)self.photosAssets.count);
+        AppLog(@"Video: %lu", (unsigned long)self.videosAssets.count);
     });
 }
 

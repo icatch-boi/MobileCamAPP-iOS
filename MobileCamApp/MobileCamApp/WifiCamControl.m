@@ -167,10 +167,12 @@
     for (mit = vModes.begin(); mit != vModes.end(); ++mit) {
         switch (*mit) {
             case ICH_CAM_MODE_CAMERA:
+                AppLog(@"ICH_CAM_MODE_CAMERA");
 //                abilities |= WifiCamAbilityStillCapture;
                 [abilities addObject:@(WifiCamAbilityStillCapture)];
                 break;
             case ICH_CAM_MODE_VIDEO:
+                AppLog(@"ICH_CAM_MODE_VIDEO");
 //                abilities |= WifiCamAbilityMovieRecord;
                 [abilities addObject:@(WifiCamAbilityMovieRecord)];
                 break;

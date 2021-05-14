@@ -1431,7 +1431,8 @@
     //int ret = _playback->downloadFile(f, picBuf);
     int ret = _playback->getQuickview(f, picBuf);
     
-    if (ret == ICH_BUF_TOO_SMALL || ret == ICH_CAM_MTP_GET_OBJECTS_ERROR) {
+    if (/*ret == ICH_BUF_TOO_SMALL || ret == ICH_CAM_MTP_GET_OBJECTS_ERROR*/
+        ICH_SUCCEED != ret) {
         picBuf = NULL;
         picBuf = make_shared<ICatchFrameBuffer>(3648*2736);
         if (picBuf == NULL) {
